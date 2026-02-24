@@ -1,8 +1,7 @@
-import { LoginRequest, AuthResponse } from "../types";
+import { LoginRequest, SignupRequest, AuthResponse, Entite } from "../types";
 
 /**
  * Mock de réponse API réussie pour démonstration.
- * Utile pour montrer le contrat attendu au développeur backend.
  */
 export const MOCK_AUTH_SUCCESS: AuthResponse = {
     user: {
@@ -15,24 +14,57 @@ export const MOCK_AUTH_SUCCESS: AuthResponse = {
 };
 
 /**
- * Service pour la gestion de l'authentification.
+ * Mock des entités pour le formulaire d'inscription.
+ */
+const MOCK_ENTITES: Entite[] = [
+    { id: "1", nom: "Informatique" },
+    { id: "2", nom: "Ressources Humaines" },
+    { id: "3", nom: "Direction" },
+    { id: "4", nom: "Communication" },
+];
+
+/**
+ * Service pour la gestion de l'authentification et de l'inscription.
  */
 export const authService = {
     /**
+     * Récupère la liste des entités disponibles (simulé).
+     */
+    getEntites: async (): Promise<Entite[]> => {
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        return MOCK_ENTITES;
+    },
+
+    /**
      * Simule un appel API de connexion.
-     * @param credentials Email et mot de passe de l'utilisateur (LoginRequest).
-     * @returns Une Promise résolvant avec MOCK_AUTH_SUCCESS.
      */
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-        // Affichage des données prêtes à être envoyées (pour le feedback dev)
         console.log("%c Envoi de LoginRequest au backend :", "color: #3b82f6; font-weight: bold;");
         console.table(credentials);
-
-        // Simulation d'un délai réseau de 1 seconde
         await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Pour la démo, on renvoie toujours le mock de succès
         return MOCK_AUTH_SUCCESS;
+    },
+
+    /**
+     * Simule un appel API d'inscription.
+     * @param data Données d'inscription (SignupRequest).
+     */
+    signup: async (data: SignupRequest): Promise<AuthResponse> => {
+        console.log("%c Envoi de SignupRequest au backend :", "color: #10b981; font-weight: bold;");
+        console.table(data);
+
+        // Simulation d'un délai réseau
+        await new Promise((resolve) => setTimeout(resolve, 1200));
+
+        // On renvoie un mock de succès après création
+        return {
+            ...MOCK_AUTH_SUCCESS,
+            user: {
+                ...MOCK_AUTH_SUCCESS.user,
+                email: data.email,
+                nom: data.nom,
+            }
+        };
     },
 
     /**
