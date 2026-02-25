@@ -1,30 +1,44 @@
 import { LoginRequest, SignupRequest, AuthResponse, Entite } from "../types";
 
 /**
- * Mock de réponse API réussie pour démonstration.
- */
-export const MOCK_AUTH_SUCCESS: AuthResponse = {
-    user: {
-        id: "123",
-        email: "zo-kely@example.com",
-        nom: "Kely Zo",
-        role: "ADMIN",
-    },
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.fake_payload.fake_signature",
-};
-
-/**
- * Mock des entités pour le formulaire d'inscription.
+ * Mock des entités disponibles.
  */
 const MOCK_ENTITES: Entite[] = [
-    { id: "1", nom: "Informatique" },
+    { id: "1", nom: "DSINT" },
     { id: "2", nom: "Ressources Humaines" },
-    { id: "3", nom: "Direction" },
+    { id: "3", nom: "Direction Générale" },
     { id: "4", nom: "Communication" },
+    { id: "5", nom: "DAPS" },
 ];
 
 /**
- * Service pour la gestion de l'authentification et de l'inscription.
+ * Mock — Compte supérieur (ADMIN)
+ */
+const MOCK_ADMIN: AuthResponse = {
+    user: {
+        id: "001",
+        email: "admin@mesupres.gov.mg",
+        nom: "Directeur Général",
+        role: "ADMIN",
+    },
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_payload.fake_signature",
+};
+
+/**
+ * Mock — Compte utilisateur standard (USER)
+ */
+const MOCK_USER: AuthResponse = {
+    user: {
+        id: "002",
+        email: "agent@mesupres.gov.mg",
+        nom: "Agent DSINT",
+        role: "USER",
+    },
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.user_payload.fake_signature",
+};
+
+/**
+ * Service d'authentification (mock statique).
  */
 export const authService = {
     /**
@@ -37,41 +51,38 @@ export const authService = {
 
     /**
      * Simule un appel API de connexion.
+     * - email contenant "admin" → rôle ADMIN (supérieur)
+     * - sinon → rôle USER (agent standard)
      */
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-        console.log("%c Envoi de LoginRequest au backend :", "color: #3b82f6; font-weight: bold;");
-        console.table(credentials);
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-        return MOCK_AUTH_SUCCESS;
+        await new Promise((resolve) => setTimeout(resolve, 800));
+
+        if (credentials.email.toLowerCase().includes("admin")) {
+            return MOCK_ADMIN;
+        }
+        return MOCK_USER;
     },
 
     /**
      * Simule un appel API d'inscription.
-     * @param data Données d'inscription (SignupRequest).
      */
     signup: async (data: SignupRequest): Promise<AuthResponse> => {
-        console.log("%c Envoi de SignupRequest au backend :", "color: #10b981; font-weight: bold;");
-        console.table(data);
-
-        // Simulation d'un délai réseau
         await new Promise((resolve) => setTimeout(resolve, 1200));
-
-        // On renvoie un mock de succès après création
         return {
-            ...MOCK_AUTH_SUCCESS,
+            ...MOCK_USER,
             user: {
-                ...MOCK_AUTH_SUCCESS.user,
+                ...MOCK_USER.user,
                 email: data.email,
                 nom: data.nom,
-            }
+            },
         };
     },
 
     /**
-     * Simule une déconnexion.
+     * Déconnexion.
      */
     logout: async (): Promise<void> => {
-        await new Promise((resolve) => setTimeout(resolve, 500));
+        await new Promise((resolve) => setTimeout(resolve, 300));
         localStorage.removeItem("auth_token");
         localStorage.removeItem("user");
     },

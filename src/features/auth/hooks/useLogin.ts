@@ -6,7 +6,9 @@ import { authService } from "../services/authService";
 import { LoginRequest, User } from "../types";
 
 /**
- * Hook personnalisé pour gérer la logique de connexion.
+ * Hook de connexion avec redirection basée sur le rôle.
+ * - USER → /dashboard/nouveau (formulaire de saisie)
+ * - ADMIN / MANAGER → /dashboard/supervision
  */
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -22,31 +24,31 @@ export const useLogin = () => {
         try {
             const response = await authService.login(credentials);
 
-            // Stockage local
+            // Persistance en localStorage
             localStorage.setItem("auth_token", response.token);
             localStorage.setItem("user", JSON.stringify(response.user));
 
             // Mise à jour de l'état pour feedback UI
             setUser(response.user);
 
-            // Délai court avant redirection pour laisser le temps de voir le message de succès
+            // Redirection selon le rôle après un court délai (affichage du message de succès)
             setTimeout(() => {
-                router.push("/dashboard");
-            }, 2000);
+                const role = response.user.role;
+                if (role === "ADMIN" || role === "MANAGER") {
+                    router.push("/dashboard/supervision");
+                } else {
+                    router.push("/dashboard/nouveau");
+                }
+            }, 1500);
 
             return response.user;
         } catch (err: any) {
-            setError(err.message || "Une erreur est survenue lors de la connexion");
+            setError(err.message || "Une erreur est survenue lors de la connexion.");
             throw err;
         } finally {
             setIsLoading(false);
         }
     };
 
-    return {
-        login,
-        isLoading,
-        error,
-        user,
-    };
+    return { login, isLoading, error, user };
 };
