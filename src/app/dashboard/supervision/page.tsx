@@ -1,37 +1,49 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SupervisionView } from "@/features/rapports/components/SupervisionView";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { User } from "@/features/auth/types";
 
+import { authService } from "@/features/auth/services/authService";
 /**
  * Page Supervision — accessible uniquement aux ADMIN et MANAGER.
  * Redirige les utilisateurs standards vers /dashboard/nouveau.
  */
 export default function SupervisionPage() {
-    const user = useCurrentUser();
+    const [user, setUser] = useState<User | null>(null)
     const router = useRouter();
-
+    const [loading, setLoading] = useState(true)
+    const login= process.env.NEXT_PUBLIC_LOGIN_URL || '/login';
     useEffect(() => {
-        // Une fois le user chargé depuis localStorage, on vérifie le rôle
-        if (user !== null && user.role !== "ADMIN" && user.role !== "MANAGER") {
-            router.replace("/dashboard/nouveau");
+        checkAuth()
+    },[]);
+
+    const checkAuth = async () => {
+      try {
+        const user = await authService.checkAuth();
+        setUser(user);
+        if (user.role !== "Admin") {
+        authService.logout();
+          router.push(login);
         }
-    }, [user, router]);
+      } catch (err) {
+        authService.logout();
+        router.push(login);
+      }
+      finally{
+        setLoading(false);
+      }
+      // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
+    };
 
     // Pendant le chargement, on n'affiche rien pour éviter le flash
-    if (user === null) {
+    if (loading) {
         return (
-            <div className="flex items-center justify-center py-24">
-                <div className="w-8 h-8 border-4 border-gray-300 border-t-gray-700 rounded-full animate-spin" />
-            </div>
-        );
-    }
-
-    // Si rôle insuffisant, le useEffect redirige — on n'affiche rien en attendant
-    if (user.role !== "ADMIN" && user.role !== "MANAGER") {
-        return null;
+        <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
+            <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+        </header>
+        )
     }
 
     return (

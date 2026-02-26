@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect } from "react";
+import React, { useState, useMemo, useRef, useEffect, memo } from "react";
 import { useForm, useFieldArray, Control, UseFormRegister } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -10,25 +10,22 @@ import { RapportConsolide } from "../types";
 import { usePdfExport } from "../hooks/usePdfExport";
 import { RapportView } from "./RapportView";
 
-// Schéma de validation
+// Schéma avec nettoyage automatique des entrées vides
 const consolidationSchema = z.object({
-    dateDebut: z.string().min(1, "Date de début requise"),
-    dateFin: z.string().min(1, "Date de fin requise"),
+    dateDebut: z.string().min(1, "Requis"),
+    dateFin: z.string().min(1, "Requis"),
     lignes: z.array(z.object({
-        activites: z.array(z.string().min(1)).min(1),
-        effets: z.array(z.string().min(1)).min(1),
-        impacts: z.array(z.string().min(1)).min(1),
-    })).min(1),
+        activites: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
+        effets: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
+        impacts: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
+    })).min(1, "Au moins une ligne est requise"),
 });
 
 type ConsolidationFormValues = z.infer<typeof consolidationSchema>;
 
-/**
- * Textarea à hauteur automatique pour une puce individuelle.
- */
-const BulletTextarea = ({ register, name, onKeyDown, onChange, isFirst }: any) => {
+const BulletTextarea = memo(({ register, name, onKeyDown, isLastCreated }: any) => {
     const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const { ref, onChange: rhfOnChange, ...rest } = register(name);
+    const { ref, ...rest } = register(name);
 
     const adjustHeight = () => {
         if (textareaRef.current) {
@@ -37,45 +34,42 @@ const BulletTextarea = ({ register, name, onKeyDown, onChange, isFirst }: any) =
         }
     };
 
-    useEffect(() => { adjustHeight(); }, []);
+    useEffect(() => { 
+        adjustHeight();
+        // Focus auto uniquement si c'est la nouvelle puce qu'on vient de créer
+        if (isLastCreated && textareaRef.current) {
+            textareaRef.current.focus();
+        }
+    }, [isLastCreated]);
 
     return (
-        <div className="flex items-start gap-1.5">
-            <span className="text-gray-400 mt-2 text-xs shrink-0">•</span>
+        <div className="flex items-start gap-1.5 w-full">
+            <span className="text-blue-500 mt-2 text-[10px] shrink-0">•</span>
             <textarea
                 {...rest}
                 ref={(e) => {
                     ref(e);
                     textareaRef.current = e;
-                    if (isFirst && !e?.value) e?.focus();
                 }}
                 onChange={(e) => {
-                    rhfOnChange(e);
-                    if (onChange) onChange(e);
+                    rest.onChange(e); // Important pour RHF
                     adjustHeight();
                 }}
                 onKeyDown={onKeyDown}
                 rows={1}
-                className="w-full py-1.5 bg-transparent focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all resize-none overflow-hidden text-gray-800 placeholder:text-gray-300 border-none"
-                placeholder="Saisir un détail…"
+                className="w-full py-1.5 bg-transparent focus:bg-white border-none focus:ring-1 focus:ring-blue-100 outline-none text-xs transition-all resize-none overflow-hidden text-gray-800 placeholder:text-gray-300"
+                placeholder="Saisir un détail..."
             />
         </div>
     );
-};
+});
 
-/**
- * Cellule de puces pour une colonne du tableau.
- */
-const BulletCell = ({ control, register, name, index, fieldName }: {
-    control: Control<ConsolidationFormValues>,
-    register: UseFormRegister<ConsolidationFormValues>,
-    name?: string,
-    index: number,
-    fieldName: "activites" | "effets" | "impacts",
-}) => {
+BulletTextarea.displayName = "BulletTextarea";
+
+const BulletCell = ({ control, register, index, fieldName }: any) => {
     const { fields, append, remove } = useFieldArray({
         control,
-        name: `lignes.${index}.${fieldName}` as any,
+        name: `lignes.${index}.${fieldName}`,
     });
 
     const containerRef = useRef<HTMLDivElement>(null);
@@ -90,36 +84,32 @@ const BulletCell = ({ control, register, name, index, fieldName }: {
             remove(bulletIndex);
             setTimeout(() => {
                 const textareas = containerRef.current?.querySelectorAll("textarea");
-                const targetIndex = bulletIndex > 0 ? bulletIndex - 1 : 0;
-                if (textareas?.[targetIndex]) {
-                    (textareas[targetIndex] as HTMLTextAreaElement).focus();
-                    const len = (textareas[targetIndex] as HTMLTextAreaElement).value.length;
-                    (textareas[targetIndex] as HTMLTextAreaElement).setSelectionRange(len, len);
+                const prev = textareas?.[bulletIndex - 1] as HTMLTextAreaElement;
+                if (prev) {
+                    prev.focus();
+                    prev.setSelectionRange(prev.value.length, prev.value.length);
                 }
             }, 0);
         }
     };
 
     return (
-        <div ref={containerRef} className="flex flex-col gap-0.5 p-2 min-h-[50px] group/cell relative">
+        <div ref={containerRef} className="flex flex-col gap-0 p-2 min-h-[60px] group/cell border-r border-gray-100 last:border-r-0">
             {fields.map((field, bulletIndex) => (
-                <div key={field.id} className="relative group/bullet">
+                <div key={field.id} className="relative group/bullet flex items-center">
                     <BulletTextarea
                         register={register}
                         name={`lignes.${index}.${fieldName}.${bulletIndex}`}
                         onKeyDown={(e: any) => handleKeyDown(e, bulletIndex)}
-                        isFirst={bulletIndex === fields.length - 1 && !field.id}
+                        isLastCreated={bulletIndex === fields.length - 1 && bulletIndex !== 0}
                     />
                     {fields.length > 1 && (
                         <button
                             type="button"
                             onClick={() => remove(bulletIndex)}
-                            className="absolute -right-1 top-1.5 opacity-0 group-hover/bullet:opacity-100 text-gray-300 hover:text-red-500 transition-all p-0.5"
-                            title="Supprimer"
+                            className="opacity-0 group-hover/bullet:opacity-100 text-gray-300 hover:text-red-500 p-1 transition-all"
                         >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                            </svg>
+                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeWidth="2" strokeLinecap="round"/></svg>
                         </button>
                     )}
                 </div>
@@ -127,7 +117,7 @@ const BulletCell = ({ control, register, name, index, fieldName }: {
             <button
                 type="button"
                 onClick={() => append("")}
-                className="self-start opacity-0 group-hover/cell:opacity-100 text-[9px] font-semibold text-blue-500 hover:text-blue-700 transition-all ml-4 mt-1"
+                className="self-start opacity-0 group-hover/cell:opacity-100 text-[10px] text-blue-600 font-bold ml-4 mt-1 hover:underline transition-opacity"
             >
                 + Ajouter
             </button>
@@ -135,15 +125,12 @@ const BulletCell = ({ control, register, name, index, fieldName }: {
     );
 };
 
-/**
- * Formulaire de consolidation Multi-Puces — design sobre et professionnel.
- */
 export const ConsolidationForm = () => {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
 
-    const { register, handleSubmit, control, watch } = useForm<ConsolidationFormValues>({
+    const { register, handleSubmit, control, watch, formState: { errors } } = useForm<ConsolidationFormValues>({
         resolver: zodResolver(consolidationSchema),
         defaultValues: {
             dateDebut: new Date().toISOString().split("T")[0],
@@ -153,170 +140,118 @@ export const ConsolidationForm = () => {
     });
 
     const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
-    const [confirmDeleteIndex, setConfirmDeleteIndex] = useState<number | null>(null);
-
     const watchedValues = watch();
 
-    const rapportPreview = useMemo<RapportConsolide>(() => ({
-        id: "live-preview",
+const rapportPreview = useMemo<RapportConsolide>(() => ({
+    id: 0,
+    calendrier: {
         dateDebut: watchedValues.dateDebut || "",
         dateFin: watchedValues.dateFin || "",
-        dateCreation: new Date().toISOString().split("T")[0],
-        entiteId: "1",
-        entiteNom: "DSINT",
-        lignes: watchedValues.lignes as any || [],
-        status: "BROUILLON",
-    }), [watchedValues]);
+        typeCalendrier: { name: "HEBDO" },
+    },
+    dateCreation: new Date().toISOString(),
+    // CORRECTION : Utilisez "user" si c'est ce que l'interface attend
+    user: { 
+        role: "Admin", 
+        entite: "DIRECTION", 
+        email: "admin@exemple.com" 
+    },
+    // CORRECTION : Si l'interface attend "lignes" ET "activites"
+    lignes: watchedValues.lignes as any || [],
+    activites: [], // Ajoutez un tableau vide ou mappez vos lignes ici si nécessaire
+    status: "BROUILLON",
+}), [watchedValues]);
 
     const onSubmit = async (data: ConsolidationFormValues) => {
         setIsSubmitting(true);
         try {
-            await rapportService.saveRapport(data);
-            router.push("/dashboard");
+            // await rapportService.saveRapport(data);
+            router.push("/dashboard/supervision");
+            router.refresh();
         } catch (err) {
-            console.error(err);
+            alert("Erreur lors de l'enregistrement. Vérifiez votre connexion.");
         } finally {
             setIsSubmitting(false);
         }
     };
 
     return (
-        <div className="space-y-5">
-            {/* Barre d'outils */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
+        <div className="max-w-6xl mx-auto space-y-6 pb-20">
+            {/* Header / Actions */}
+            <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm sticky top-2 z-20">
                 <div className="flex items-center gap-4">
-                    <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide whitespace-nowrap">
-                        Période :
-                    </label>
-                    <div className="flex items-center gap-2">
-                        <input
-                            {...register("dateDebut")}
-                            type="date"
-                            className="px-3 py-1.5 border border-gray-400 rounded text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <span className="text-gray-400 text-sm">→</span>
-                        <input
-                            {...register("dateFin")}
-                            type="date"
-                            className="px-3 py-1.5 border border-gray-400 rounded text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
+                    <div className={`flex items-center gap-2 p-1 rounded-lg ${errors.dateDebut || errors.dateFin ? 'bg-red-50 ring-1 ring-red-200' : ''}`}>
+                        <input type="date" {...register("dateDebut")} className="text-xs border-gray-300 rounded focus:ring-blue-500" />
+                        <span className="text-gray-400 text-xs">au</span>
+                        <input type="date" {...register("dateFin")} className="text-xs border-gray-300 rounded focus:ring-blue-500" />
                     </div>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2">
                     <button
                         type="button"
+                        onClick={() => exportToPdf("preview-container", `Rapport_${watchedValues.dateDebut}.pdf`)}
                         disabled={isPdfGenerating}
-                        onClick={() => {
-                            // On déclenche l'export directement sur l'ID du renderer caché
-                            exportToPdf("rapport-a4-container-live", `Canevas_Rapport_${new Date().getFullYear()}.pdf`);
-                        }}
-                        className="px-4 py-2 border border-gray-400 rounded text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-1.5 disabled:opacity-50"
+                        className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition-colors"
                     >
-                        {isPdfGenerating ? (
-                            <div className="w-3.5 h-3.5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                        )}
-                        Canevas
+                        {isPdfGenerating ? "Génération..." : "Aperçu PDF"}
                     </button>
                     <button
                         onClick={handleSubmit(onSubmit)}
                         disabled={isSubmitting}
-                        className="px-5 py-2 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded transition-colors shadow-sm disabled:opacity-50"
+                        className="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all disabled:bg-gray-400"
                     >
-                        {isSubmitting ? "Envoi…" : "Valider"}
+                        {isSubmitting ? "Envoi en cours..." : "Valider le rapport"}
                     </button>
                 </div>
             </div>
 
-            {/* Grille de saisie */}
-            <div className="bg-white border border-gray-400 rounded-lg overflow-hidden shadow-sm">
-                <div className="min-w-[700px] overflow-x-auto">
-                    {/* En-tête */}
-                    <div className="grid grid-cols-[44px_1fr_1fr_1fr_52px] border-b border-gray-400 bg-gray-100">
-                        <div className="p-3 text-xs font-bold uppercase text-gray-500 text-center border-r border-gray-400">#</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Activités</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Effets</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Impacts</div>
-                        <div className="p-3 bg-gray-50" />
-                    </div>
+            {/* Table de saisie */}
+            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                <div className="grid grid-cols-[40px_1fr_1fr_1fr_50px] bg-gray-50/80 border-b border-gray-200">
+                    <div className="p-3 text-[10px] font-bold text-gray-400 text-center">#</div>
+                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Activités</div>
+                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Effets</div>
+                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Impacts</div>
+                    <div className="bg-gray-100/30" />
+                </div>
 
-                    {/* Lignes */}
-                    <div className="divide-y divide-gray-300">
-                        {fields.map((field, index) => (
-                            <div
-                                key={field.id}
-                                className="grid grid-cols-[44px_1fr_1fr_1fr_52px] divide-x divide-gray-300 hover:bg-gray-50/50 transition-colors group/row"
-                            >
-                                <div className="flex items-center justify-center text-xs font-bold text-gray-400 bg-gray-50 border-r border-gray-300">
-                                    {index + 1}
-                                </div>
-                                <BulletCell control={control} register={register} index={index} fieldName="activites" />
-                                <BulletCell control={control} register={register} index={index} fieldName="effets" />
-                                <BulletCell control={control} register={register} index={index} fieldName="impacts" />
-                                <div className="flex items-center justify-center p-2 border-l border-gray-300">
-                                    {fields.length > 1 && (
-                                        <div className="relative">
-                                            {confirmDeleteIndex === index ? (
-                                                <div className="flex items-center gap-1">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => { remove(index); setConfirmDeleteIndex(null); }}
-                                                        className="p-1.5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                                                        title="Confirmer"
-                                                    >
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setConfirmDeleteIndex(null)}
-                                                        className="p-1.5 bg-gray-100 text-gray-500 rounded hover:bg-gray-200 transition-colors"
-                                                        title="Annuler"
-                                                    >
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setConfirmDeleteIndex(index)}
-                                                    className="p-1.5 text-gray-300 hover:text-red-500 transition-all hover:scale-110"
-                                                    title="Supprimer la ligne"
-                                                >
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
-                                            )}
-                                        </div>
-                                    )}
-                                </div>
+                <div className="divide-y divide-gray-100">
+                    {fields.map((field, index) => (
+                        <div key={field.id} className="grid grid-cols-[40px_1fr_1fr_1fr_50px] group/row hover:bg-blue-50/10 transition-colors">
+                            <div className="flex items-center justify-center bg-gray-50/30 border-r border-gray-100 text-[10px] font-bold text-gray-400">
+                                {index + 1}
                             </div>
-                        ))}
-                    </div>
+                            <BulletCell control={control} register={register} index={index} fieldName="activites" />
+                            <BulletCell control={control} register={register} index={index} fieldName="effets" />
+                            <BulletCell control={control} register={register} index={index} fieldName="impacts" />
+                            <div className="flex items-center justify-center">
+                                {fields.length > 1 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => remove(index)}
+                                        className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-all opacity-0 group-hover/row:opacity-100"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
 
-            {/* Bouton d'ajout */}
             <button
                 type="button"
                 onClick={() => append({ activites: [""], effets: [""], impacts: [""] })}
-                className="w-full py-4 border border-dashed border-gray-400 rounded-lg text-gray-500 text-xs font-semibold uppercase hover:bg-gray-50 hover:border-gray-500 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:text-blue-500 hover:border-blue-200 hover:bg-blue-50/50 transition-all font-bold text-[11px] flex items-center justify-center gap-2 uppercase tracking-widest"
             >
-                <span className="text-base">+</span>
-                Ajouter un groupe d'activités
+                <span className="text-lg">+</span> Ajouter un groupe de lignes
             </button>
-            {/* Hidden renderer for PDF capture (Live preview) */}
-            <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0 overflow-hidden">
-                <RapportView rapport={rapportPreview} containerId="rapport-a4-container-live" />
+
+            {/* Hidden PDF Preview */}
+            <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0 shadow-none">
+                <RapportView rapport={rapportPreview} containerId="preview-container" />
             </div>
         </div>
     );

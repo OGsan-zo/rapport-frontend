@@ -42,7 +42,7 @@ export const LoginForm = () => {
                     </div>
                 </div>
                 <div>
-                    <h2 className="text-lg font-bold text-gray-900">Bienvenue, {user.nom}</h2>
+                    <h2 className="text-lg font-bold text-gray-900">Bienvenue, {user.entite}</h2>
                     <p className="text-sm text-gray-500 mt-1">Connexion réussie. Redirection en cours…</p>
                 </div>
                 <p className="text-xs text-gray-400">

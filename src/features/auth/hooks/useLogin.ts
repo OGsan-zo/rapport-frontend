@@ -24,17 +24,13 @@ export const useLogin = () => {
         try {
             const response = await authService.login(credentials);
 
-            // Persistance en localStorage
-            localStorage.setItem("auth_token", response.token);
-            localStorage.setItem("user", JSON.stringify(response.user));
-
             // Mise à jour de l'état pour feedback UI
             setUser(response.user);
 
             // Redirection selon le rôle après un court délai (affichage du message de succès)
             setTimeout(() => {
                 const role = response.user.role;
-                if (role === "ADMIN" || role === "MANAGER") {
+                if (role === "Admin") {
                     router.push("/dashboard/supervision");
                 } else {
                     router.push("/dashboard/nouveau");
@@ -44,7 +40,7 @@ export const useLogin = () => {
             return response.user;
         } catch (err: any) {
             setError(err.message || "Une erreur est survenue lors de la connexion.");
-            throw err;
+            // throw err;
         } finally {
             setIsLoading(false);
         }

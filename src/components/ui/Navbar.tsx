@@ -1,10 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { authService } from "@/features/auth/services/authService";
+import { User } from "@/features/auth/types";
 
 /**
  * Barre de navigation épurée.
@@ -12,12 +12,19 @@ import { authService } from "@/features/auth/services/authService";
  * - "Supervision" : uniquement ADMIN et MANAGER.
  */
 export const Navbar: React.FC = () => {
-    const user = useCurrentUser();
+    const [user, setUser] = useState<User | null>(null)
     const pathname = usePathname();
     const router = useRouter();
+      const [loading, setLoading] = useState(true)
 
+    
+  const login= process.env.NEXT_PUBLIC_LOGIN_URL || '/login';   
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
+    
+  useEffect(() => {
+    checkAuth()
+  }, [])
     const navLinkClass = (href: string) =>
         `text-sm font-medium px-3 py-1.5 rounded transition-colors ${isActive(href)
             ? "bg-gray-100 text-gray-900 font-semibold"
@@ -28,9 +35,32 @@ export const Navbar: React.FC = () => {
         await authService.logout();
         router.push("/login");
     };
+    const checkAuth = async () => {
+      try {
+        const response = await fetch(`/api/auth/me`);
+        if (!response.ok) {
+          router.push(login)
+          return;
+        }
+        const data = await response.json();
+        setUser(data.user);
+      } catch (err) {
+        router.push(login)
+      }
+      finally{
+        setLoading(false)
+      }
+      // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
+    };
 
-    const isSuperior = user && (user.role === "ADMIN" || user.role === "MANAGER");
-
+    const isSuperior = user && (user.role === "Admin");
+    if (loading) {
+        return (
+        <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
+            <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+        </header>
+        )
+    }
     return (
         <header className="bg-white border-b border-gray-300 shadow-sm">
             <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
@@ -61,7 +91,7 @@ export const Navbar: React.FC = () => {
                 <div className="flex items-center gap-3">
                     {user && (
                         <span className="text-xs text-gray-500 hidden sm:inline">
-                            {user.nom}
+                            {user.entite}
                             <span className="ml-1 text-gray-400">({user.role})</span>
                         </span>
                     )}

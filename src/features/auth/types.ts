@@ -1,12 +1,12 @@
 export interface User {
-  id: string;
+  id?: number;
   email: string;
-  nom: string;
-  role: "ADMIN" | "USER" | "MANAGER";
+  entite: string;
+  role: "Admin" | "Utilisateur";
 }
 
 export interface Entite {
-  id: string;
+  id: number;
   nom: string;
 }
 
@@ -18,8 +18,8 @@ export interface LoginRequest {
 export interface SignupRequest {
   email: string;
   password: string;
-  nom: string;
-  entiteId: string;
+  entite: string;
+  entiteId: number;
 }
 
 export interface AuthResponse {
