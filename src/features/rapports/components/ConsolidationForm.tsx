@@ -20,7 +20,7 @@ import { SelectPeriode } from "../../common/components/SelectPeriode";
  * Note : statut est défini comme z.string() sans .optional() pour éviter l'erreur de type
  */
 const consolidationSchema = z.object({
-  idCalendrier: 1,
+  idCalendrier: z.number(),
   dateDebut: z.string().optional(),
   dateFin: z.string().optional(),
   lignes: z.array(
@@ -72,6 +72,7 @@ export const ConsolidationForm = () => {
   const rapportPreview = useMemo<ApiRapport>(() => {
     return {
       id: 0,
+      idCalendrier: watchedValues.idCalendrier,
       calendrier: {
         id: 1,
         dateDebut: watchedValues.dateDebut || "2026-01-01",

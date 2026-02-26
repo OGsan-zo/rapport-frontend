@@ -93,11 +93,17 @@ export const authService = {
         return MOCK_USERS;
     },
 
-    /**
-     * Simule un appel API de connexion.
-     * - email contenant "admin" → rôle ADMIN (supérieur)
-     * - sinon → rôle USER (agent standard)
-     */
+    createUser: async (data: any): Promise<User> => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const newUser: User = {
+            id: MOCK_USERS.length + 1,
+            email: data.email,
+            entite: data.nom,
+            role: data.role,
+        };
+        MOCK_USERS = [newUser, ...MOCK_USERS];
+        return newUser;
+    },
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/login`, {
         method: 'POST',

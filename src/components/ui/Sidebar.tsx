@@ -1,14 +1,28 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
 import { User } from "@/features/auth/types";
+import { authService } from "@/features/auth/services/authService";
 
 
 export const Sidebar: React.FC = () => {
-    const [user, setUser] = useState<User | null>(null)
+    const [user, setUser] = useState<User | null>(null);
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const userData = await authService.checkAuth();
+                setUser(userData);
+            } catch (err) {
+                setUser(null);
+            }
+        };
+        getUser();
+    }, []);
+
     const pathname = usePathname();
 
     const isSuperior = user && (user.role === "Admin" );

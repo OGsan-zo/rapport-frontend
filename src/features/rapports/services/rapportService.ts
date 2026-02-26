@@ -30,8 +30,7 @@ let MOCK_RAPPORTS: ApiRapport[] = [
                     { effect: "Temps de réponse réduit de 40%", impact: "Meilleure expérience utilisateur" }
                 ],
             }
-        ],
-        status: "VALIDE",
+        ]
     },
     {
         id: 18,

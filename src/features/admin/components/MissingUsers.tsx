@@ -67,10 +67,10 @@ export const MissingUsers = () => {
                                     Aucun retardataire détecté pour cette période.
                                 </td>
                             </tr>
-                        ) : (
+                        ) : (   
                             users.map((user) => (
                                 <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
-                                    <td className="p-5 text-sm font-bold text-slate-900 border-r border-slate-100">{user.nom}</td>
+                                    <td className="p-5 text-sm font-bold text-slate-900 border-r border-slate-100">{user.entite}</td>
                                     <td className="p-5 text-sm font-medium text-slate-400 border-r border-slate-100 italic">{user.email}</td>
                                     <td className="p-5 text-[9px] font-bold text-slate-300 uppercase tracking-widest">{user.role}</td>
                                 </tr>

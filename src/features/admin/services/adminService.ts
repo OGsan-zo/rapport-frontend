@@ -15,11 +15,11 @@ export interface CalendarPeriod {
 
 // Mock users database
 const MOCK_ALL_USERS: User[] = [
-    { id: "001", email: "admin@mesupres.gov.mg", nom: "Admin Syst", role: "ADMIN" },
-    { id: "002", email: "agent@mesupres.gov.mg", nom: "Agent DSINT", role: "USER" },
-    { id: "004", email: "jean@mesupres.gov.mg", nom: "Jean Rakoto", role: "USER" },
-    { id: "005", email: "marie@mesupres.gov.mg", nom: "Marie Randria", role: "USER" },
-    { id: "006", email: "paul@mesupres.gov.mg", nom: "Paul Rabary", role: "USER" },
+    { id: 1, email: "admin@mesupres.gov.mg", entite: "Admin Syst", role: "Admin" },
+    { id: 2, email: "agent@mesupres.gov.mg", entite: "Agent DSINT", role: "Utilisateur" },
+    { id: 4, email: "jean@mesupres.gov.mg", entite: "Jean Rakoto", role: "Utilisateur" },
+    { id: 5, email: "marie@mesupres.gov.mg", entite: "Marie Randria", role: "Utilisateur" },
+    { id: 6, email: "paul@mesupres.gov.mg", entite: "Paul Rabary", role: "Utilisateur" },
 ];
 
 let MOCK_PERIODS: CalendarPeriod[] = [
@@ -35,7 +35,7 @@ export const adminService = {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
         // Simulé: On compte les utilisateurs standards
-        const standardUsers = MOCK_ALL_USERS.filter(u => u.role === "USER");
+        const standardUsers = MOCK_ALL_USERS.filter(u => u.role === "Utilisateur");
         const totalUsers = standardUsers.length;
 
         // Simulé: On dit qu'il y a 3 rapports reçus
