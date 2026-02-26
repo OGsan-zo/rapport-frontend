@@ -135,7 +135,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                     {/* ======= TITRE ======= */}
                     <div style={{ textAlign: "center", marginBottom: "24px" }}>
                         <h1 style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.1em", borderBottom: "1.5px solid #1e293b", paddingBottom: "8px", display: "inline-block", paddingLeft: "16px", paddingRight: "16px", color: "#1e293b" }}>
-                            Rapport Hebdomadaire d&apos;Activités
+                            Rapport d&apos;Activités
                         </h1>
                     </div>
 

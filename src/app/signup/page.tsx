@@ -1,26 +1,75 @@
 import React from "react";
 import { SignupForm } from "@/features/auth/components/SignupForm";
+import Link from "next/link";
+
+import { IMAGES } from "@/features/common/constants";
+import Image from "next/image";
 
 /**
- * Page d'inscription.
+ * Page d'inscription alignée sur le design Login (2 colonnes + Logos).
  */
 export default function SignupPage() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-            <div className="w-full px-4 flex flex-col items-center gap-6">
-                <div className="text-center">
-                    <h2 className="text-xs font-bold uppercase text-gray-500 tracking-widest">
-                        MESUPRES — Rapports
-                    </h2>
+        <main className="min-h-screen flex bg-white relative overflow-hidden">
+            {/* Lien de retour discret */}
+            <Link
+                href="/"
+                className="absolute top-8 left-8 flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors z-50 group font-medium"
+            >
+                <span className="transition-transform group-hover:-translate-x-1">←</span>
+                <span>Retour à l&apos;accueil</span>
+            </Link>
+
+            {/* Côté gauche : Illustration (Visible uniquement sur les tablettes/PC) */}
+            <div className="hidden lg:flex lg:w-1/2 bg-gray-50 flex-col items-center justify-center p-12 border-r border-gray-100">
+                <div className="max-w-md w-full space-y-8 text-center">
+                    <div className="relative w-full aspect-square max-w-[400px] mx-auto opacity-90 hover:opacity-100 transition-opacity">
+                        <Image
+                            src={IMAGES.ILLUSTRATION_LOGIN}
+                            alt="Illustration"
+                            fill
+                            className="object-contain"
+                            priority
+                        />
+                    </div>
+                    <div className="space-y-3">
+                        <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+                            Rejoignez la Plateforme
+                        </h1>
+                        <p className="text-gray-500 text-lg">
+                            Créez votre profil pour commencer à centraliser vos activités.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            {/* Côté droit : Formulaire */}
+            <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 bg-white">
+                <div className="flex flex-col items-center gap-6 mb-10">
+                    <div className="flex items-center gap-6">
+                        <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="h-12 w-auto mix-blend-multiply" />
+                        <div className="h-10 w-[1px] bg-slate-200" />
+                        <img src={IMAGES.LOGO_MESUPRES} alt="Logo" className="h-12 w-auto mix-blend-multiply" />
+                    </div>
+                    <div className="text-center space-y-1">
+                        <h2 className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.2em]">
+                            Ministère de l&apos;Enseignement Supérieur
+                        </h2>
+                        <p className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">
+                            Direction des Systèmes d&apos;Information (DSINT)
+                        </p>
+                    </div>
                 </div>
 
                 <SignupForm />
 
-                <p className="text-xs text-gray-400">
-                    © {currentYear} - DSINT - MESUPRES
-                </p>
+                <div className="text-center mt-8">
+                    <p className="text-xs text-gray-400">
+                        © {currentYear} - DSINT - MESUPRES
+                    </p>
+                </div>
             </div>
         </main>
     );

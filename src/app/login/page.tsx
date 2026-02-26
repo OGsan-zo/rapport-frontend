@@ -2,6 +2,7 @@ import React from "react";
 import { LoginForm } from "@/features/auth/components/LoginForm";
 import { IMAGES } from "@/features/common/constants";
 import Image from "next/image";
+import Link from "next/link";
 
 /**
  * Page de connexion moderne avec illustration.
@@ -10,7 +11,16 @@ export default function LoginPage() {
     const currentYear = new Date().getFullYear();
 
     return (
-        <main className="min-h-screen flex bg-white">
+        <main className="min-h-screen flex bg-white relative overflow-hidden">
+            {/* Lien de retour discret */}
+            <Link
+                href="/"
+                className="absolute top-8 left-8 flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors z-50 group font-medium"
+            >
+                <span className="transition-transform group-hover:-translate-x-1">←</span>
+                <span>Retour à l&apos;accueil</span>
+            </Link>
+
             {/* Côté gauche : Illustration (Visible uniquement sur les tablettes/PC) */}
             <div className="hidden lg:flex lg:w-1/2 bg-gray-50 flex-col items-center justify-center p-12 border-r border-gray-100">
                 <div className="max-w-md w-full space-y-8 text-center">
@@ -36,39 +46,28 @@ export default function LoginPage() {
 
             {/* Côté droit : Formulaire */}
             <div className="w-full lg:w-1/2 flex flex-col items-center justify-center p-8 bg-white">
-                <div className="w-full max-w-[400px] space-y-8">
-                    <div className="flex flex-col items-center gap-4">
-                        <div className="flex items-center gap-3">
-                            <div className="relative w-10 h-10">
-                                <Image
-                                    src={IMAGES.LOGO_REPOBLIKA}
-                                    alt="Logo Repoblika"
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
-                            <div className="h-8 w-[1px] bg-gray-300" />
-                            <div className="relative w-10 h-10">
-                                <Image
-                                    src={IMAGES.LOGO_MESUPRES}
-                                    alt="Logo MESUPRES"
-                                    fill
-                                    className="object-contain"
-                                />
-                            </div>
-                        </div>
-                        <h2 className="text-xs font-bold uppercase text-gray-400 tracking-[0.2em] mb-4">
+                <div className="flex flex-col items-center gap-6 mb-10">
+                    <div className="flex items-center gap-6">
+                        <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="h-12 w-auto mix-blend-multiply" />
+                        <div className="h-10 w-[1px] bg-slate-200" />
+                        <img src={IMAGES.LOGO_MESUPRES} alt="Logo" className="h-12 w-auto mix-blend-multiply" />
+                    </div>
+                    <div className="text-center space-y-1">
+                        <h2 className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.2em]">
                             Ministère de l&apos;Enseignement Supérieur
                         </h2>
-                    </div>
-
-                    <LoginForm />
-
-                    <div className="text-center">
-                        <p className="text-xs text-gray-400">
-                            © {currentYear} - DSINT - MESUPRES
+                        <p className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">
+                            Direction des Systèmes d&apos;Information (DSINT)
                         </p>
                     </div>
+                </div>
+
+                <LoginForm />
+
+                <div className="text-center">
+                    <p className="text-xs text-gray-400">
+                        © {currentYear} - DSINT - MESUPRES
+                    </p>
                 </div>
             </div>
         </main>

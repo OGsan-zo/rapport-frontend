@@ -1,4 +1,4 @@
-import { LoginRequest, SignupRequest, AuthResponse, Entite } from "../types";
+import { LoginRequest, SignupRequest, AuthResponse, Entite, User } from "../types";
 
 /**
  * Mock des entités disponibles.
@@ -51,6 +51,15 @@ const MOCK_USER: AuthResponse = {
 };
 
 /**
+ * Mock des utilisateurs pour la gestion admin.
+ */
+let MOCK_USERS: User[] = [
+    { id: "001", email: "admin@mesupres.gov.mg", nom: "Administrateur Système", role: "ADMIN" },
+    { id: "002", email: "agent@mesupres.gov.mg", nom: "Agent DSINT", role: "USER" },
+    { id: "003", email: "directeur@mesupres.gov.mg", nom: "Directeur Général", role: "DIRECTEUR" },
+];
+
+/**
  * Service d'authentification (mock statique).
  */
 export const authService = {
@@ -60,6 +69,14 @@ export const authService = {
     getEntites: async (): Promise<Entite[]> => {
         await new Promise((resolve) => setTimeout(resolve, 500));
         return MOCK_ENTITES;
+    },
+
+    /**
+     * Récupère la liste de tous les utilisateurs (ADMIN uniquement).
+     */
+    getUsers: async (): Promise<User[]> => {
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        return MOCK_USERS;
     },
 
     /**
@@ -92,6 +109,21 @@ export const authService = {
                 nom: data.nom,
             },
         };
+    },
+
+    /**
+     * Permet à un administrateur de créer un utilisateur.
+     */
+    createUser: async (data: any): Promise<User> => {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const newUser: User = {
+            id: Math.random().toString(36).substr(2, 9),
+            email: data.email,
+            nom: data.nom,
+            role: data.role,
+        };
+        MOCK_USERS = [newUser, ...MOCK_USERS];
+        return newUser;
     },
 
     /**

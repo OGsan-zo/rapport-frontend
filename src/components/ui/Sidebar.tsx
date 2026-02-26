@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
 import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 
@@ -22,16 +23,20 @@ export const Sidebar: React.FC = () => {
 
     return (
         <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50 transition-all">
-            {/* Logo Section - Clean & Minimal */}
-            <div className="p-8 pb-10">
-                <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-slate-900 rounded-lg flex items-center justify-center shadow-sm">
-                        <span className="text-white font-bold text-sm">R</span>
-                    </div>
-                    <div>
-                        <h2 className="text-xs font-bold text-slate-900 tracking-tight leading-none uppercase">Rapport</h2>
-                        <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-1">E.S.P.A</span>
-                    </div>
+            {/* Header avec Logos Institutionnels */}
+            <div className="px-8 py-8 flex flex-col gap-6">
+                <div className="flex items-center gap-4">
+                    <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="h-8 w-auto mix-blend-multiply" />
+                    <div className="h-6 w-[1px] bg-slate-200" />
+                    <img src={IMAGES.LOGO_MESUPRES} alt="Logo" className="h-8 w-auto mix-blend-multiply" />
+                </div>
+                <div>
+                    <h1 className="text-[11px] font-bold text-slate-900 tracking-[0.2em] uppercase leading-tight">
+                        Rapport d&apos;Activités
+                    </h1>
+                    <p className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mt-1">
+                        ESPA / DSINT
+                    </p>
                 </div>
             </div>
 
@@ -70,6 +75,11 @@ export const Sidebar: React.FC = () => {
                         <Link href="/admin/periodes" className={linkClass("/admin/periodes")}>
                             Périodes
                         </Link>
+                        {user?.role === "ADMIN" && (
+                            <Link href="/admin/utilisateurs" className={linkClass("/admin/utilisateurs")}>
+                                Utilisateurs
+                            </Link>
+                        )}
                     </div>
                 )}
             </nav>

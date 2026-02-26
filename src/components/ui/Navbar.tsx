@@ -39,7 +39,7 @@ export const Navbar: React.FC = () => {
                 <Link href="/dashboard" className="flex items-center gap-3">
                     <span className="text-xs font-bold text-slate-900 tracking-tight uppercase">Rapports de Service</span>
                     <div className="h-3 w-[1px] bg-slate-200"></div>
-                    <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">M.E.S.P.R.E.S</span>
+                    <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">M.E.S.U.P.R.E.S</span>
                 </Link>
 
                 {/* Profile + Logout - Simple */}
@@ -47,7 +47,7 @@ export const Navbar: React.FC = () => {
                     {user && (
                         <div className="hidden sm:flex flex-col items-end">
                             <span className="text-[11px] font-bold text-slate-900 uppercase leading-none">{user.nom}</span>
-                            <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wider mt-1">Antananarivo / ESPA</span>
+                            <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wider mt-1">Antananarivo / MESUPRES</span>
                         </div>
                     )}
                     <button
