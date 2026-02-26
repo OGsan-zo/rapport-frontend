@@ -1,16 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
+import { User } from "@/features/auth/types";
+
 
 export const Sidebar: React.FC = () => {
-    const user = useCurrentUser();
+    const [user, setUser] = useState<User | null>(null)
     const pathname = usePathname();
 
-    const isSuperior = user && (user.role === "ADMIN" || user.role === "MANAGER" || user.role === "DIRECTEUR");
+    const isSuperior = user && (user.role === "Admin" );
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
     const linkClass = (href: string) =>
@@ -19,7 +20,7 @@ export const Sidebar: React.FC = () => {
             : "text-slate-500 hover:text-slate-900 border-r-2 border-transparent hover:bg-slate-50"
         }`;
 
-    const isAdminOrDirector = user && (user.role === "ADMIN" || user.role === "DIRECTEUR");
+    const isAdminOrDirector = user && (user.role === "Admin");
 
     return (
         <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50 transition-all">
@@ -75,7 +76,7 @@ export const Sidebar: React.FC = () => {
                         <Link href="/admin/periodes" className={linkClass("/admin/periodes")}>
                             Périodes
                         </Link>
-                        {user?.role === "ADMIN" && (
+                        {user.role === "Admin" && (
                             <Link href="/admin/utilisateurs" className={linkClass("/admin/utilisateurs")}>
                                 <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />

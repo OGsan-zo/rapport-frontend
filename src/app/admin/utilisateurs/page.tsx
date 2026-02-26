@@ -3,17 +3,52 @@
 import React, { useState } from "react";
 import { UserList } from "@/features/admin/components/UserList";
 import { UserAdminForm } from "@/features/admin/components/UserAdminForm";
-import { useCurrentUser } from "@/features/auth/hooks/useCurrentUser";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { authService } from "@/features/auth/services/authService";
+import { User } from "@/features/auth/types";
 
 export default function AdminUsersPage() {
-    const user = useCurrentUser();
+
     const router = useRouter();
     const [showForm, setShowForm] = useState(false);
     const [refreshKey, setRefreshKey] = useState(0);
+    const [user, setUser] = useState<User | null>(null)
+    const [loading, setLoading] = useState(true)
+    const login= process.env.NEXT_PUBLIC_LOGIN_URL || '/login';
+    useEffect(() => {
+        checkAuth()
+    },[]);
+
+    const checkAuth = async () => {
+      try {
+        const user = await authService.checkAuth();
+        setUser(user);
+        if (user.role !== "Admin") {
+        authService.logout();
+          router.push(login);
+        }
+      } catch (err) {
+        authService.logout();
+        router.push(login);
+      }
+      finally{
+        setLoading(false);
+      }
+      // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
+    };
+
+    // Pendant le chargement, on n'affiche rien pour éviter le flash
+    if (loading) {
+        return (
+        <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
+            <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+        </header>
+        )
+    }
 
     // Guard express : Seul l'ADMIN peut voir cette page
-    if (user && user.role !== "ADMIN") {
+    if (user && user.role !== "Admin") {
         router.push("/dashboard");
         return null;
     }

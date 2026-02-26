@@ -20,7 +20,7 @@ import { SelectPeriode } from "../../common/components/SelectPeriode";
  * Note : statut est défini comme z.string() sans .optional() pour éviter l'erreur de type
  */
 const consolidationSchema = z.object({
-  idCalendrier: z.number({ required_error: "La période est requise" }).int().min(1),
+  idCalendrier: 1,
   dateDebut: z.string().optional(),
   dateFin: z.string().optional(),
   lignes: z.array(
@@ -73,7 +73,7 @@ export const ConsolidationForm = () => {
     return {
       id: 0,
       calendrier: {
-        id: watchedValues.idCalendrier || 0,
+        id: 1,
         dateDebut: watchedValues.dateDebut || "2026-01-01",
         dateFin: watchedValues.dateFin || "2026-01-07",
         typeCalendrier: {
@@ -86,7 +86,14 @@ export const ConsolidationForm = () => {
         entite: "VOTRE DIRECTION",
         role: "Admin",
       },
-      activites: [],
+      activites: [
+            {
+                name: "Déploiement de la nouvelle application de rapports",
+                effectsImpacts: [
+                    { effect: "Réduction du temps de traitement de 60%", impact: "Dématérialisation complète du processus de rapport" }
+                ],
+            },
+        ],
     };
   }, [watchedValues]);
 
@@ -94,7 +101,7 @@ export const ConsolidationForm = () => {
     setIsSubmitting(true);
     try {
       // Appel au service corrigé précédemment
-      await rapportService.saveRapport(data.idCalendrier, data.lignes);
+      await rapportService.saveRapport(1, data.lignes);
       router.push("/dashboard");
     } catch (err) {
       console.error("Erreur submit:", err);

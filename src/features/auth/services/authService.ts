@@ -1,8 +1,5 @@
-<<<<<<< HEAD
+
 import { LoginRequest, AuthResponse, Entite, User } from "../types";
-=======
-import { LoginRequest, SignupRequest, AuthResponse, Entite, User } from "../types";
->>>>>>> baf3d479b8433c07503f531cfa100c7626d50014
 
 /**
  * Mock des entités disponibles.

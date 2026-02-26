@@ -61,7 +61,7 @@ export const rapportService = {
     /**
      * Récupère les rapports de l'utilisateur connecté.
      */
-    getRapports: async (): Promise<RapportConsolide[]> => {
+    getRapports: async (): Promise<ApiRapport[]> => {
         try {
             // L'appel se fait sur la route interne de Next.js
             const response = await fetch("/api/rapports", {
@@ -78,7 +78,7 @@ export const rapportService = {
                 throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
             }
             const responseData = await response.json();
-            const data: RapportConsolide[] = responseData.data;
+            const data: ApiRapport[] = responseData.data;
 
             // Tri par date de début décroissante (les plus récents en premier)
             return data;
