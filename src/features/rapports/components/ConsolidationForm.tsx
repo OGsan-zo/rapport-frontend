@@ -9,115 +9,67 @@ import { useRouter } from "next/navigation";
 import { RapportConsolide } from "../types";
 import { usePdfExport } from "../hooks/usePdfExport";
 import { RapportView } from "./RapportView";
+import { SelectPeriode } from "../../common/components/SelectPeriode";
 
 // Schéma de validation
 const consolidationSchema = z.object({
-    dateDebut: z.string().min(1, "Date de début requise"),
-    dateFin: z.string().min(1, "Date de fin requise"),
-    lignes: z.array(z.object({
-        activites: z.array(z.string().min(1)).min(1),
-        effets: z.array(z.string().min(1)).min(1),
-        impacts: z.array(z.string().min(1)).min(1),
+    idCalendrier: z.number().int().min(1, "ID Calendrier requis"),
+    dateDebut: z.string(), // Uniquement pour l'UI
+    dateFin: z.string(),   // Uniquement pour l'UI
+    activites: z.array(z.object({
+        entite: z.string().min(1, "Nom de l'activité requis"),
+        effectsImpacts: z.array(z.object({
+            effect: z.string().min(1, "Effet requis"),
+            impact: z.string().min(1, "Impact requis"),
+        })).min(1),
     })).min(1),
 });
 
 type ConsolidationFormValues = z.infer<typeof consolidationSchema>;
 
 /**
- * Textarea à hauteur automatique pour une puce individuelle.
+ * Cellule de paires Effet/Impact pour une activité.
  */
-const BulletTextarea = ({ register, name, onKeyDown, onChange, isFirst }: any) => {
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const { ref, onChange: rhfOnChange, ...rest } = register(name);
-
-    const adjustHeight = () => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "auto";
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-    };
-
-    useEffect(() => { adjustHeight(); }, []);
-
-    return (
-        <div className="flex items-start gap-1.5">
-            <span className="text-gray-400 mt-2 text-xs shrink-0">•</span>
-            <textarea
-                {...rest}
-                ref={(e) => {
-                    ref(e);
-                    textareaRef.current = e;
-                    if (isFirst && !e?.value) e?.focus();
-                }}
-                onChange={(e) => {
-                    rhfOnChange(e);
-                    if (onChange) onChange(e);
-                    adjustHeight();
-                }}
-                onKeyDown={onKeyDown}
-                rows={1}
-                className="w-full py-1.5 bg-transparent focus:bg-white focus:ring-1 focus:ring-blue-400 outline-none text-xs transition-all resize-none overflow-hidden text-gray-800 placeholder:text-gray-300 border-none"
-                placeholder="Saisir un détail…"
-            />
-        </div>
-    );
-};
-
-/**
- * Cellule de puces pour une colonne du tableau.
- */
-const BulletCell = ({ control, register, name, index, fieldName }: {
+const EffectsImpactsList = ({ control, register, activityIndex }: {
     control: Control<ConsolidationFormValues>,
     register: UseFormRegister<ConsolidationFormValues>,
-    name?: string,
-    index: number,
-    fieldName: "activites" | "effets" | "impacts",
+    activityIndex: number,
 }) => {
     const { fields, append, remove } = useFieldArray({
         control,
-        name: `lignes.${index}.${fieldName}` as any,
+        name: `activites.${activityIndex}.effectsImpacts` as any,
     });
 
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const handleKeyDown = (e: React.KeyboardEvent, bulletIndex: number) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            append("");
-        }
-        if (e.key === "Backspace" && !(e.target as HTMLTextAreaElement).value && fields.length > 1) {
-            e.preventDefault();
-            remove(bulletIndex);
-            setTimeout(() => {
-                const textareas = containerRef.current?.querySelectorAll("textarea");
-                const targetIndex = bulletIndex > 0 ? bulletIndex - 1 : 0;
-                if (textareas?.[targetIndex]) {
-                    (textareas[targetIndex] as HTMLTextAreaElement).focus();
-                    const len = (textareas[targetIndex] as HTMLTextAreaElement).value.length;
-                    (textareas[targetIndex] as HTMLTextAreaElement).setSelectionRange(len, len);
-                }
-            }, 0);
-        }
-    };
-
     return (
-        <div ref={containerRef} className="flex flex-col gap-0.5 p-2 min-h-[50px] group/cell relative">
-            {fields.map((field, bulletIndex) => (
-                <div key={field.id} className="relative group/bullet">
-                    <BulletTextarea
-                        register={register}
-                        name={`lignes.${index}.${fieldName}.${bulletIndex}`}
-                        onKeyDown={(e: any) => handleKeyDown(e, bulletIndex)}
-                        isFirst={bulletIndex === fields.length - 1 && !field.id}
-                    />
+        <div className="flex flex-col divide-y divide-slate-100 h-full">
+            {fields.map((field, eiIndex) => (
+                <div key={field.id} className="grid grid-cols-2 divide-x divide-slate-100 group/ei relative min-h-[100px]">
+                    {/* Effet */}
+                    <div className="p-0">
+                        <textarea
+                            {...register(`activites.${activityIndex}.effectsImpacts.${eiIndex}.effect` as any)}
+                            rows={3}
+                            className="w-full h-full p-4 text-xs font-medium bg-white focus:bg-white outline-none resize-none border-none text-slate-700 placeholder:text-slate-300"
+                            placeholder="Saisir l'effet..."
+                        />
+                    </div>
+                    {/* Impact */}
+                    <div className="p-0 pr-8">
+                        <textarea
+                            {...register(`activites.${activityIndex}.effectsImpacts.${eiIndex}.impact` as any)}
+                            rows={3}
+                            className="w-full h-full p-4 text-xs font-medium bg-white focus:bg-white outline-none resize-none border-none text-slate-700 placeholder:text-slate-300"
+                            placeholder="Saisir l'impact..."
+                        />
+                    </div>
+
                     {fields.length > 1 && (
                         <button
                             type="button"
-                            onClick={() => remove(bulletIndex)}
-                            className="absolute -right-1 top-1.5 opacity-0 group-hover/bullet:opacity-100 text-gray-300 hover:text-red-500 transition-all p-0.5"
-                            title="Supprimer"
+                            onClick={() => remove(eiIndex)}
+                            className="absolute right-1 top-2 opacity-0 group-hover/ei:opacity-100 text-slate-200 hover:text-red-400 transition-all"
                         >
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
                             </svg>
                         </button>
@@ -126,10 +78,10 @@ const BulletCell = ({ control, register, name, index, fieldName }: {
             ))}
             <button
                 type="button"
-                onClick={() => append("")}
-                className="self-start opacity-0 group-hover/cell:opacity-100 text-[9px] font-semibold text-blue-500 hover:text-blue-700 transition-all ml-4 mt-1"
+                onClick={() => append({ effect: "", impact: "" })}
+                className="py-3 text-[10px] font-bold text-slate-400 hover:text-slate-900 hover:bg-slate-50 uppercase tracking-widest border-t border-slate-100 bg-white transition-all"
             >
-                + Ajouter
+                + Ajouter Effet/Impact
             </button>
         </div>
     );
@@ -143,16 +95,22 @@ export const ConsolidationForm = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
 
-    const { register, handleSubmit, control, watch } = useForm<ConsolidationFormValues>({
+    const { register, handleSubmit, control, watch, setValue } = useForm<ConsolidationFormValues>({
         resolver: zodResolver(consolidationSchema),
         defaultValues: {
-            dateDebut: new Date().toISOString().split("T")[0],
-            dateFin: new Date().toISOString().split("T")[0],
-            lignes: [{ activites: [""], effets: [""], impacts: [""] }],
+            idCalendrier: 1,
+            dateDebut: "",
+            dateFin: "",
+            activites: [
+                {
+                    entite: "",
+                    effectsImpacts: [{ effect: "", impact: "" }]
+                }
+            ],
         },
     });
 
-    const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
+    const { fields, append, remove } = useFieldArray({ control, name: "activites" });
     const [confirmDeleteIndex, setConfirmDeleteIndex] = useState<number | null>(null);
 
     const watchedValues = watch();
@@ -164,14 +122,18 @@ export const ConsolidationForm = () => {
         dateCreation: new Date().toISOString().split("T")[0],
         entiteId: "1",
         entiteNom: "DSINT",
-        lignes: watchedValues.lignes as any || [],
+        lignes: watchedValues.activites?.map(a => ({
+            name: a.entite,
+            effectsImpacts: a.effectsImpacts
+        })) as any || [],
         status: "BROUILLON",
     }), [watchedValues]);
 
     const onSubmit = async (data: ConsolidationFormValues) => {
         setIsSubmitting(true);
         try {
-            await rapportService.saveRapport(data);
+            // Envoi selon la structure exact demandée : { idCalendrier, activites: [...] }
+            await rapportService.saveRapport(data.idCalendrier, data.activites);
             router.push("/dashboard");
         } catch (err) {
             console.error(err);
@@ -181,122 +143,91 @@ export const ConsolidationForm = () => {
     };
 
     return (
-        <div className="space-y-5">
-            {/* Barre d'outils */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
-                <div className="flex items-center gap-4">
-                    <label className="text-xs font-semibold text-gray-600 uppercase tracking-wide whitespace-nowrap">
-                        Période :
-                    </label>
-                    <div className="flex items-center gap-2">
-                        <input
-                            {...register("dateDebut")}
-                            type="date"
-                            className="px-3 py-1.5 border border-gray-400 rounded text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <span className="text-gray-400 text-sm">→</span>
-                        <input
-                            {...register("dateFin")}
-                            type="date"
-                            className="px-3 py-1.5 border border-gray-400 rounded text-xs text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                    </div>
+        <div className="space-y-10 max-w-6xl mx-auto pb-20">
+            {/* Toolbar - Minimal & Clean */}
+            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-8 transition-all">
+                <div className="space-y-1">
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Nouveau Rapport</h1>
+                    <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">Saisie des activités hebdomadaires</p>
                 </div>
 
-                <div className="flex items-center gap-3">
-                    <button
-                        type="button"
-                        disabled={isPdfGenerating}
-                        onClick={() => {
-                            // On déclenche l'export directement sur l'ID du renderer caché
-                            exportToPdf("rapport-a4-container-live", `Canevas_Rapport_${new Date().getFullYear()}.pdf`);
-                        }}
-                        className="px-4 py-2 border border-gray-400 rounded text-xs font-semibold text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-1.5 disabled:opacity-50"
-                    >
-                        {isPdfGenerating ? (
-                            <div className="w-3.5 h-3.5 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
-                        ) : (
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                            </svg>
-                        )}
-                        Canevas
-                    </button>
-                    <button
-                        onClick={handleSubmit(onSubmit)}
-                        disabled={isSubmitting}
-                        className="px-5 py-2 bg-gray-900 hover:bg-black text-white text-xs font-bold rounded transition-colors shadow-sm disabled:opacity-50"
-                    >
-                        {isSubmitting ? "Envoi…" : "Valider"}
-                    </button>
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3">
+                        <span className="text-[9px] font-bold uppercase px-3 text-slate-400">Période :</span>
+                        <SelectPeriode
+                            currentId={watchedValues.idCalendrier}
+                            onSelect={(id) => setValue("idCalendrier", id)}
+                            className="w-[280px]"
+                        />
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <button
+                            type="button"
+                            disabled={isPdfGenerating}
+                            onClick={() => {
+                                exportToPdf("rapport-a4-container-live", `Export_Rapport_${new Date().getFullYear()}.pdf`);
+                            }}
+                            className="px-5 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:border-slate-900 hover:text-slate-900 transition-all disabled:opacity-50"
+                        >
+                            {isPdfGenerating ? "..." : "PDF Preview"}
+                        </button>
+                        <button
+                            onClick={handleSubmit(onSubmit)}
+                            disabled={isSubmitting}
+                            className="px-8 py-2 bg-slate-900 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg hover:bg-slate-800 transition-all shadow-sm shadow-slate-200 disabled:opacity-50"
+                        >
+                            {isSubmitting ? "Envoi..." : "Valider"}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            {/* Grille de saisie */}
-            <div className="bg-white border border-gray-400 rounded-lg overflow-hidden shadow-sm">
-                <div className="min-w-[700px] overflow-x-auto">
-                    {/* En-tête */}
-                    <div className="grid grid-cols-[44px_1fr_1fr_1fr_52px] border-b border-gray-400 bg-gray-100">
-                        <div className="p-3 text-xs font-bold uppercase text-gray-500 text-center border-r border-gray-400">#</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Activités</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Effets</div>
-                        <div className="p-3 text-xs font-bold uppercase text-gray-700 border-r border-gray-400">Impacts</div>
-                        <div className="p-3 bg-gray-50" />
+            {/* Grid - Clean & Standardized */}
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm shadow-slate-100">
+                <div className="min-w-[800px] overflow-x-auto">
+                    {/* Header */}
+                    <div className="grid grid-cols-[60px_1fr_1fr_1fr_80px] border-b border-slate-200 bg-slate-50/50">
+                        <div className="p-4 text-[10px] font-bold uppercase text-slate-500 text-center border-r border-slate-200/50">#</div>
+                        <div className="p-4 text-[10px] font-bold uppercase text-slate-500 border-r border-slate-200/50 tracking-wider">Activités du Service</div>
+                        <div className="p-4 text-[10px] font-bold uppercase text-slate-500 border-r border-slate-200/50 tracking-wider text-center bg-[#CFE2F3]/20">Effets Attendus</div>
+                        <div className="p-4 text-[10px] font-bold uppercase text-slate-500 border-r border-slate-200/50 tracking-wider text-center bg-[#EFE2F5]/20">Impacts Observés</div>
+                        <div className="p-4 bg-white/20" />
                     </div>
 
-                    {/* Lignes */}
-                    <div className="divide-y divide-gray-300">
+                    {/* Rows */}
+                    <div className="divide-y divide-slate-100">
                         {fields.map((field, index) => (
                             <div
                                 key={field.id}
-                                className="grid grid-cols-[44px_1fr_1fr_1fr_52px] divide-x divide-gray-300 hover:bg-gray-50/50 transition-colors group/row"
+                                className="grid grid-cols-[60px_1fr_1fr_1fr_80px] divide-x divide-slate-100 group/row min-h-[140px]"
                             >
-                                <div className="flex items-center justify-center text-xs font-bold text-gray-400 bg-gray-50 border-r border-gray-300">
-                                    {index + 1}
+                                <div className="flex items-center justify-center text-xs font-bold text-slate-300 bg-slate-50/30 border-r border-slate-100">
+                                    {String(index + 1).padStart(2, '0')}
                                 </div>
-                                <BulletCell control={control} register={register} index={index} fieldName="activites" />
-                                <BulletCell control={control} register={register} index={index} fieldName="effets" />
-                                <BulletCell control={control} register={register} index={index} fieldName="impacts" />
-                                <div className="flex items-center justify-center p-2 border-l border-gray-300">
+                                <div className="p-0">
+                                    <textarea
+                                        {...register(`activites.${index}.entite` as any)}
+                                        rows={5}
+                                        className="w-full h-full p-5 text-sm font-medium border-none focus:ring-0 outline-none resize-none text-slate-800 bg-white placeholder:text-slate-200 transition-colors focus:bg-slate-50/10"
+                                        placeholder="Décrire l'activité..."
+                                    />
+                                </div>
+                                <div className="col-span-2 p-0">
+                                    <EffectsImpactsList control={control} register={register} activityIndex={index} />
+                                </div>
+                                <div className="flex items-center justify-center bg-slate-50/10">
                                     {fields.length > 1 && (
-                                        <div className="relative">
-                                            {confirmDeleteIndex === index ? (
-                                                <div className="flex items-center gap-1">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => { remove(index); setConfirmDeleteIndex(null); }}
-                                                        className="p-1.5 bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
-                                                        title="Confirmer"
-                                                    >
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                                                        </svg>
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => setConfirmDeleteIndex(null)}
-                                                        className="p-1.5 bg-gray-100 text-gray-500 rounded hover:bg-gray-200 transition-colors"
-                                                        title="Annuler"
-                                                    >
-                                                        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            ) : (
-                                                <button
-                                                    type="button"
-                                                    onClick={() => setConfirmDeleteIndex(index)}
-                                                    className="p-1.5 text-gray-300 hover:text-red-500 transition-all hover:scale-110"
-                                                    title="Supprimer la ligne"
-                                                >
-                                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                                    </svg>
-                                                </button>
-                                            )}
-                                        </div>
+                                        <button
+                                            type="button"
+                                            onClick={() => remove(index)}
+                                            className="p-3 text-slate-200 hover:text-red-400 transition-all rounded-full hover:bg-red-50"
+                                            title="Supprimer la ligne"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
                                     )}
                                 </div>
                             </div>
@@ -305,13 +236,13 @@ export const ConsolidationForm = () => {
                 </div>
             </div>
 
-            {/* Bouton d'ajout */}
+            {/* Add Button - Clean */}
             <button
                 type="button"
-                onClick={() => append({ activites: [""], effets: [""], impacts: [""] })}
-                className="w-full py-4 border border-dashed border-gray-400 rounded-lg text-gray-500 text-xs font-semibold uppercase hover:bg-gray-50 hover:border-gray-500 transition-all flex items-center justify-center gap-2"
+                onClick={() => append({ entite: "", effectsImpacts: [{ effect: "", impact: "" }] })}
+                className="w-full py-8 border-2 border-dashed border-slate-200 text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] rounded-xl hover:border-slate-900 hover:text-slate-900 hover:bg-slate-50 transition-all flex items-center justify-center gap-4 bg-white"
             >
-                <span className="text-base">+</span>
+                <span className="text-2xl font-light">+</span>
                 Ajouter un groupe d'activités
             </button>
             {/* Hidden renderer for PDF capture (Live preview) */}

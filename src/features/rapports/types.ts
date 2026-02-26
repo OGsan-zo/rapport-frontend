@@ -1,15 +1,46 @@
 /**
- * Interface pour une ligne cohérente d'un rapport.
- * Supporte désormais plusieurs puces par cellule.
+ * Structure pour le couple Effet / Impact dans l'API réelle.
  */
-export interface RapportLigne {
-    activites: string[];
-    effets: string[];
-    impacts: string[];
+export interface EffectImpact {
+    effect: string;
+    impact: string;
 }
 
 /**
- * Interface pour un rapport consolidé hebdomadaire.
+ * Structure d'une activité dans l'API réelle.
+ */
+export interface ApiActivite {
+    name?: string;     // Utilisé dans le GET
+    entite?: string;   // Utilisé dans le POST de soumission
+    effectsImpacts: EffectImpact[];
+}
+
+/**
+ * Structure du rapport renvoyé par l'API (GET data[0]).
+ */
+export interface ApiRapport {
+    id?: string | number;
+    utilisateur: {
+        entite: string;
+    };
+    calendrier: {
+        id?: number;
+        dateDebut: string;
+        dateFin: string;
+    };
+    activites: ApiActivite[];
+}
+
+/**
+ * Interface pour la requête d'enregistrement (POST).
+ */
+export interface CreateRapportRequest {
+    idCalendrier: number;
+    activites: ApiActivite[];
+}
+
+/**
+ * Version "aplatie" utilisée par l'UI interne (Compatibilité).
  */
 export interface RapportConsolide {
     id: string;
@@ -18,15 +49,6 @@ export interface RapportConsolide {
     dateCreation: string;
     entiteId: string;
     entiteNom: string;
-    lignes: RapportLigne[];
+    lignes: ApiActivite[]; // On utilise désormais la structure imbriquée
     status: "BROUILLON" | "VALIDE" | "TRANSMIS";
-}
-
-/**
- * Interface pour la requête d'enregistrement d'un rapport.
- */
-export interface SaveRapportRequest {
-    dateDebut: string;
-    dateFin: string;
-    lignes: RapportLigne[];
 }

@@ -86,7 +86,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 {/* Feuille A4 blanc brillant */}
                 <div
                     id={containerId}
-                    className="pdf-sheet bg-white font-serif text-[13px] shadow-2xl"
+                    className="pdf-sheet bg-white font-sans text-[13px] shadow-2xl"
                     style={{
                         width: "210mm",
                         minHeight: "297mm",
@@ -108,10 +108,10 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                 style={{ width: "45px", height: "auto" }}
                             />
                             <div style={{ textAlign: "left" }}>
-                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", letterSpacing: "0.05em", color: "#000000", margin: 0 }}>
+                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", letterSpacing: "0.05em", color: "#1e293b", margin: 0 }}>
                                     Repoblikan&apos;i Madagasikara
                                 </p>
-                                <p style={{ fontSize: "9px", fontStyle: "italic", color: "#000000", marginTop: "2px", margin: 0 }}>
+                                <p style={{ fontSize: "9px", fontStyle: "italic", color: "#64748b", marginTop: "2px", margin: 0 }}>
                                     Fitiavana — Tanindrazana — Fandrosoana
                                 </p>
                             </div>
@@ -120,7 +120,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                         {/* Logo MESUPRES + Texte */}
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                             <div style={{ textAlign: "right" }}>
-                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", color: "#000000", margin: 0 }}>
+                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", color: "#1e293b", margin: 0 }}>
                                     MESUPRES
                                 </p>
                             </div>
@@ -134,7 +134,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
 
                     {/* ======= TITRE ======= */}
                     <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                        <h1 style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.1em", borderBottom: "2px solid #000000", paddingBottom: "8px", display: "inline-block", paddingLeft: "16px", paddingRight: "16px", color: "#000000" }}>
+                        <h1 style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.1em", borderBottom: "1.5px solid #1e293b", paddingBottom: "8px", display: "inline-block", paddingLeft: "16px", paddingRight: "16px", color: "#1e293b" }}>
                             Rapport Hebdomadaire d&apos;Activités
                         </h1>
                     </div>
@@ -145,7 +145,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                             width: "100%",
                             borderCollapse: "collapse",
                             tableLayout: "fixed",
-                            border: "2px solid #000000", // Contour extérieur
+                            border: "1px solid #1e293b", // Contour extérieur affiné
                         }}
                     >
                         <tbody>
@@ -212,12 +212,12 @@ export const RapportView: React.FC<RapportViewProps> = ({
 
                             {/* En-têtes colonnes */}
                             <tr
-                                style={{ backgroundColor: "#BDE3FF", textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "11px", letterSpacing: "0.05em", color: "#000000" }}
+                                style={{ backgroundColor: "#F8FAFC", textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "11px", letterSpacing: "0.05em", color: "#475569" }}
                             >
                                 <td
                                     style={{
-                                        borderBottom: "2px solid #000000", // Séparation majeure
-                                        borderRight: "1px solid #000000",
+                                        borderBottom: "1px solid #e2e8f0",
+                                        borderRight: "1px solid #e2e8f0",
                                         width: "33.33%",
                                         padding: "12px"
                                     }}
@@ -226,8 +226,8 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                 </td>
                                 <td
                                     style={{
-                                        borderBottom: "2px solid #000000", // Séparation majeure
-                                        borderRight: "1px solid #000000",
+                                        borderBottom: "1px solid #e2e8f0",
+                                        borderRight: "1px solid #e2e8f0",
                                         width: "33.33%",
                                         padding: "12px"
                                     }}
@@ -236,7 +236,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                 </td>
                                 <td
                                     style={{
-                                        borderBottom: "2px solid #000000", // Séparation majeure
+                                        borderBottom: "1px solid #e2e8f0",
                                         width: "33.33%",
                                         padding: "12px"
                                     }}
@@ -246,50 +246,69 @@ export const RapportView: React.FC<RapportViewProps> = ({
                             </tr>
 
                             {/* Lignes de données */}
-                            {rapport.lignes.map((ligne, index) => (
-                                <tr
-                                    key={index}
-                                    style={{ breakInside: "avoid", pageBreakInside: "avoid" }}
-                                >
-                                    <td
-                                        style={{
-                                            borderBottom: index === rapport.lignes.length - 1 && rapport.lignes.length >= 3 ? "none" : "1px solid #000000",
-                                            borderRight: "1px solid #000000",
-                                            minHeight: "40px",
-                                            verticalAlign: "top",
-                                            padding: "12px",
-                                            color: "#000000"
-                                        }}
-                                    >
-                                        {renderBulletList(ligne.activites)}
-                                    </td>
-                                    <td
-                                        style={{
-                                            borderBottom: index === rapport.lignes.length - 1 && rapport.lignes.length >= 3 ? "none" : "1px solid #000000",
-                                            borderRight: "1px solid #000000",
-                                            minHeight: "40px",
-                                            verticalAlign: "top",
-                                            padding: "12px",
-                                            color: "#000000"
-                                        }}
-                                    >
-                                        {renderBulletList(ligne.effets)}
-                                    </td>
-                                    <td
-                                        style={{
-                                            borderBottom: index === rapport.lignes.length - 1 && rapport.lignes.length >= 3 ? "none" : "1px solid #000000",
-                                            minHeight: "40px",
-                                            verticalAlign: "top",
-                                            padding: "12px",
-                                            color: "#000000"
-                                        }}
-                                    >
-                                        {renderBulletList(ligne.impacts)}
-                                    </td>
-                                </tr>
+                            {rapport.lignes.map((activite, actIndex) => (
+                                <React.Fragment key={`act-${actIndex}`}>
+                                    {activite.effectsImpacts.map((ei, eiIndex) => (
+                                        <tr
+                                            key={`${actIndex}-${eiIndex}`}
+                                            style={{ breakInside: "avoid", pageBreakInside: "avoid" }}
+                                        >
+                                            {/* Nom de l'activité (seulement sur la première ligne de l'activité) */}
+                                            {eiIndex === 0 && (
+                                                <td
+                                                    rowSpan={activite.effectsImpacts.length}
+                                                    style={{
+                                                        borderBottom: actIndex === rapport.lignes.length - 1 ? "none" : "1px solid #000000",
+                                                        borderRight: "1px solid #000000",
+                                                        verticalAlign: "top",
+                                                        padding: "12px",
+                                                        color: "#000000",
+                                                        fontWeight: "500",
+                                                        lineHeight: "1.4"
+                                                    }}
+                                                >
+                                                    {activite.name || activite.entite}
+                                                </td>
+                                            )}
+
+                                            {/* Effet */}
+                                            <td
+                                                style={{
+                                                    borderBottom: (actIndex === rapport.lignes.length - 1 && eiIndex === activite.effectsImpacts.length - 1) ? "none" : "1px solid #000000",
+                                                    borderRight: "1px solid #000000",
+                                                    verticalAlign: "top",
+                                                    padding: "12px",
+                                                    color: "#000000",
+                                                    lineHeight: "1.4"
+                                                }}
+                                            >
+                                                <div style={{ display: "flex", gap: "6px" }}>
+                                                    <span style={{ color: "#000000" }}>•</span>
+                                                    <span>{ei.effect}</span>
+                                                </div>
+                                            </td>
+
+                                            {/* Impact */}
+                                            <td
+                                                style={{
+                                                    borderBottom: (actIndex === rapport.lignes.length - 1 && eiIndex === activite.effectsImpacts.length - 1) ? "none" : "1px solid #000000",
+                                                    verticalAlign: "top",
+                                                    padding: "12px",
+                                                    color: "#000000",
+                                                    lineHeight: "1.4"
+                                                }}
+                                            >
+                                                <div style={{ display: "flex", gap: "6px" }}>
+                                                    <span style={{ color: "#000000" }}>•</span>
+                                                    <span>{ei.impact}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </React.Fragment>
                             ))}
 
-                            {/* Lignes vides de remplissage (min 3 lignes visible) */}
+                            {/* Lignes vides de remplissage (min 3 blocs d'activités visibles) */}
                             {rapport.lignes.length < 3 &&
                                 Array.from({ length: 3 - rapport.lignes.length }).map((_, index) => (
                                     <tr key={`empty-${index}`}>
@@ -297,7 +316,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                             style={{
                                                 borderRight: "1px solid #000000",
                                                 borderBottom: index === (3 - rapport.lignes.length) - 1 ? "none" : "1px solid #000000",
-                                                height: "48px",
+                                                height: "64px",
                                                 verticalAlign: "top",
                                                 padding: "12px"
                                             }}
@@ -306,7 +325,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                             style={{
                                                 borderRight: "1px solid #000000",
                                                 borderBottom: index === (3 - rapport.lignes.length) - 1 ? "none" : "1px solid #000000",
-                                                height: "48px",
+                                                height: "64px",
                                                 verticalAlign: "top",
                                                 padding: "12px"
                                             }}
@@ -314,7 +333,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                         <td
                                             style={{
                                                 borderBottom: index === (3 - rapport.lignes.length) - 1 ? "none" : "1px solid #000000",
-                                                height: "48px",
+                                                height: "64px",
                                                 verticalAlign: "top",
                                                 padding: "12px"
                                             }}

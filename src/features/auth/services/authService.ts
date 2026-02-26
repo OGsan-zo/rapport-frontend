@@ -18,10 +18,23 @@ const MOCK_ADMIN: AuthResponse = {
     user: {
         id: "001",
         email: "admin@mesupres.gov.mg",
-        nom: "Directeur Général",
+        nom: "Administrateur Système",
         role: "ADMIN",
     },
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_payload.fake_signature",
+    token: "token_admin",
+};
+
+/**
+ * Mock — Compte Directeur
+ */
+const MOCK_DIRECTEUR: AuthResponse = {
+    user: {
+        id: "003",
+        email: "directeur@mesupres.gov.mg",
+        nom: "Directeur Général",
+        role: "DIRECTEUR",
+    },
+    token: "token_directeur",
 };
 
 /**
@@ -59,6 +72,9 @@ export const authService = {
 
         if (credentials.email.toLowerCase().includes("admin")) {
             return MOCK_ADMIN;
+        }
+        if (credentials.email.toLowerCase().includes("direct@")) {
+            return MOCK_DIRECTEUR;
         }
         return MOCK_USER;
     },
