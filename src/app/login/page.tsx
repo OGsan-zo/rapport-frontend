@@ -15,7 +15,7 @@ export default function LoginPage() {
             {/* Lien de retour discret */}
             <Link
                 href="/"
-                className="absolute top-8 left-8 flex items-center gap-2 text-sm text-white/50 hover:text-white transition-colors z-50 group font-medium"
+                className="absolute top-8 left-8 flex items-center gap-2 text-sm text-slate-400 hover:text-slate-900 transition-colors z-50 group font-medium"
             >
                 <span className="transition-transform group-hover:-translate-x-1">←</span>
                 <span>Retour à l&apos;accueil</span>

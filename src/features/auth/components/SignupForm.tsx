@@ -60,7 +60,7 @@ export const SignupForm = () => {
     }
 
     return (
-        <div className="w-full max-w-sm p-8 bg-white border border-gray-300 rounded-lg shadow-sm space-y-6">
+        <div className="w-full max-w-sm p-8 bg-white border border-slate-100 rounded-lg shadow-sm space-y-6">
             <div className="space-y-1">
                 <h1 className="text-xl font-bold text-gray-900">Inscription</h1>
                 <p className="text-sm text-gray-500">Créez votre compte collaborateur</p>
@@ -74,7 +74,7 @@ export const SignupForm = () => {
                         {...register("nom")}
                         type="text"
                         placeholder="Jean Dupont"
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.nom ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.nom ? "border-red-500" : "border-slate-200"
                             }`}
                     />
                     {errors.nom && <p className="text-xs text-red-600 mt-1">{errors.nom.message}</p>}
@@ -87,7 +87,7 @@ export const SignupForm = () => {
                         {...register("email")}
                         type="email"
                         placeholder="jean.dupont@mesupres.gov.mg"
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-slate-200"
                             }`}
                     />
                     {errors.email && <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>}
@@ -100,7 +100,7 @@ export const SignupForm = () => {
                         {...register("password")}
                         type="password"
                         placeholder="••••••••"
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-slate-200"
                             }`}
                     />
                     {errors.password && <p className="text-xs text-red-600 mt-1">{errors.password.message}</p>}
@@ -111,7 +111,7 @@ export const SignupForm = () => {
                     <label className="text-sm font-medium text-gray-700 block">Entité / Département</label>
                     <select
                         {...register("entiteId")}
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 transition-colors outline-none focus:ring-2 focus:ring-blue-500 bg-white appearance-none ${errors.entiteId ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 transition-colors outline-none focus:ring-2 focus:ring-blue-500 bg-white appearance-none ${errors.entiteId ? "border-red-500" : "border-slate-200"
                             }`}
                         style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2394a3b8\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.75rem center', backgroundSize: '1em' }}
                     >
