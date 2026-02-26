@@ -1,258 +1,237 @@
 "use client";
 
-import React, { useState, useMemo, useRef, useEffect, memo } from "react";
-import { useForm, useFieldArray, Control, UseFormRegister } from "react-hook-form";
+import React, { useState, useMemo } from "react";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { rapportService } from "../services/rapportService";
 import { useRouter } from "next/navigation";
-import { RapportConsolide } from "../types";
-import { usePdfExport } from "../hooks/usePdfExport";
-import { RapportView } from "./RapportView";
 
-// Schéma avec nettoyage automatique des entrées vides
+// Services et Types
+import { rapportService } from "../services/rapportService";
+import { ApiRapport } from "../types";
+import { usePdfExport } from "../hooks/usePdfExport";
+
+// Composants
+import { RapportView } from "./RapportView";
+import { SelectPeriode } from "../../common/components/SelectPeriode";
+
+/**
+ * Schéma de validation Zod
+ * Note : statut est défini comme z.string() sans .optional() pour éviter l'erreur de type
+ */
 const consolidationSchema = z.object({
-    dateDebut: z.string().min(1, "Requis"),
-    dateFin: z.string().min(1, "Requis"),
-    lignes: z.array(z.object({
-        activites: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
-        effets: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
-        impacts: z.array(z.string()).transform(val => val.filter(v => v.trim() !== "")),
-    })).min(1, "Au moins une ligne est requise"),
+  idCalendrier: z.number({ required_error: "La période est requise" }).int().min(1),
+  dateDebut: z.string().optional(),
+  dateFin: z.string().optional(),
+  lignes: z.array(
+    z.object({
+      titre: z.string().min(1, "Le titre est requis"),
+      description: z.string().min(1, "La description est requise"),
+      impact: z.string().min(1, "L'impact est requis"),
+      statut: z.string() // Strictement string pour matcher l'erreur TS
+    })
+  ).min(1),
 });
 
 type ConsolidationFormValues = z.infer<typeof consolidationSchema>;
 
-const BulletTextarea = memo(({ register, name, onKeyDown, isLastCreated }: any) => {
-    const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-    const { ref, ...rest } = register(name);
-
-    const adjustHeight = () => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = "auto";
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-    };
-
-    useEffect(() => { 
-        adjustHeight();
-        // Focus auto uniquement si c'est la nouvelle puce qu'on vient de créer
-        if (isLastCreated && textareaRef.current) {
-            textareaRef.current.focus();
-        }
-    }, [isLastCreated]);
-
-    return (
-        <div className="flex items-start gap-1.5 w-full">
-            <span className="text-blue-500 mt-2 text-[10px] shrink-0">•</span>
-            <textarea
-                {...rest}
-                ref={(e) => {
-                    ref(e);
-                    textareaRef.current = e;
-                }}
-                onChange={(e) => {
-                    rest.onChange(e); // Important pour RHF
-                    adjustHeight();
-                }}
-                onKeyDown={onKeyDown}
-                rows={1}
-                className="w-full py-1.5 bg-transparent focus:bg-white border-none focus:ring-1 focus:ring-blue-100 outline-none text-xs transition-all resize-none overflow-hidden text-gray-800 placeholder:text-gray-300"
-                placeholder="Saisir un détail..."
-            />
-        </div>
-    );
-});
-
-BulletTextarea.displayName = "BulletTextarea";
-
-const BulletCell = ({ control, register, index, fieldName }: any) => {
-    const { fields, append, remove } = useFieldArray({
-        control,
-        name: `lignes.${index}.${fieldName}`,
-    });
-
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const handleKeyDown = (e: React.KeyboardEvent, bulletIndex: number) => {
-        if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            append("");
-        }
-        if (e.key === "Backspace" && !(e.target as HTMLTextAreaElement).value && fields.length > 1) {
-            e.preventDefault();
-            remove(bulletIndex);
-            setTimeout(() => {
-                const textareas = containerRef.current?.querySelectorAll("textarea");
-                const prev = textareas?.[bulletIndex - 1] as HTMLTextAreaElement;
-                if (prev) {
-                    prev.focus();
-                    prev.setSelectionRange(prev.value.length, prev.value.length);
-                }
-            }, 0);
-        }
-    };
-
-    return (
-        <div ref={containerRef} className="flex flex-col gap-0 p-2 min-h-[60px] group/cell border-r border-gray-100 last:border-r-0">
-            {fields.map((field, bulletIndex) => (
-                <div key={field.id} className="relative group/bullet flex items-center">
-                    <BulletTextarea
-                        register={register}
-                        name={`lignes.${index}.${fieldName}.${bulletIndex}`}
-                        onKeyDown={(e: any) => handleKeyDown(e, bulletIndex)}
-                        isLastCreated={bulletIndex === fields.length - 1 && bulletIndex !== 0}
-                    />
-                    {fields.length > 1 && (
-                        <button
-                            type="button"
-                            onClick={() => remove(bulletIndex)}
-                            className="opacity-0 group-hover/bullet:opacity-100 text-gray-300 hover:text-red-500 p-1 transition-all"
-                        >
-                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" strokeWidth="2" strokeLinecap="round"/></svg>
-                        </button>
-                    )}
-                </div>
-            ))}
-            <button
-                type="button"
-                onClick={() => append("")}
-                className="self-start opacity-0 group-hover/cell:opacity-100 text-[10px] text-blue-600 font-bold ml-4 mt-1 hover:underline transition-opacity"
-            >
-                + Ajouter
-            </button>
-        </div>
-    );
-};
-
 export const ConsolidationForm = () => {
-    const router = useRouter();
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
+  const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
 
-    const { register, handleSubmit, control, watch, formState: { errors } } = useForm<ConsolidationFormValues>({
-        resolver: zodResolver(consolidationSchema),
-        defaultValues: {
-            dateDebut: new Date().toISOString().split("T")[0],
-            dateFin: new Date().toISOString().split("T")[0],
-            lignes: [{ activites: [""], effets: [""], impacts: [""] }],
-        },
-    });
-
-    const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
-    const watchedValues = watch();
-
-const rapportPreview = useMemo<RapportConsolide>(() => ({
-    id: 0,
-    calendrier: {
-        dateDebut: watchedValues.dateDebut || "",
-        dateFin: watchedValues.dateFin || "",
-        typeCalendrier: { name: "HEBDO" },
+  // Initialisation du formulaire
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<ConsolidationFormValues>({
+    resolver: zodResolver(consolidationSchema),
+    defaultValues: {
+      idCalendrier: undefined,
+      lignes: [
+        { titre: "", description: "", impact: "", statut: "TERMINE" }
+      ],
     },
-    dateCreation: new Date().toISOString(),
-    // CORRECTION : Utilisez "user" si c'est ce que l'interface attend
-    user: { 
-        role: "Admin", 
-        entite: "DIRECTION", 
-        email: "admin@exemple.com" 
-    },
-    // CORRECTION : Si l'interface attend "lignes" ET "activites"
-    lignes: watchedValues.lignes as any || [],
-    activites: [], // Ajoutez un tableau vide ou mappez vos lignes ici si nécessaire
-    status: "BROUILLON",
-}), [watchedValues]);
+  });
 
-    const onSubmit = async (data: ConsolidationFormValues) => {
-        setIsSubmitting(true);
-        try {
-            // await rapportService.saveRapport(data);
-            router.push("/dashboard/supervision");
-            router.refresh();
-        } catch (err) {
-            alert("Erreur lors de l'enregistrement. Vérifiez votre connexion.");
-        } finally {
-            setIsSubmitting(false);
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "lignes",
+  });
+
+  const watchedValues = watch();
+
+  /**
+   * Mapping pour l'aperçu PDF
+   * Transforme les données du formulaire au format ApiRapport
+   */
+  const rapportPreview = useMemo<ApiRapport>(() => {
+    return {
+      id: 0,
+      calendrier: {
+        id: watchedValues.idCalendrier || 0,
+        dateDebut: watchedValues.dateDebut || "2026-01-01",
+        dateFin: watchedValues.dateFin || "2026-01-07",
+        typeCalendrier: {
+          name: "Hebdomadaire"
         }
+      },
+      user: {
+        id: 0,
+        email: "utilisateur@system.mg",
+        entite: "VOTRE DIRECTION",
+        role: "Admin",
+      },
+      activites: [],
     };
+  }, [watchedValues]);
 
-    return (
-        <div className="max-w-6xl mx-auto space-y-6 pb-20">
-            {/* Header / Actions */}
-            <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-gray-200 shadow-sm sticky top-2 z-20">
-                <div className="flex items-center gap-4">
-                    <div className={`flex items-center gap-2 p-1 rounded-lg ${errors.dateDebut || errors.dateFin ? 'bg-red-50 ring-1 ring-red-200' : ''}`}>
-                        <input type="date" {...register("dateDebut")} className="text-xs border-gray-300 rounded focus:ring-blue-500" />
-                        <span className="text-gray-400 text-xs">au</span>
-                        <input type="date" {...register("dateFin")} className="text-xs border-gray-300 rounded focus:ring-blue-500" />
-                    </div>
-                </div>
+  const onSubmit = async (data: ConsolidationFormValues) => {
+    setIsSubmitting(true);
+    try {
+      // Appel au service corrigé précédemment
+      await rapportService.saveRapport(data.idCalendrier, data.lignes);
+      router.push("/dashboard");
+    } catch (err) {
+      console.error("Erreur submit:", err);
+      alert("Erreur lors de l'enregistrement. Veuillez réessayer.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
-                <div className="flex items-center gap-2">
-                    <button
-                        type="button"
-                        onClick={() => exportToPdf("preview-container", `Rapport_${watchedValues.dateDebut}.pdf`)}
-                        disabled={isPdfGenerating}
-                        className="px-4 py-2 text-xs font-semibold text-gray-600 bg-gray-50 border border-gray-200 rounded-lg hover:bg-gray-100 disabled:opacity-50 transition-colors"
-                    >
-                        {isPdfGenerating ? "Génération..." : "Aperçu PDF"}
-                    </button>
-                    <button
-                        onClick={handleSubmit(onSubmit)}
-                        disabled={isSubmitting}
-                        className="px-6 py-2 bg-blue-600 text-white text-xs font-bold rounded-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all disabled:bg-gray-400"
-                    >
-                        {isSubmitting ? "Envoi en cours..." : "Valider le rapport"}
-                    </button>
-                </div>
-            </div>
-
-            {/* Table de saisie */}
-            <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                <div className="grid grid-cols-[40px_1fr_1fr_1fr_50px] bg-gray-50/80 border-b border-gray-200">
-                    <div className="p-3 text-[10px] font-bold text-gray-400 text-center">#</div>
-                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Activités</div>
-                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Effets</div>
-                    <div className="p-3 text-[10px] font-bold text-gray-500 uppercase">Impacts</div>
-                    <div className="bg-gray-100/30" />
-                </div>
-
-                <div className="divide-y divide-gray-100">
-                    {fields.map((field, index) => (
-                        <div key={field.id} className="grid grid-cols-[40px_1fr_1fr_1fr_50px] group/row hover:bg-blue-50/10 transition-colors">
-                            <div className="flex items-center justify-center bg-gray-50/30 border-r border-gray-100 text-[10px] font-bold text-gray-400">
-                                {index + 1}
-                            </div>
-                            <BulletCell control={control} register={register} index={index} fieldName="activites" />
-                            <BulletCell control={control} register={register} index={index} fieldName="effets" />
-                            <BulletCell control={control} register={register} index={index} fieldName="impacts" />
-                            <div className="flex items-center justify-center">
-                                {fields.length > 1 && (
-                                    <button
-                                        type="button"
-                                        onClick={() => remove(index)}
-                                        className="p-1.5 text-gray-300 hover:text-red-500 hover:bg-red-50 rounded-md transition-all opacity-0 group-hover/row:opacity-100"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
-            <button
-                type="button"
-                onClick={() => append({ activites: [""], effets: [""], impacts: [""] })}
-                className="w-full py-4 border-2 border-dashed border-gray-200 rounded-xl text-gray-400 hover:text-blue-500 hover:border-blue-200 hover:bg-blue-50/50 transition-all font-bold text-[11px] flex items-center justify-center gap-2 uppercase tracking-widest"
-            >
-                <span className="text-lg">+</span> Ajouter un groupe de lignes
-            </button>
-
-            {/* Hidden PDF Preview */}
-            <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0 shadow-none">
-                <RapportView rapport={rapportPreview} containerId="preview-container" />
-            </div>
+  return (
+    <div className="space-y-10 max-w-6xl mx-auto pb-20">
+      {/* TOOLBAR STICKY */}
+      <div className="sticky top-0 bg-white/90 backdrop-blur-md z-30 py-6 mb-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-6 px-4 sm:px-0">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-black text-slate-900 tracking-tight uppercase">Rapport Hebdomadaire</h1>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Consolidation des activités</p>
         </div>
-    );
+
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="bg-slate-50 p-1 rounded-xl border border-slate-200 flex items-center gap-2">
+            <span className="text-[9px] font-black uppercase px-3 text-slate-500">Période :</span>
+            <SelectPeriode
+              currentId={watchedValues.idCalendrier}
+              onSelect={(id) => setValue("idCalendrier", id, { shouldValidate: true })}
+              className="w-[260px] border-none bg-transparent focus:ring-0 shadow-none"
+            />
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              disabled={isPdfGenerating}
+              onClick={() => exportToPdf("pdf-render-zone", "Apercu_Rapport.pdf")}
+              className="px-6 py-2.5 bg-white border border-slate-200 text-slate-700 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-50 transition-all disabled:opacity-50"
+            >
+              {isPdfGenerating ? "Génération..." : "Aperçu PDF"}
+            </button>
+            <button
+              onClick={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+              className="px-8 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 disabled:opacity-50"
+            >
+              {isSubmitting ? "Traitement..." : "Enregistrer"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ZONE DE SAISIE */}
+      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="overflow-x-auto">
+          <div className="min-w-[1000px]">
+            {/* Header de la Table */}
+            <div className="grid grid-cols-[70px_1fr_1.5fr_1fr_70px] bg-slate-50/80 border-b border-slate-200">
+              <div className="p-4 text-[10px] font-black text-slate-400 text-center uppercase tracking-widest">#</div>
+              <div className="p-4 text-[10px] font-black text-slate-600 uppercase tracking-widest border-l border-slate-200/50">Titre</div>
+              <div className="p-4 text-[10px] font-black text-slate-600 uppercase tracking-widest border-l border-slate-200/50">Description des activités</div>
+              <div className="p-4 text-[10px] font-black text-slate-600 uppercase tracking-widest border-l border-slate-200/50">Impacts & Résultats</div>
+              <div className="p-4 border-l border-slate-200/50" />
+            </div>
+
+            {/* Lignes du Formulaire */}
+            <div className="divide-y divide-slate-100">
+              {fields.map((field, index) => (
+                <div key={field.id} className="grid grid-cols-[70px_1fr_1.5fr_1fr_70px] group/row transition-colors hover:bg-slate-50/30">
+                  <div className="flex items-center justify-center text-xs font-black text-slate-300 bg-slate-50/20">
+                    {String(index + 1).padStart(2, '0')}
+                  </div>
+
+                  <div className="border-l border-slate-100 p-2">
+                    <textarea
+                      {...register(`lignes.${index}.titre`)}
+                      className="w-full p-3 text-sm font-bold text-slate-800 bg-transparent border-none focus:ring-0 resize-none min-h-[100px] placeholder:text-slate-200"
+                      placeholder="Ex: Maintenance serveurs..."
+                    />
+                  </div>
+
+                  <div className="border-l border-slate-100 p-2">
+                    <textarea
+                      {...register(`lignes.${index}.description`)}
+                      className="w-full p-3 text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[100px] placeholder:text-slate-200"
+                      placeholder="Détails de l'intervention..."
+                    />
+                  </div>
+
+                  <div className="border-l border-slate-100 p-2">
+                    <textarea
+                      {...register(`lignes.${index}.impact`)}
+                      className="w-full p-3 text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[100px] placeholder:text-slate-200"
+                      placeholder="Impact sur le service..."
+                    />
+                  </div>
+
+                  <div className="border-l border-slate-100 flex items-center justify-center">
+                    <button
+                      type="button"
+                      onClick={() => remove(index)}
+                      disabled={fields.length === 1}
+                      className="p-2.5 text-slate-200 hover:text-red-500 hover:bg-red-50 rounded-full transition-all opacity-0 group-hover/row:opacity-100 disabled:invisible"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* BOUTON AJOUTER */}
+      <button
+        type="button"
+        onClick={() => append({ titre: "", description: "", impact: "", statut: "TERMINE" })}
+        className="w-full py-10 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
+      >
+        <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
+            <span className="text-xl font-light">+</span>
+        </div>
+        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ajouter une activité</span>
+      </button>
+
+      {/* ZONE INVISIBLE POUR LE PDF */}
+      <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
+        <div id="pdf-render-zone" className="w-[1000px]">
+          <RapportView rapport={rapportPreview} />
+        </div>
+      </div>
+      
+      {/* Affichage des erreurs de validation globales */}
+      {Object.keys(errors).length > 0 && (
+        <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-[10px] font-bold uppercase tracking-widest text-center">
+          Veuillez remplir tous les champs obligatoires avant de valider.
+        </div>
+      )}
+    </div>
+  );
 };

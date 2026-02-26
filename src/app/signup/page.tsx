@@ -1,13 +1,14 @@
 import React from "react";
-import { LoginForm } from "@/features/auth/components/LoginForm";
-import { IMAGES } from "@/features/common/constants";
-import Image from "next/image";
+import { SignupForm } from "@/features/auth/components/SignupForm";
 import Link from "next/link";
 
+import { IMAGES } from "@/features/common/constants";
+import Image from "next/image";
+
 /**
- * Page de connexion moderne avec illustration.
+ * Page d'inscription alignée sur le design Login (2 colonnes + Logos).
  */
-export default function LoginPage() {
+export default function SignupPage() {
     const currentYear = new Date().getFullYear();
 
     return (
@@ -35,10 +36,10 @@ export default function LoginPage() {
                     </div>
                     <div className="space-y-3">
                         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-                            Reporting Hebdomadaire
+                            Rejoignez la Plateforme
                         </h1>
                         <p className="text-gray-500 text-lg">
-                            Générez et centralisez vos rapports administratifs en quelques clics.
+                            Créez votre profil pour commencer à centraliser vos activités.
                         </p>
                     </div>
                 </div>
@@ -62,9 +63,9 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <LoginForm />
+                <SignupForm />
 
-                <div className="text-center">
+                <div className="text-center mt-8">
                     <p className="text-xs text-gray-400">
                         © {currentYear} - DSINT - MESUPRES
                     </p>

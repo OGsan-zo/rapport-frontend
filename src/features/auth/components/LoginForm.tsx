@@ -53,7 +53,7 @@ export const LoginForm = () => {
     }
 
     return (
-        <div className="w-full max-w-sm p-8 bg-white border border-gray-300 rounded-lg shadow-sm space-y-6">
+        <div className="w-full max-w-sm p-8 bg-white border border-slate-100 rounded-lg shadow-sm space-y-6">
             <div className="space-y-1">
                 <h1 className="text-xl font-bold text-gray-900">Connexion</h1>
                 <p className="text-sm text-gray-500">
@@ -71,7 +71,7 @@ export const LoginForm = () => {
                         id="email"
                         type="email"
                         placeholder="votre@email.com"
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-slate-200"
                             }`}
                         disabled={isLoading}
                     />
@@ -89,7 +89,7 @@ export const LoginForm = () => {
                         id="password"
                         type="password"
                         placeholder="••••••••"
-                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-gray-400"
+                        className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.password ? "border-red-500" : "border-slate-200"
                             }`}
                         disabled={isLoading}
                     />

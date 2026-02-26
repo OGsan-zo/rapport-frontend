@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { LoginRequest, AuthResponse, Entite, User } from "../types";
+=======
+import { LoginRequest, SignupRequest, AuthResponse, Entite, User } from "../types";
+>>>>>>> baf3d479b8433c07503f531cfa100c7626d50014
 
 /**
  * Mock des entités disponibles.
@@ -18,10 +22,23 @@ const MOCK_ADMIN: AuthResponse = {
     user: {
         id: 1,
         email: "admin@mesupres.gov.mg",
-        entite: "Directeur Général",
+        entite: "Administrateur Système",
         role: "Admin",
     },
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.admin_payload.fake_signature",
+    token: "token_admin",
+};
+
+/**
+ * Mock — Compte Directeur
+ */
+const MOCK_DIRECTEUR: AuthResponse = {
+    user: {
+        id: 3,
+        email: "directeur@mesupres.gov.mg",
+        entite: "Directeur Général",
+        role: "Utilisateur",
+    },
+    token: "token_directeur",
 };
 
 /**
@@ -37,6 +54,15 @@ const MOCK_USER: AuthResponse = {
     token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.user_payload.fake_signature",
 };
 const API_URL = '/api/auth';
+/**
+ * Mock des utilisateurs pour la gestion admin.
+ */
+let MOCK_USERS: User[] = [
+    { id: 1, email: "admin@mesupres.gov.mg", entite: "Administrateur Système", role: "Admin" },
+    { id: 2, email: "agent@mesupres.gov.mg", entite: "Agent DSINT", role: "Utilisateur" },
+    { id: 3, email: "directeur@mesupres.gov.mg", entite: "Directeur Général", role: "Utilisateur" },
+];
+
 /**
  * Service d'authentification (mock statique).
  */
@@ -60,6 +86,14 @@ export const authService = {
         }
         return user as User;
       
+    },
+
+    /**
+     * Récupère la liste de tous les utilisateurs (ADMIN uniquement).
+     */
+    getUsers: async (): Promise<User[]> => {
+        await new Promise((resolve) => setTimeout(resolve, 800));
+        return MOCK_USERS;
     },
 
     /**

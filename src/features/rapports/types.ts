@@ -1,82 +1,56 @@
 /**
- * Interface pour une ligne cohérente d'un rapport.
- * Supporte désormais plusieurs puces par cellule.
+ * Structure pour le couple Effet / Impact dans l'API réelle.
  */
-// export interface RapportLigne {
-//     activites: string[];
-//     effets: string[];
-//     impacts: string[];
-// }
-
 import { User } from "../auth/types";
-
-// /**
-//  * Interface pour un rapport consolidé hebdomadaire.
-//  */
-// export interface RapportConsolide {
-//     id: string;
-//     dateDebut: string;
-//     dateFin: string;
-//     dateCreation: string;
-//     entiteId: string;
-//     entiteNom: string;
-//     lignes: RapportLigne[];
-//     status: "BROUILLON" | "VALIDE" | "TRANSMIS";
-// }
-
-/**
- * Interface pour la requête d'enregistrement d'un rapport.
- */
-// export interface SaveRapportRequest {
-//     dateDebut: string;
-//     dateFin: string;
-//     lignes: RapportLigne[];
-// }
-
-/**
- * Détail d'un effet et de son impact lié à une activité
- */
 export interface EffectImpact {
-    id: number;
     effect: string;
     impact: string;
 }
 
 /**
- * Structure de l'activité elle-même
+ * Structure d'une activité dans l'API réelle.
  */
-export interface ActiviteDetail {
-    id: number;
-    name: string;
-}
-
-/**
- * Ligne de rapport contenant une activité et ses impacts
- */
-export interface RapportActivite {
-    activite: ActiviteDetail;
+export interface ApiActivite {
+    name?: string;     // Utilisé dans le GET
+    entite?: string;   // Utilisé dans le POST de soumission
     effectsImpacts: EffectImpact[];
 }
 
-
-
 /**
- * Détails du calendrier
+ * Structure du rapport renvoyé par l'API (GET data[0]).
  */
-export interface Calendrier {
-    dateDebut: string;
-    dateFin: string;
-    typeCalendrier: {
-        name: string;
+export interface ApiRapport {
+    id?: number;
+    user: User;
+    calendrier: {
+        id?: number;
+        dateDebut: string;
+        dateFin: string;
+        typeCalendrier: {
+            name: string;
+        };
     };
+    activites: ApiActivite[];
 }
 
 /**
- * Interface principale correspondant à un élément du tableau "data"
+ * Interface pour la requête d'enregistrement (POST).
+ */
+export interface CreateRapportRequest {
+    idCalendrier: number;
+    activites: ApiActivite[];
+}
+
+/**
+ * Version "aplatie" utilisée par l'UI interne (Compatibilité).
  */
 export interface RapportConsolide {
-    id: number;
-    user: User;
-    calendrier: Calendrier;
-    activites: RapportActivite[];
+    id: string;
+    dateDebut: string;
+    dateFin: string;
+    dateCreation: string;
+    entiteId: string;
+    entiteNom: string;
+    lignes: ApiActivite[]; // On utilise désormais la structure imbriquée
+    status: "BROUILLON" | "VALIDE" | "TRANSMIS";
 }

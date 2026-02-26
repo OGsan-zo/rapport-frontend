@@ -56,7 +56,7 @@ export const pdfService = {
         // Définir le titre du document pour les navigateurs
         pdf.setProperties({
             title: filename,
-            subject: "Rapport Hebdomadaire d'Activités",
+            subject: "Rapport d'Activités",
             author: "Systeme de Rapportage",
         });
 

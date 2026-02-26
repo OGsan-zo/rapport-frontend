@@ -53,53 +53,32 @@ export const Navbar: React.FC = () => {
       // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
     };
 
-    const isSuperior = user && (user.role === "Admin");
-    if (loading) {
-        return (
-        <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
-            <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
-        </header>
-        )
-    }
+    const isSuperior = user && (user.role === "Admin" );
+    const isAdminOrDirector = user && (user.role === "Admin" );
+
     return (
-        <header className="bg-white border-b border-gray-300 shadow-sm">
+        <header className="bg-white/80 backdrop-blur-md border-b border-slate-100 sticky top-0 z-40 transition-all">
             <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
-                {/* Logo / Titre */}
-                <Link href="/dashboard" className="flex items-center gap-2">
-                    <span className="text-base font-bold text-gray-900 tracking-tight uppercase">
-                        Rapports
-                    </span>
-                    <span className="text-xs text-gray-400 font-normal hidden sm:inline">— MESUPRES</span>
+                {/* Logo / Titre - Clean */}
+                <Link href="/dashboard" className="flex items-center gap-3">
+                    <span className="text-xs font-bold text-slate-900 tracking-tight uppercase">Rapports de Service</span>
+                    <div className="h-3 w-[1px] bg-slate-200"></div>
+                    <span className="text-[10px] text-slate-400 font-medium uppercase tracking-widest">M.E.S.U.P.R.E.S</span>
                 </Link>
 
-                {/* Navigation */}
-                <nav className="flex items-center gap-1">
-                    <Link href="/dashboard/nouveau" className={navLinkClass("/dashboard/nouveau")}>
-                        Nouveau Rapport
-                    </Link>
-                    <Link href="/dashboard" className={navLinkClass("/dashboard")}>
-                        Mes Rapports
-                    </Link>
-                    {isSuperior && (
-                        <Link href="/dashboard/supervision" className={navLinkClass("/dashboard/supervision")}>
-                            Supervision
-                        </Link>
-                    )}
-                </nav>
-
-                {/* Profil + Déconnexion */}
-                <div className="flex items-center gap-3">
+                {/* Profile + Logout - Simple */}
+                <div className="flex items-center gap-6">
                     {user && (
-                        <span className="text-xs text-gray-500 hidden sm:inline">
-                            {user.entite}
-                            <span className="ml-1 text-gray-400">({user.role})</span>
-                        </span>
+                        <div className="hidden sm:flex flex-col items-end">
+                            <span className="text-[11px] font-bold text-slate-900 uppercase leading-none">{user.entite}</span>
+                            <span className="text-[9px] font-medium text-slate-400 uppercase tracking-wider mt-1">Antananarivo / MESUPRES</span>
+                        </div>
                     )}
                     <button
                         onClick={handleLogout}
-                        className="text-xs font-medium text-gray-500 hover:text-gray-900 border border-gray-300 px-3 py-1.5 rounded hover:bg-gray-50 transition-colors"
+                        className="text-[10px] font-bold text-slate-400 hover:text-red-500 uppercase tracking-widest transition-colors py-1.5 px-3 border border-slate-100 rounded-lg hover:border-red-100 hover:bg-red-50"
                     >
-                        Déconnexion
+                        Quitter
                     </button>
                 </div>
             </div>

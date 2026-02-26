@@ -2,23 +2,24 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { rapportService } from "../services/rapportService";
-import { RapportConsolide } from "../types";
+import { ApiRapport } from "../types"; // Utilisation de ApiRapport
 import { usePdfExport } from "../hooks/usePdfExport";
 import { RapportView } from "./RapportView";
+import { SelectPeriode } from "../../common/components/SelectPeriode";
 
 /**
  * Vue Supervision — tableau de tous les rapports avec filtres.
  */
 export const SupervisionView: React.FC = () => {
-    const [rapports, setRapports] = useState<RapportConsolide[]>([]);
+    const [rapports, setRapports] = useState<ApiRapport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [semaineFilter, setSemaineFilter] = useState("");
+    const [selectedPeriodId, setSelectedPeriodId] = useState<number | undefined>(undefined);
     const [entiteFilter, setEntiteFilter] = useState("");
 
     // PDF Generation State
     const { exportToPdf } = usePdfExport();
-    const [selectedForPdf, setSelectedForPdf] = useState<RapportConsolide | null>(null);
+    const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport | null>(null);
     const [generatingId, setGeneratingId] = useState<number | null>(null);
 
     // Chargement initial
@@ -36,47 +37,47 @@ export const SupervisionView: React.FC = () => {
         load();
     }, []);
 
-    // Extraction des entités uniques pour le filtre (mémorisée pour la performance)
+    // Extraction des entités uniques pour le filtre
     const entites = useMemo(() => {
         const unique = new Map();
         rapports.forEach(r => {
-            unique.set(r.user.entite, r.user.entite);
+            if (r.user.entite) {
+                unique.set(r.user.entite, r.user.entite);
+            }
         });
         return Array.from(unique.values()).sort();
     }, [rapports]);
 
-    // Filtrage mémorisé
+    // Logique de filtrage
     const filtered = useMemo(() => {
         return rapports.filter((r) => {
             const matchesEntite = entiteFilter === "" || r.user.entite === entiteFilter;
-            
-            // Pour la semaine, on vérifie si la date choisie est incluse dans l'intervalle
-            const matchesSemaine = semaineFilter === "" || (
-                semaineFilter >= r.calendrier.dateDebut && 
-                semaineFilter <= r.calendrier.dateFin
-            );
-
+            const matchesSemaine = !selectedPeriodId || r.id === selectedPeriodId;
             return matchesEntite && matchesSemaine;
         });
-    }, [rapports, entiteFilter, semaineFilter]);
+    }, [rapports, entiteFilter, selectedPeriodId]);
 
-    const handlePdfClick = async (rapport: RapportConsolide) => {
-        setGeneratingId(rapport.id);
+    const handlePdfClick = async (rapport: ApiRapport) => {
+        let idFichier = rapport.id;
+        if (!idFichier) {
+            idFichier=0;
+        };
+        setGeneratingId(idFichier);
         setSelectedForPdf(rapport);
         
-        // Délai pour laisser le temps au DOM "caché" de se rendre proprement
+        // Petit délai pour laisser React injecter le composant RapportView dans le DOM masqué
         setTimeout(async () => {
             try {
-                const fileName = `Rapport_${rapport.user.entite.replace(/\s+/g, '_')}_Semaine_${rapport.calendrier.dateDebut}.pdf`;
-                await exportToPdf("rapport-a4-container", fileName);
+                await exportToPdf("rapport-a4-container", `Rapport_${rapport.user.entite}_${rapport.id}.pdf`);
             } finally {
                 setGeneratingId(null);
                 setSelectedForPdf(null);
             }
-        }, 600);
+        }, 500);
     };
 
     const formatDate = (dateStr: string) => {
+        if (!dateStr) return "N/A";
         return new Date(dateStr).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
     };
 
@@ -87,105 +88,107 @@ export const SupervisionView: React.FC = () => {
     };
 
     return (
-        <div className="space-y-6">
-            {/* Barre de Filtres */}
-            <div className="flex flex-col md:flex-row gap-4 bg-white border border-gray-300 rounded-lg p-5 shadow-sm">
-                <div className="flex flex-col gap-1.5 flex-1">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase">Semaine du rapport</label>
-                    <input
-                        type="date"
-                        value={semaineFilter}
-                        onChange={(e) => setSemaineFilter(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500 outline-none"
-                    />
-                </div>
-                
-                <div className="flex flex-col gap-1.5 flex-1">
-                    <label className="text-[11px] font-bold text-gray-500 uppercase">Entité / Direction</label>
-                    <select
-                        value={entiteFilter}
-                        onChange={(e) => setEntiteFilter(e.target.value)}
-                        className="px-3 py-2 border border-gray-300 rounded text-sm bg-white outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                        <option value="">Toutes les entités</option>
-                        {entites.map((nom) => (
-                            <option key={nom} value={nom}>{nom}</option>
-                        ))}
-                    </select>
+        <div className="space-y-10 pb-20">
+            {/* Toolbar Supervision */}
+            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
+                <div className="space-y-1">
+                    <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Supervision</h1>
+                    <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-1">Pilotage inter-entités</p>
                 </div>
 
-                {(semaineFilter || entiteFilter) && (
-                    <div className="flex items-end">
+                <div className="flex flex-col sm:flex-row items-center gap-6">
+                    <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3">
+                        <span className="text-[9px] font-bold uppercase px-3 text-slate-400 border-r border-slate-200">Semaine :</span>
+                        <SelectPeriode
+                            currentId={selectedPeriodId}
+                            onSelect={setSelectedPeriodId}
+                            className="w-[280px]"
+                        />
+                    </div>
+
+                    <div className="relative min-w-[240px]">
+                        <select
+                            value={entiteFilter}
+                            onChange={(e) => setEntiteFilter(e.target.value)}
+                            className="w-full bg-white border border-slate-200 px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg outline-none cursor-pointer text-slate-600"
+                        >
+                            <option value="">Tous les services</option>
+                            {entites.map((entite) => (
+                                <option key={entite} value={entite}>{entite}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    {(selectedPeriodId || entiteFilter) && (
                         <button
-                            onClick={() => { setSemaineFilter(""); setEntiteFilter(""); }}
-                            className="px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded transition-colors font-medium"
+                            onClick={() => { setSelectedPeriodId(undefined); setEntiteFilter(""); }}
+                            className="text-[10px] font-bold text-slate-400 hover:text-red-500 uppercase tracking-widest px-2"
                         >
                             Effacer les filtres
                         </button>
-                    </div>
-                )}
+                    )}
+                </div>
             </div>
 
-            {/* Statistiques rapides */}
-            <div className="flex justify-between items-center">
-                <p className="text-sm text-gray-600">
-                    <span className="font-bold text-gray-900">{filtered.length}</span> rapport(s) trouvé(s)
+            {/* Counter Section */}
+            <div className="flex items-center gap-3">
+                <div className="h-0.5 w-4 bg-slate-900"></div>
+                <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
+                    Documents reçus : <span className="text-slate-900 font-extrabold text-xs">{filtered.length}</span>
                 </p>
             </div>
 
-            {/* Tableau des Rapports */}
-            <div className="bg-white border border-gray-300 rounded-xl overflow-hidden shadow-sm">
+            {/* Table */}
+            <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
                 <table className="w-full text-left border-collapse">
-                    <thead className="bg-gray-50 border-b border-gray-300">
-                        <tr>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase text-gray-500">Entité</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase text-gray-500">Période</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase text-gray-500">Statut</th>
-                            <th className="px-6 py-4 text-[11px] font-bold uppercase text-gray-500 text-right">Action</th>
+                    <thead>
+                        <tr className="bg-slate-50/50 border-b border-slate-200">
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-slate-500 tracking-wider">Entité Émettrice</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-slate-500 tracking-wider">Période</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-center">État</th>
+                            <th className="px-6 py-5 text-[10px] font-bold uppercase text-slate-500 tracking-wider text-right">Action</th>
                         </tr>
                     </thead>
-                    <tbody className="divide-y divide-gray-200">
+                    <tbody className="divide-y divide-slate-100">
                         {isLoading ? (
-                            Array(3).fill(0).map((_, i) => (
+                            Array(4).fill(0).map((_, i) => (
                                 <tr key={i} className="animate-pulse">
-                                    <td colSpan={4} className="px-6 py-8"><div className="h-4 bg-gray-100 rounded w-full" /></td>
+                                    <td colSpan={4} className="px-6 py-6"><div className="h-4 bg-slate-50 w-3/4 rounded" /></td>
                                 </tr>
                             ))
-                        ) : filtered.map((rapport) => (
-                            <tr key={rapport.id} className="hover:bg-blue-50/30 transition-colors">
-                                <td className="px-6 py-4">
-                                    <div className="text-sm font-bold text-gray-900">{rapport.user.entite}</div>
-                                    <div className="text-xs text-gray-500">{rapport.user.email}</div>
-                                </td>
-                                <td className="px-6 py-4 text-sm text-gray-700">
-                                    Du {formatDate(rapport.calendrier.dateDebut)} au {formatDate(rapport.calendrier.dateFin)}
-                                </td>
-                               
-                                <td className="px-6 py-4 text-right">
-                                    <button
-                                        onClick={() => handlePdfClick(rapport)}
-                                        disabled={generatingId === rapport.id}
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition-all shadow-sm disabled:opacity-50"
-                                    >
-                                        {generatingId === rapport.id ? (
-                                            <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                        ) : (
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                                            </svg>
-                                        )}
-                                        {generatingId === rapport.id ? "Génération..." : "Générer PDF"}
-                                    </button>
+                        ) : filtered.length > 0 ? (
+                            filtered.map((rapport) => (
+                                <tr key={rapport.id} className="hover:bg-slate-50/50 transition-colors">
+                                    <td className="px-6 py-5">
+                                        <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user.entite}</div>
+                                        <div className="text-[10px] text-slate-400 lowercase">{rapport.user.email}</div>
+                                    </td>
+                                    <td className="px-6 py-5 text-xs text-slate-500 italic">
+                                        Du {formatDate(rapport.calendrier.dateDebut)} au {formatDate(rapport.calendrier.dateFin)}
+                                    </td>
+                                    
+                                    <td className="px-6 py-5 text-right">
+                                        <button
+                                            onClick={() => handlePdfClick(rapport)}
+                                            disabled={generatingId !== null}
+                                            className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-50"
+                                        >
+                                            {generatingId === rapport.id ? (
+                                                <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                            ) : "Consulter / PDF"}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={4} className="py-20 text-center text-slate-400 text-[10px] font-medium uppercase tracking-widest">
+                                    Aucun rapport trouvé.
                                 </td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
-                {!isLoading && filtered.length === 0 && (
-                    <div className="py-20 text-center text-gray-400">
-                        <p>Aucun rapport trouvé pour ces critères.</p>
-                    </div>
-                )}
             </div>
 
             {/* Rendu masqué pour capture PDF */}

@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { RapportConsolide } from "../types";
+// Mise à jour de l'import vers ApiRapport
+import { ApiRapport } from "../types"; 
 import { IMAGES } from "@/features/common/constants";
 
 interface RapportViewProps {
-    rapport: RapportConsolide;
+    rapport: ApiRapport; // Utilisation du nouveau type
     scale?: number;
     containerId?: string;
 }
@@ -38,7 +39,6 @@ export const RapportView: React.FC<RapportViewProps> = ({
                         border: none !important;
                     }
                 }
-                /* Empêche la coupure des lignes de tableau entre deux pages PDF */
                 tr { page-break-inside: avoid; break-inside: avoid; }
             `}</style>
 
@@ -48,7 +48,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
             >
                 <div
                     id={containerId}
-                    className="pdf-sheet bg-white font-serif text-[13px] shadow-2xl"
+                    className="pdf-sheet bg-white font-sans text-[13px] shadow-2xl"
                     style={{
                         width: "210mm",
                         minHeight: "297mm",
@@ -60,46 +60,48 @@ export const RapportView: React.FC<RapportViewProps> = ({
                     }}
                 >
                     {/* ======= EN-TÊTE ======= */}
-                    <div className="flex justify-between items-center mb-8 w-full">
-                        <div className="flex items-center gap-3">
-                            <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="w-[45px] h-auto" />
-                            <div className="text-left">
-                                <p className="text-[10px] uppercase font-bold leading-tight m-0 text-black">
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px", width: "100%" }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo Madagascar" style={{ width: "45px", height: "auto" }} />
+                            <div style={{ textAlign: "left" }}>
+                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", color: "#1e293b", margin: 0 }}>
                                     Repoblikan&apos;i Madagasikara
                                 </p>
-                                <p className="text-[9px] italic m-0 text-black">
+                                <p style={{ fontSize: "9px", fontStyle: "italic", color: "#64748b", margin: 0 }}>
                                     Fitiavana — Tanindrazana — Fandrosoana
                                 </p>
                             </div>
                         </div>
 
-                        <div className="flex items-center gap-3">
-                            <p className="text-[12px] font-bold uppercase text-black m-0">MESUPRES</p>
-                            <img src={IMAGES.LOGO_MESUPRES} alt="Logo" className="w-[45px] h-auto" />
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <div style={{ textAlign: "right" }}>
+                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", color: "#1e293b", margin: 0 }}>
+                                    MESUPRES
+                                </p>
+                            </div>
+                            <img src={IMAGES.LOGO_MESUPRES} alt="Logo MESUPRES" style={{ width: "45px", height: "auto" }} />
                         </div>
                     </div>
 
-                    {/* ======= TITRE ======= */}
-                    <div className="text-center mb-6">
-                        <h1 className="text-[14px] font-bold uppercase border-b-2 border-black pb-2 px-4 inline-block text-black">
-                            Rapport Hebdomadaire d&apos;Activités
+                    <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                        <h1 style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", borderBottom: "1.5px solid #1e293b", paddingBottom: "8px", display: "inline-block", paddingLeft: "16px", paddingRight: "16px", color: "#1e293b" }}>
+                            Rapport d&apos;Activités
                         </h1>
                     </div>
 
-                    {/* ======= TABLEAU ======= */}
-                    <table className="w-full border-collapse border-2 border-black table-fixed">
+                    {/* ======= TABLEAU PRINCIPAL ======= */}
+                    <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed", border: "1px solid #1e293b" }}>
                         <tbody>
-                            {/* Entité - Accès via rapport.utilisateur.entite */}
+                            {/* Modification : rapport.utilisateur au lieu de rapport.user */}
                             <tr className="bg-[#D1E7B9]">
                                 <td className="border-b border-r border-black w-[28%] p-3 font-bold uppercase text-[12px] text-black">
                                     Entité :
                                 </td>
                                 <td className="border-b border-black p-3 font-bold uppercase text-[12px] text-black">
-                                    {rapport.user.entite}
+                                    {rapport.user.entite || "N/A"}
                                 </td>
                             </tr>
 
-                            {/* Semaine - Accès via rapport.calendrier */}
                             <tr className="bg-[#E2D1F9]">
                                 <td className="border-b-2 border-r border-black p-3 font-bold uppercase text-[12px] text-black">
                                     Semaine du :
@@ -109,34 +111,41 @@ export const RapportView: React.FC<RapportViewProps> = ({
                                 </td>
                             </tr>
 
-                            {/* Headers de colonnes */}
-                            <tr className="bg-[#BDE3FF] text-center font-bold uppercase text-[11px] text-black">
-                                <td className="border-b-2 border-r border-black p-3 w-1/3">Activités</td>
-                                <td className="border-b-2 border-r border-black p-3 w-1/3">Effets</td>
-                                <td className="border-b-2 border-black p-3 w-1/3">Impacts</td>
+                            <tr style={{ backgroundColor: "#F8FAFC", textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "11px", color: "#475569" }}>
+                                <td style={{ borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", padding: "12px" }}>Activités</td>
+                                <td style={{ borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", padding: "12px" }}>Effets</td>
+                                <td style={{ borderBottom: "1px solid #e2e8f0", padding: "12px" }}>Impacts</td>
                             </tr>
 
-                            {/* Données - Accès via rapport.activites & effectsImpacts */}
-                            {rapport.activites.map((item, idx) => (
-                                <tr key={idx} className="text-black align-top">
-                                    <td className="border-b border-r border-black p-3">
-                                        • {item.activite.name}
-                                    </td>
-                                    <td className="border-b border-r border-black p-3">
-                                        <ul className="list-none p-0 m-0">
-                                            {item.effectsImpacts.map((ei, i) => (
-                                                <li key={i} className="mb-1">• {ei.effect}</li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                    <td className="border-b border-black p-3">
-                                        <ul className="list-none p-0 m-0">
-                                            {item.effectsImpacts.map((ei, i) => (
-                                                <li key={i} className="mb-1">• {ei.impact}</li>
-                                            ))}
-                                        </ul>
-                                    </td>
-                                </tr>
+                            {/* Lignes de données */}
+                            {rapport.activites.map((activite, actIndex) => (
+                                <React.Fragment key={`act-${actIndex}`}>
+                                    {activite.effectsImpacts.map((ei, eiIndex) => (
+                                        <tr key={`${actIndex}-${eiIndex}`} style={{ breakInside: "avoid" }}>
+                                            {eiIndex === 0 && (
+                                                <td
+                                                    rowSpan={activite.effectsImpacts.length}
+                                                    style={{
+                                                        borderBottom: "1px solid #000000",
+                                                        borderRight: "1px solid #000000",
+                                                        verticalAlign: "top",
+                                                        padding: "12px",
+                                                        fontWeight: "500"
+                                                    }}
+                                                >
+                                                    {/* On privilégie 'name', sinon 'entite' (selon votre structure ApiRapport) */}
+                                                    {activite.name || (activite as any).entite}
+                                                </td>
+                                            )}
+                                            <td style={{ borderBottom: "1px solid #000000", borderRight: "1px solid #000000", verticalAlign: "top", padding: "12px" }}>
+                                                <div className="flex gap-2"><span>•</span><span>{ei.effect}</span></div>
+                                            </td>
+                                            <td style={{ borderBottom: "1px solid #000000", verticalAlign: "top", padding: "12px" }}>
+                                                <div className="flex gap-2"><span>•</span><span>{ei.impact}</span></div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </React.Fragment>
                             ))}
                         </tbody>
                     </table>
@@ -147,7 +156,8 @@ export const RapportView: React.FC<RapportViewProps> = ({
                             <p className="font-bold uppercase text-black">L&apos;Agent</p>
                             <div className="h-16" />
                             <p className="border-t-2 border-black w-40 mx-auto font-bold pt-1">
-                                {rapport.user.email.split('@')[0]}
+                                {/* Accès sécurisé au nom de l'utilisateur */}
+                                {rapport.user.entite || rapport.user.email?.split('@')[0]}
                             </p>
                         </div>
                         <div className="text-center text-[11px]">
