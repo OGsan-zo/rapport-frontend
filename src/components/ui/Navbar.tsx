@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
                 {/* Logo / Titre */}
                 <Link href="/dashboard" className="flex items-center gap-2">
                     <span className="text-base font-bold text-gray-900 tracking-tight uppercase">
-                        Rapports Hebdomadaires
+                        Rapports
                     </span>
                     <span className="text-xs text-gray-400 font-normal hidden sm:inline">— MESUPRES</span>
                 </Link>

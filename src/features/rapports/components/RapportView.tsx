@@ -2,6 +2,7 @@
 
 import React from "react";
 import { RapportConsolide } from "../types";
+import { IMAGES } from "@/features/common/constants";
 
 interface RapportViewProps {
     rapport: RapportConsolide;
@@ -98,17 +99,36 @@ export const RapportView: React.FC<RapportViewProps> = ({
                     }}
                 >
                     {/* ======= EN-TÊTE OFFICIEL ======= */}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "32px" }}>
-                        <div style={{ textAlign: "center" }}>
-                            <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", letterSpacing: "0.05em", color: "#000000" }}>
-                                Repoblikan&apos;i Madagasikara
-                            </p>
-                            <p style={{ fontSize: "9px", fontStyle: "italic", color: "#4b5563", marginTop: "2px" }}>
-                                Fitiavana — Tanindrazana — Fandrosoana
-                            </p>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px", width: "100%" }}>
+                        {/* Logo Repoblika + Texte */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <img
+                                src={IMAGES.LOGO_REPOBLIKA}
+                                alt="Logo Madagascar"
+                                style={{ width: "45px", height: "auto" }}
+                            />
+                            <div style={{ textAlign: "left" }}>
+                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", letterSpacing: "0.05em", color: "#000000", margin: 0 }}>
+                                    Repoblikan&apos;i Madagasikara
+                                </p>
+                                <p style={{ fontSize: "9px", fontStyle: "italic", color: "#000000", marginTop: "2px", margin: 0 }}>
+                                    Fitiavana — Tanindrazana — Fandrosoana
+                                </p>
+                            </div>
                         </div>
-                        <div style={{ textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "12px", letterSpacing: "0.05em", color: "#000000" }}>
-                            MESUPRES
+
+                        {/* Logo MESUPRES + Texte */}
+                        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                            <div style={{ textAlign: "right" }}>
+                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", letterSpacing: "0.05em", color: "#000000", margin: 0 }}>
+                                    MESUPRES
+                                </p>
+                            </div>
+                            <img
+                                src={IMAGES.LOGO_MESUPRES}
+                                alt="Logo MESUPRES"
+                                style={{ width: "45px", height: "auto" }}
+                            />
                         </div>
                     </div>
 
