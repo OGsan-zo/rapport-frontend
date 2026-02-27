@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/features/auth/services/authService";
 import { User } from "@/features/auth/types";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
+import { AdminPilotageProvider } from "@/features/admin/context/AdminPilotageContext";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
@@ -44,5 +45,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         return null;
     }
 
-    return <DashboardLayout>{children}</DashboardLayout>;
+    return (
+        <AdminPilotageProvider>
+            <DashboardLayout>{children}</DashboardLayout>
+        </AdminPilotageProvider>
+    );
 }

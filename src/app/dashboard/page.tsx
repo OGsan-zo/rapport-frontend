@@ -6,30 +6,30 @@ import { rapportService } from "@/features/rapports/services/rapportService";
 import { ApiRapport } from "@/features/rapports/types"; // Changement ici
 import { usePdfExport } from "@/features/rapports/hooks/usePdfExport";
 import { RapportView } from "@/features/rapports/components/RapportView";
-import { SelectPeriode } from "@/features/common/components/SelectPeriode";
+import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 
 export default function DashboardPage() {
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
     const [filtered, setFiltered] = useState<ApiRapport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedPeriodId, setSelectedPeriodId] = useState<number | undefined>(undefined);
+    const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
 
     const { exportToPdf } = usePdfExport();
     const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport | null>(null);
     const [generatingId, setGeneratingId] = useState<number | null>(null);
 
     const handlePdfClick = async (rapport: ApiRapport) => {
-        let idRp= 0;
+        let idRp = 0;
         if (rapport.id !== undefined) {
             idRp = rapport.id;
         }
         setGeneratingId(idRp);
         setSelectedForPdf(rapport);
-        
+
         setTimeout(() => {
             // Utilisation de la date du calendrier liée au rapport
             const year = new Date(rapport.calendrier.dateDebut).getFullYear();
-            exportToPdf("rapport-a4-container", `Rapport_Hebdo_${year}_ID${rapport.id}.pdf`)
+            exportToPdf("rapport-a4-container", `Rapport_H${year}_ID${rapport.id}.pdf`)
                 .finally(() => {
                     setGeneratingId(null);
                     setSelectedForPdf(null);
@@ -53,12 +53,12 @@ export default function DashboardPage() {
     }, []);
 
     useEffect(() => {
-        if (selectedPeriodId === undefined) {
+        if (!selectedPeriodId) {
             setFiltered(rapports);
             return;
         }
         // Filtrage par l'ID du calendrier
-        const filteredData = rapports.filter(r => r.calendrier.id === selectedPeriodId);
+        const filteredData = rapports.filter(r => r.calendrier.id === Number(selectedPeriodId));
         setFiltered(filteredData);
     }, [selectedPeriodId, rapports]);
 
@@ -86,9 +86,9 @@ export default function DashboardPage() {
                 <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto">
                     <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3 w-full sm:w-auto">
                         <span className="text-[9px] font-bold uppercase px-3 text-slate-400">Filtrer :</span>
-                        <SelectPeriode
-                            currentId={selectedPeriodId}
-                            onSelect={setSelectedPeriodId}
+                        <PeriodeSelect
+                            value={selectedPeriodId}
+                            onValueChange={setSelectedPeriodId}
                             className="w-full sm:w-[280px]"
                         />
                     </div>

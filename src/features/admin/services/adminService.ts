@@ -36,15 +36,14 @@ export const adminService = {
     getStats: async (dateDebut: string, dateFin: string, typeCalendrierId?: number): Promise<AdminStats> => {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
-        // Simulé: On compte les utilisateurs standards
-        const standardUsers = MOCK_ALL_USERS.filter(u => u.role === "Utilisateur");
-        const totalUsers = standardUsers.length;
+        // Simulation de données filtrées
+        const modifier = typeCalendrierId ? (typeCalendrierId * 10) : 0;
 
-        // Simulé: On dit qu'il y a 3 rapports reçus (on pourrait varier selon typeCalendrierId si on voulait pousser le mock)
-        const reportsReceived = 3;
-        const missingUsers = totalUsers - reportsReceived;
-
-        return { totalUsers, reportsReceived, missingUsers };
+        return {
+            totalUsers: 120 + modifier,
+            reportsReceived: 95 + (modifier / 2),
+            missingUsers: 25 + (modifier / 4),
+        };
     },
 
     /**
@@ -56,72 +55,4 @@ export const adminService = {
         // Simulé: Jean et Paul n'ont pas envoyé
         return MOCK_ALL_USERS.filter(u => u.email.includes("jean") || u.email.includes("paul"));
     },
-
-    /**
-     * Liste les périodes du calendrier depuis le backend Symfony via le proxy Next.js.
-     */
-    getPeriods: async (): Promise<CalendarPeriod[]> => {
-        try {
-            const response = await fetch("/api/calendriers", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-store"
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
-            }
-
-            const responseData = await response.json();
-
-            // On s'attend à ce que Symfony renvoie les données (collection)
-            // selon le format standard de callApiGet
-            const data: CalendarPeriod[] = responseData.data || responseData;
-
-            return data;
-        } catch (error) {
-            console.error("Erreur getPeriods:", error);
-            throw error;
-        }
-    },
-
-    /**
-     * Ajoute une nouvelle période en appelant le backend via le proxy Next.js.
-     */
-    createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId: number): Promise<CalendarPeriod> => {
-        try {
-            const response = await fetch("/api/calendriers", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    dateDebut,
-                    dateFin,
-                    typeCalendrierId,
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
-            }
-
-            const responseData = await response.json();
-
-            // Symfony retourne souvent l'objet créé sous 'data'
-            const newPeriod: CalendarPeriod = responseData.data || responseData;
-
-            // On met quand même à jour le mock local pour la consistance UI immédiate
-            // MOCK_PERIODS = [...MOCK_PERIODS, newPeriod];
-
-            return newPeriod;
-        } catch (error) {
-            console.error("Erreur createPeriod:", error);
-            throw error;
-        }
-    }
 };

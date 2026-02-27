@@ -5,7 +5,7 @@ import { rapportService } from "../services/rapportService";
 import { ApiRapport } from "../types"; // Utilisation de ApiRapport
 import { usePdfExport } from "../hooks/usePdfExport";
 import { RapportView } from "./RapportView";
-import { SelectPeriode } from "../../common/components/SelectPeriode";
+import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 
 /**
  * Vue Supervision — tableau de tous les rapports avec filtres.
@@ -14,7 +14,7 @@ export const SupervisionView: React.FC = () => {
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const [selectedPeriodId, setSelectedPeriodId] = useState<number | undefined>(undefined);
+    const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
     const [entiteFilter, setEntiteFilter] = useState("");
 
     // PDF Generation State
@@ -52,7 +52,7 @@ export const SupervisionView: React.FC = () => {
     const filtered = useMemo(() => {
         return rapports.filter((r) => {
             const matchesEntite = entiteFilter === "" || r.user.entite === entiteFilter;
-            const matchesSemaine = !selectedPeriodId || r.id === selectedPeriodId;
+            const matchesSemaine = !selectedPeriodId || r.id === Number(selectedPeriodId);
             return matchesEntite && matchesSemaine;
         });
     }, [rapports, entiteFilter, selectedPeriodId]);
@@ -60,11 +60,11 @@ export const SupervisionView: React.FC = () => {
     const handlePdfClick = async (rapport: ApiRapport) => {
         let idFichier = rapport.id;
         if (!idFichier) {
-            idFichier=0;
+            idFichier = 0;
         };
         setGeneratingId(idFichier);
         setSelectedForPdf(rapport);
-        
+
         // Petit délai pour laisser React injecter le composant RapportView dans le DOM masqué
         setTimeout(async () => {
             try {
@@ -99,9 +99,9 @@ export const SupervisionView: React.FC = () => {
                 <div className="flex flex-col sm:flex-row items-center gap-6">
                     <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3">
                         <span className="text-[9px] font-bold uppercase px-3 text-slate-400 border-r border-slate-200">Semaine :</span>
-                        <SelectPeriode
-                            currentId={selectedPeriodId}
-                            onSelect={setSelectedPeriodId}
+                        <PeriodeSelect
+                            value={selectedPeriodId}
+                            onValueChange={setSelectedPeriodId}
                             className="w-[280px]"
                         />
                     </div>
@@ -121,7 +121,7 @@ export const SupervisionView: React.FC = () => {
 
                     {(selectedPeriodId || entiteFilter) && (
                         <button
-                            onClick={() => { setSelectedPeriodId(undefined); setEntiteFilter(""); }}
+                            onClick={() => { setSelectedPeriodId(""); setEntiteFilter(""); }}
                             className="text-[10px] font-bold text-slate-400 hover:text-red-500 uppercase tracking-widest px-2"
                         >
                             Effacer les filtres
@@ -166,7 +166,7 @@ export const SupervisionView: React.FC = () => {
                                     <td className="px-6 py-5 text-xs text-slate-500 italic">
                                         Du {formatDate(rapport.calendrier.dateDebut)} au {formatDate(rapport.calendrier.dateFin)}
                                     </td>
-                                    
+
                                     <td className="px-6 py-5 text-right">
                                         <button
                                             onClick={() => handlePdfClick(rapport)}

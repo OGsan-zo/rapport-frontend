@@ -1,47 +1,70 @@
-"use client";
-
 import React, { useEffect, useState } from "react";
-import { adminService } from "../services/adminService";
 import { User } from "../../auth/types";
-import { SelectPeriode } from "../../common/components/SelectPeriode";
+import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
+import { periodeService as configPeriodeService } from "@/features/config/services/periodeService";
+import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
+import { useAdminPilotage } from "../context/AdminPilotageContext";
 
 export const MissingUsers = () => {
+    const {
+        selectedTypeId,
+        setSelectedTypeId,
+        selectedPeriodId,
+        setSelectedPeriodId
+    } = useAdminPilotage();
+
     const [users, setUsers] = useState<User[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedPeriodId, setSelectedPeriodId] = useState<number | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        if (selectedPeriodId === undefined) return;
+        if (!selectedPeriodId || !selectedTypeId) {
+            setUsers([]);
+            setIsLoading(false);
+            return;
+        }
 
-        const fetch = async () => {
+        const fetchMissing = async () => {
             setIsLoading(true);
             try {
-                const data = await adminService.getMissingUsers("any", "any");
+                // Utilisation de la nouvelle API centralisée
+                const data = await configPeriodeService.getLateUsers(selectedPeriodId);
                 setUsers(data);
             } catch (err) {
-                console.error(err);
+                console.error("Erreur MissingUsers:", err);
             } finally {
                 setIsLoading(false);
             }
         };
-        fetch();
-    }, [selectedPeriodId]);
+        fetchMissing();
+    }, [selectedPeriodId, selectedTypeId]);
 
     return (
         <div className="space-y-10">
-            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8 transition-all">
+            {/* Design aligné sur le Dashboard - Header Miroir */}
+            <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
                 <div className="space-y-1">
                     <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Agents Manquants</h1>
                     <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest mt-1">Surveillance des transmissions de rapports</p>
                 </div>
 
-                <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3">
-                    <span className="text-[9px] font-bold uppercase px-3 text-slate-400">Période :</span>
-                    <SelectPeriode
-                        currentId={selectedPeriodId}
-                        onSelect={setSelectedPeriodId}
-                        className="min-w-[320px]"
-                    />
+                <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex flex-col sm:flex-row items-center gap-3">
+                    <div className="flex items-center gap-2 px-3 border-r border-slate-200">
+                        <span className="text-[9px] font-bold uppercase text-slate-400">Type :</span>
+                        <TypeCalendrierSelect
+                            value={selectedTypeId}
+                            onValueChange={setSelectedTypeId}
+                            className="min-w-[160px] border-none bg-transparent shadow-none focus:ring-0"
+                        />
+                    </div>
+                    <div className="flex items-center gap-2 px-3">
+                        <span className="text-[9px] font-bold uppercase text-slate-400">Période :</span>
+                        <PeriodeSelect
+                            value={selectedPeriodId}
+                            onValueChange={setSelectedPeriodId}
+                            typeCalendrierId={selectedTypeId}
+                            className="min-w-[280px] border-none bg-transparent shadow-none focus:ring-0"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -67,8 +90,8 @@ export const MissingUsers = () => {
                                     Aucun retardataire détecté pour cette période.
                                 </td>
                             </tr>
-                        ) : (   
-                            users.map((user) => (
+                        ) : (
+                            users.map((user: User) => (
                                 <tr key={user.id} className="hover:bg-slate-50/50 transition-colors">
                                     <td className="p-5 text-sm font-bold text-slate-900 border-r border-slate-100">{user.entite}</td>
                                     <td className="p-5 text-sm font-medium text-slate-400 border-r border-slate-100 italic">{user.email}</td>

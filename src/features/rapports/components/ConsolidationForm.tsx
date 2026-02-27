@@ -13,7 +13,7 @@ import { usePdfExport } from "../hooks/usePdfExport";
 
 // Composants
 import { RapportView } from "./RapportView";
-import { SelectPeriode } from "../../common/components/SelectPeriode";
+import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 
 /**
  * Schéma de validation Zod
@@ -88,13 +88,13 @@ export const ConsolidationForm = () => {
         role: "Admin",
       },
       activites: [
-            {
-                name: "Déploiement de la nouvelle application de rapports",
-                effectsImpacts: [
-                    { effect: "Réduction du temps de traitement de 60%", impact: "Dématérialisation complète du processus de rapport" }
-                ],
-            },
-        ],
+        {
+          name: "Déploiement de la nouvelle application de rapports",
+          effectsImpacts: [
+            { effect: "Réduction du temps de traitement de 60%", impact: "Dématérialisation complète du processus de rapport" }
+          ],
+        },
+      ],
     };
   }, [watchedValues]);
 
@@ -124,9 +124,9 @@ export const ConsolidationForm = () => {
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <div className="bg-slate-50 p-1 rounded-xl border border-slate-200 flex items-center gap-2">
             <span className="text-[9px] font-black uppercase px-3 text-slate-500">Période :</span>
-            <SelectPeriode
-              currentId={watchedValues.idCalendrier}
-              onSelect={(id) => setValue("idCalendrier", id, { shouldValidate: true })}
+            <PeriodeSelect
+              value={watchedValues.idCalendrier?.toString() || ""}
+              onValueChange={(val) => setValue("idCalendrier", Number(val), { shouldValidate: true })}
               className="w-[260px] border-none bg-transparent focus:ring-0 shadow-none"
             />
           </div>
@@ -222,7 +222,7 @@ export const ConsolidationForm = () => {
         className="w-full py-10 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
       >
         <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
-            <span className="text-xl font-light">+</span>
+          <span className="text-xl font-light">+</span>
         </div>
         <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ajouter une activité</span>
       </button>
@@ -233,7 +233,7 @@ export const ConsolidationForm = () => {
           <RapportView rapport={rapportPreview} />
         </div>
       </div>
-      
+
       {/* Affichage des erreurs de validation globales */}
       {Object.keys(errors).length > 0 && (
         <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-[10px] font-bold uppercase tracking-widest text-center">

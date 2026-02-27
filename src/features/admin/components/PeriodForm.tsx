@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { adminService, CalendarPeriod } from "../services/adminService";
+import { periodeService } from "@/features/config/services/periodeService";
+import { CalendarPeriod } from "@/features/config/types";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 
 export const PeriodForm = () => {
@@ -14,7 +15,7 @@ export const PeriodForm = () => {
     const fetchPeriods = async () => {
         setIsLoading(true);
         try {
-            const data = await adminService.getPeriods();
+            const data = await periodeService.getPeriods();
             setPeriods(data);
         } catch (err) {
             console.error(err);
@@ -41,7 +42,7 @@ export const PeriodForm = () => {
 
         setIsSubmitting(true);
         try {
-            await adminService.createPeriod(
+            await periodeService.createPeriod(
                 newPeriod.debut,
                 newPeriod.fin,
                 Number(newPeriod.typeCalendrierId)
