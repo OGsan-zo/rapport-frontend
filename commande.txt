@@ -16,3 +16,6 @@ npm install @react-pdf/renderer
 
 #pour installer axios
 npm install axios
+
+# Pour tout mettre installer 
+npm install --legacy-peer-deps
