@@ -5,7 +5,7 @@ import Link from "next/link";
 import { rapportService } from "@/features/rapports/services/rapportService";
 import { ApiRapport } from "@/features/rapports/types"; // Changement ici
 import { usePdfExport } from "@/features/rapports/hooks/usePdfExport";
-import { RapportView } from "@/features/rapports/components/RapportView";
+import { RapportView } from "@/features/rapports/components/vision/RapportView";
 import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 
 export default function DashboardPage() {

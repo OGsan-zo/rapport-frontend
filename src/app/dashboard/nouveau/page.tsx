@@ -1,5 +1,5 @@
 import React from "react";
-import { ConsolidationForm } from "@/features/rapports/components/ConsolidationForm";
+import { ConsolidationForm } from "@/features/rapports/components/form/RapportForm";
 
 /**
  * Page de création d'un nouveau rapport.

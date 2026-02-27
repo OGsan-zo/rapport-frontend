@@ -2,7 +2,7 @@
 
 import React from "react";
 // Mise à jour de l'import vers ApiRapport
-import { ApiRapport } from "../types"; 
+import { ApiRapport } from "../../types"; 
 import { IMAGES } from "@/features/common/constants";
 
 interface RapportViewProps {

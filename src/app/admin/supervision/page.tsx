@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SupervisionView } from "@/features/rapports/components/SupervisionView";
+import { SupervisionView } from "@/features/rapports/components/vision/SupervisionView";
 import { User } from "@/features/auth/types";
 
 import { authService } from "@/features/auth/services/authService";

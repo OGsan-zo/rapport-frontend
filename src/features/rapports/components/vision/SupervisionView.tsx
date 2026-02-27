@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
-import { rapportService } from "../services/rapportService";
-import { ApiRapport } from "../types"; // Utilisation de ApiRapport
-import { usePdfExport } from "../hooks/usePdfExport";
+import { rapportService } from "../../services/rapportService";
+import { ApiRapport } from "../../types"; // Utilisation de ApiRapport
+import { usePdfExport } from "../../hooks/usePdfExport";
 import { RapportView } from "./RapportView";
 import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 
