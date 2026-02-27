@@ -22,10 +22,21 @@ export const LoginForm = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
     } = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
     });
+
+    const fillDefaultCredentials = (userType: 'admin' | 'user') => {
+        if (userType === 'admin') {
+            setValue('email', 'admin@gmail.com');
+            setValue('password', 'adminadmin');
+        } else {
+            setValue('email', 'test@gmail.com');
+            setValue('password', 'testtest');
+        }
+    };
 
     const onSubmit = (data: LoginFormValues) => {
         login(data);
@@ -123,7 +134,25 @@ export const LoginForm = () => {
                 </button>
             </form>
 
-            <div className="border-t border-gray-200 pt-4">
+            <div className="border-t border-gray-200 pt-4 space-y-3">
+                <div className="flex gap-2">
+                    <button
+                        type="button"
+                        onClick={() => fillDefaultCredentials('admin')}
+                        className="flex-1 px-3 py-2 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded transition-colors"
+                        disabled={isLoading}
+                    >
+                        Admin par défaut
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => fillDefaultCredentials('user')}
+                        className="flex-1 px-3 py-2 bg-gray-50 hover:bg-gray-100 text-gray-700 text-xs font-medium rounded transition-colors"
+                        disabled={isLoading}
+                    >
+                        Utilisateur par défaut
+                    </button>
+                </div>
                 <p className="text-xs text-gray-400 text-center">
                     Compte supérieur : utilisez un email contenant «&nbsp;admin&nbsp;»
                 </p>

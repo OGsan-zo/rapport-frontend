@@ -31,7 +31,7 @@ export const useLogin = () => {
             setTimeout(() => {
                 const role = response.user.role;
                 if (role === "Admin") {
-                    router.push("/dashboard/supervision");
+                    router.push("/admin/supervision");
                 } else {
                     router.push("/dashboard/nouveau");
                 }

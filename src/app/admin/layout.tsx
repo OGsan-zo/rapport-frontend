@@ -9,12 +9,16 @@ import { DashboardLayout } from "@/components/layout/DashboardLayout";
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [authChecked, setAuthChecked] = useState(false);
     const router = useRouter();
     const login = process.env.NEXT_PUBLIC_LOGIN_URL || '/login';
 
     useEffect(() => {
-        checkAuth();
-    }, []);
+        if (!authChecked) {
+            checkAuth();
+            setAuthChecked(true);
+        }
+    }, [authChecked]);
 
     const checkAuth = async () => {
         try {
@@ -28,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             authService.logout();
             router.push(login);
         } finally {
+            setAuthChecked(true);
             setLoading(false);
         }
     };
