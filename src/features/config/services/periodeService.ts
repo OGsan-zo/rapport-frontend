@@ -26,7 +26,7 @@ export const periodeService = {
             const responseData = await response.json();
             return responseData.data || responseData;
         } catch (error) {
-            console.error("Erreur getPeriods:", error);
+            // console.error("Erreur getPeriods:", error);
             throw error;
         }
     },
@@ -56,7 +56,7 @@ export const periodeService = {
             const responseData = await response.json();
             return responseData.data || responseData;
         } catch (error) {
-            console.error("Erreur createPeriod:", error);
+            // console.error("Erreur createPeriod:", error);
             throw error;
         }
     },
@@ -82,7 +82,7 @@ export const periodeService = {
             const responseData = await response.json();
             return responseData.data || responseData;
         } catch (error) {
-            console.error("Erreur getLateUsers:", error);
+            // console.error("Erreur getLateUsers:", error);
             throw error;
         }
     }

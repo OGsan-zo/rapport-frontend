@@ -27,7 +27,7 @@ export const typeCalendrierService = {
 
             return data;
         } catch (error) {
-            console.error("Erreur getTypeCalendriers:", error);
+            // console.error("Erreur getTypeCalendriers:", error);
             throw error;
         }
     },
