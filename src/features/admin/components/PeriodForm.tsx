@@ -2,11 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { adminService, CalendarPeriod } from "../services/adminService";
+import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 
 export const PeriodForm = () => {
     const [periods, setPeriods] = useState<CalendarPeriod[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [newPeriod, setNewPeriod] = useState({ debut: "", fin: "" });
+    const [newPeriod, setNewPeriod] = useState({ debut: "", fin: "", typeCalendrierId: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const fetchPeriods = async () => {
@@ -31,8 +32,12 @@ export const PeriodForm = () => {
 
         setIsSubmitting(true);
         try {
-            await adminService.createPeriod(newPeriod.debut, newPeriod.fin);
-            setNewPeriod({ debut: "", fin: "" });
+            await adminService.createPeriod(
+                newPeriod.debut,
+                newPeriod.fin,
+                newPeriod.typeCalendrierId ? Number(newPeriod.typeCalendrierId) : undefined
+            );
+            setNewPeriod({ debut: "", fin: "", typeCalendrierId: "" });
             fetchPeriods();
         } catch (err) {
             console.error(err);
@@ -71,6 +76,14 @@ export const PeriodForm = () => {
                             className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm font-medium focus:ring-1 focus:ring-slate-900 outline-none transition-all text-slate-700 bg-slate-50/30"
                         />
                     </div>
+
+                    <div className="space-y-3">
+                        <TypeCalendrierSelect
+                            value={newPeriod.typeCalendrierId}
+                            onValueChange={(val) => setNewPeriod({ ...newPeriod, typeCalendrierId: val })}
+                        />
+                    </div>
+
                     <button
                         type="submit"
                         disabled={isSubmitting}

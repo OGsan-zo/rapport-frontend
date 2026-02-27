@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { adminService, AdminStats } from "../services/adminService";
 import { SelectPeriode } from "../../common/components/SelectPeriode";
+import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 import Link from "next/link";
 
 export const AdminDashboard = () => {
@@ -10,6 +11,7 @@ export const AdminDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [selectedPeriodId, setSelectedPeriodId] = useState<number | undefined>(undefined);
+    const [selectedTypeId, setSelectedTypeId] = useState<string>("");
 
     useEffect(() => {
         if (selectedPeriodId === undefined) return;
@@ -17,7 +19,11 @@ export const AdminDashboard = () => {
         const fetchStats = async () => {
             setIsRefreshing(true);
             try {
-                const data = await adminService.getStats("any", "any");
+                const data = await adminService.getStats(
+                    "any",
+                    "any",
+                    selectedTypeId ? Number(selectedTypeId) : undefined
+                );
                 setStats(data);
             } catch (err) {
                 console.error(err);
@@ -27,7 +33,7 @@ export const AdminDashboard = () => {
             }
         };
         fetchStats();
-    }, [selectedPeriodId]);
+    }, [selectedPeriodId, selectedTypeId]);
 
     const StatCard = ({ title, value, sub, color }: any) => (
         <div className={`bg-white border border-slate-200 rounded-xl p-8 shadow-sm flex flex-col gap-3 transition-all duration-500 overflow-hidden relative group hover:border-blue-200 ${isRefreshing ? "opacity-40 scale-[0.98] blur-[1px]" : "opacity-100 scale-100 blur-0"}`}>
@@ -46,11 +52,18 @@ export const AdminDashboard = () => {
                     <p className="text-slate-400 text-[11px] font-medium uppercase tracking-widest mt-2 px-1 border-l-2 border-slate-900">Suivi de la conformité institutionnelle</p>
                 </div>
 
-                <SelectPeriode
-                    currentId={selectedPeriodId}
-                    onSelect={setSelectedPeriodId}
-                    className="min-w-[320px]"
-                />
+                <div className="flex flex-col sm:flex-row gap-4">
+                    <TypeCalendrierSelect
+                        value={selectedTypeId}
+                        onValueChange={setSelectedTypeId}
+                        className="min-w-[200px]"
+                    />
+                    <SelectPeriode
+                        currentId={selectedPeriodId}
+                        onSelect={setSelectedPeriodId}
+                        className="min-w-[320px]"
+                    />
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
