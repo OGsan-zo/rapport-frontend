@@ -1,18 +1,22 @@
 import { RapportConsolide } from "../../rapports/types";
 import { User } from "../../auth/types";
-
+import { useFetchAuth } from "@/hooks/useFetchAuth";
 export interface AdminStats {
     totalUsers: number;
     reportsReceived: number;
     missingUsers: number;
 }
 
+export interface TypeCalendrier {
+    id: number;
+    name: string;
+}
+
 export interface CalendarPeriod {
     id: number;
     dateDebut: string;
     dateFin: string;
-    typeCalendrierId?: number;
-    typeCalendrierName?: string;
+    typeCalendrier: TypeCalendrier;
 }
 
 // Mock users database
@@ -25,14 +29,33 @@ const MOCK_ALL_USERS: User[] = [
 ];
 
 let MOCK_PERIODS: CalendarPeriod[] = [
-    { id: 1, dateDebut: "2026-02-23", dateFin: "2026-02-27", typeCalendrierName: "Hebdomadaire" },
-    { id: 2, dateDebut: "2026-03-02", dateFin: "2026-03-06", typeCalendrierName: "Hebdomadaire" },
+    { 
+        id: 1, 
+        dateDebut: "2026-02-23 00:00:00", 
+        dateFin: "2026-02-27 00:00:00", 
+        typeCalendrier: {
+            id: 1, // J'ai ajouté un ID fictif pour respecter l'interface
+            name: "Hebdomadaire"
+        }
+    },
+    { 
+        id: 2, 
+        dateDebut: "2026-03-02 00:00:00", 
+        dateFin: "2026-03-06 00:00:00", 
+        typeCalendrier: {
+            id: 1,
+            name: "Hebdomadaire"
+        }
+    },
 ];
-
+const fetchAuth = useFetchAuth();
 export const adminService = {
+    
     /**
+     * 
      * Calcule les statistiques de conformité sur une période.
      */
+    
     getStats: async (dateDebut: string, dateFin: string, typeCalendrierId?: number): Promise<AdminStats> => {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
@@ -61,8 +84,9 @@ export const adminService = {
      * Liste les périodes du calendrier depuis le backend Symfony via le proxy Next.js.
      */
     getPeriods: async (): Promise<CalendarPeriod[]> => {
+        
         try {
-            const response = await fetch("/api/calendriers", {
+            const response = await fetchAuth("/api/calendriers", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +107,7 @@ export const adminService = {
 
             return data;
         } catch (error) {
-            console.error("Erreur getPeriods:", error);
+            // console.error("Erreur getPeriods:", error);
             throw error;
         }
     },
@@ -93,7 +117,7 @@ export const adminService = {
      */
     createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId: number): Promise<CalendarPeriod> => {
         try {
-            const response = await fetch("/api/calendriers", {
+            const response = await fetchAuth("/api/calendriers", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -120,7 +144,7 @@ export const adminService = {
 
             return newPeriod;
         } catch (error) {
-            console.error("Erreur createPeriod:", error);
+            // console.error("Erreur createPeriod:", error);
             throw error;
         }
     }
