@@ -58,11 +58,34 @@ export const adminService = {
     },
 
     /**
-     * Liste les périodes du calendrier.
+     * Liste les périodes du calendrier depuis le backend Symfony via le proxy Next.js.
      */
     getPeriods: async (): Promise<CalendarPeriod[]> => {
-        await new Promise((resolve) => setTimeout(resolve, 400));
-        return MOCK_PERIODS;
+        try {
+            const response = await fetch("/api/calendriers", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+
+            // On s'attend à ce que Symfony renvoie les données (collection)
+            // selon le format standard de callApiGet
+            const data: CalendarPeriod[] = responseData.data || responseData;
+
+            return data;
+        } catch (error) {
+            console.error("Erreur getPeriods:", error);
+            throw error;
+        }
     },
 
     /**
