@@ -66,17 +66,39 @@ export const adminService = {
     },
 
     /**
-     * Ajoute une nouvelle période.
+     * Ajoute une nouvelle période en appelant le backend via le proxy Next.js.
      */
-    createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId?: number): Promise<CalendarPeriod> => {
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        const newPeriod: CalendarPeriod = {
-            id: MOCK_PERIODS.length + 1,
-            dateDebut,
-            dateFin,
-            typeCalendrierId
-        };
-        MOCK_PERIODS = [...MOCK_PERIODS, newPeriod];
-        return newPeriod;
+    createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId: number): Promise<CalendarPeriod> => {
+        try {
+            const response = await fetch("/api/calendriers", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    dateDebut,
+                    dateFin,
+                    typeCalendrierId,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+
+            // Symfony retourne souvent l'objet créé sous 'data'
+            const newPeriod: CalendarPeriod = responseData.data || responseData;
+
+            // On met quand même à jour le mock local pour la consistance UI immédiate
+            // MOCK_PERIODS = [...MOCK_PERIODS, newPeriod];
+
+            return newPeriod;
+        } catch (error) {
+            console.error("Erreur createPeriod:", error);
+            throw error;
+        }
     }
 };

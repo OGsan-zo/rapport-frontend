@@ -9,6 +9,7 @@ export const PeriodForm = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [newPeriod, setNewPeriod] = useState({ debut: "", fin: "", typeCalendrierId: "" });
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
     const fetchPeriods = async () => {
         setIsLoading(true);
@@ -28,19 +29,31 @@ export const PeriodForm = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newPeriod.debut || !newPeriod.fin) return;
+        setFeedback(null);
+
+        if (!newPeriod.debut || !newPeriod.fin || !newPeriod.typeCalendrierId) {
+            setFeedback({ type: "error", message: "Tous les champs sont requis." });
+            return;
+        }
 
         setIsSubmitting(true);
         try {
             await adminService.createPeriod(
                 newPeriod.debut,
                 newPeriod.fin,
-                newPeriod.typeCalendrierId ? Number(newPeriod.typeCalendrierId) : undefined
+                Number(newPeriod.typeCalendrierId)
             );
             setNewPeriod({ debut: "", fin: "", typeCalendrierId: "" });
+            setFeedback({ type: "success", message: "Période créée avec succès !" });
             fetchPeriods();
-        } catch (err) {
-            console.error(err);
+
+            // Masquer le message de succès après 3 secondes
+            setTimeout(() => setFeedback(null), 3000);
+        } catch (err: any) {
+            setFeedback({
+                type: "error",
+                message: err.message || "Une erreur est survenue lors de la création."
+            });
         } finally {
             setIsSubmitting(false);
         }
@@ -56,6 +69,15 @@ export const PeriodForm = () => {
                 </div>
 
                 <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm shadow-slate-100 space-y-8">
+                    {feedback && (
+                        <div className={`p-4 rounded-lg text-xs font-bold uppercase tracking-widest border ${feedback.type === "success"
+                                ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+                                : "bg-rose-50 border-rose-100 text-rose-500"
+                            }`}>
+                            {feedback.message}
+                        </div>
+                    )}
+
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date de début</label>
                         <input
