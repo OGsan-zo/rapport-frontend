@@ -71,8 +71,8 @@ export const PeriodForm = () => {
                 <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm shadow-slate-100 space-y-8">
                     {feedback && (
                         <div className={`p-4 rounded-lg text-xs font-bold uppercase tracking-widest border ${feedback.type === "success"
-                                ? "bg-emerald-50 border-emerald-100 text-emerald-600"
-                                : "bg-rose-50 border-rose-100 text-rose-500"
+                            ? "bg-emerald-50 border-emerald-100 text-emerald-600"
+                            : "bg-rose-50 border-rose-100 text-rose-500"
                             }`}>
                             {feedback.message}
                         </div>
@@ -128,18 +128,22 @@ export const PeriodForm = () => {
                             <tr>
                                 <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-400 w-16 text-center">ID</th>
                                 <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Période Institutionnelle</th>
+                                <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Type</th>
                                 <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 text-center">Statut</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {isLoading ? (
-                                <tr><td colSpan={3} className="p-12 text-center text-slate-300 italic animate-pulse uppercase text-[10px] tracking-widest">Récupération des données...</td></tr>
+                                <tr><td colSpan={4} className="p-12 text-center text-slate-300 italic animate-pulse uppercase text-[10px] tracking-widest">Récupération des données...</td></tr>
                             ) : (
-                                periods.map((p) => (
+                                periods.map((p: CalendarPeriod) => (
                                     <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
                                         <td className="p-4 text-[10px] font-bold text-slate-300 border-r border-slate-100 text-center">#{String(p.id).padStart(3, '0')}</td>
                                         <td className="p-4 text-sm text-slate-700 font-bold border-r border-slate-100">
                                             Semaine du {new Date(p.dateDebut).toLocaleDateString()} au {new Date(p.dateFin).toLocaleDateString()}
+                                        </td>
+                                        <td className="p-4 text-[10px] font-bold text-slate-500 border-r border-slate-100 uppercase tracking-wide">
+                                            {p.typeCalendrierName || "Standard"}
                                         </td>
                                         <td className="p-4 text-center">
                                             <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-bold uppercase tracking-widest border border-emerald-100 rounded-md">Activée</span>
