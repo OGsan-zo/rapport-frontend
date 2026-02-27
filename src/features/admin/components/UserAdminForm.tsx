@@ -4,13 +4,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { authService } from "@/features/auth/services/authService";
+import { adminService } from "@/features/admin/services/adminService";
+import { RoleSelect } from "../../config/components/RoleSelect";
 
 const userAdminSchema = z.object({
-    nom: z.string().min(2, "Le nom doit faire au moins 2 caractères"),
+    entite: z.string().min(2, "L'entité doit faire au moins 2 caractères"),
     email: z.string().email("Adresse email invalide"),
-    password: z.string().min(6, "6 caractères minimum"),
-    role: z.enum(["USER", "MANAGER", "DIRECTEUR", "ADMIN"]),
+    mdp: z.string().min(6, "6 caractères minimum"),
+    idRole: z.string().min(1, "Veuillez choisir un rôle"),
 });
 
 type UserAdminFormValues = z.infer<typeof userAdminSchema>;
@@ -27,19 +28,30 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
     const {
         register,
         handleSubmit,
+        setValue,
+        watch,
         formState: { errors },
     } = useForm<UserAdminFormValues>({
         resolver: zodResolver(userAdminSchema),
         defaultValues: {
-            role: "USER"
+            idRole: ""
         }
     });
 
     const onSubmit = async (data: UserAdminFormValues) => {
         setIsLoading(true);
         setError(null);
+
+        // Payload final avec les clés exactes
+        const payload = {
+            ...data,
+            idRole: Number(data.idRole)
+        };
+
+        console.log("Payload envoyé:", payload);
+
         try {
-            await authService.createUser(data);
+            await adminService.createUser(payload);
             onSuccess();
         } catch (err: any) {
             setError(err.message || "Erreur lors de la création");
@@ -57,14 +69,14 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 <div className="space-y-1">
-                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Nom complet</label>
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Entité / Nom</label>
                     <input
-                        {...register("nom")}
+                        {...register("entite")}
                         type="text"
-                        placeholder="Ex: Jean Paul"
-                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.nom ? "border-red-500" : "border-slate-300"}`}
+                        placeholder="Ex: DSINT ou Jean Paul"
+                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.entite ? "border-red-500" : "border-slate-300"}`}
                     />
-                    {errors.nom && <p className="text-[10px] text-red-600 font-bold">{errors.nom.message}</p>}
+                    {errors.entite && <p className="text-[10px] text-red-600 font-bold">{errors.entite.message}</p>}
                 </div>
 
                 <div className="space-y-1">
@@ -82,24 +94,18 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
                     <div className="space-y-1">
                         <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Mot de passe</label>
                         <input
-                            {...register("password")}
+                            {...register("mdp")}
                             type="password"
                             placeholder="••••••••"
-                            className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.password ? "border-red-500" : "border-slate-300"}`}
+                            className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.mdp ? "border-red-500" : "border-slate-300"}`}
                         />
                     </div>
                     <div className="space-y-1">
-                        <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Rôle</label>
-                        <select
-                            {...register("role")}
-                            className="w-full px-3 py-2 border border-slate-300 rounded text-sm text-slate-900 bg-white outline-none focus:ring-1 focus:ring-slate-900 appearance-none"
-                            style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke=\'%2394a3b8\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\' /%3E%3C/svg%3E")', backgroundRepeat: 'no-repeat', backgroundPosition: 'right 0.5rem center', backgroundSize: '0.8em' }}
-                        >
-                            <option value="USER">USER</option>
-                            <option value="MANAGER">MANAGER</option>
-                            <option value="DIRECTEUR">DIRECTEUR</option>
-                            <option value="ADMIN">ADMIN</option>
-                        </select>
+                        <RoleSelect
+                            value={watch("idRole")}
+                            onChange={(val) => setValue("idRole", val, { shouldValidate: true })}
+                            error={errors.idRole?.message}
+                        />
                     </div>
                 </div>
 

@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { adminService, AdminStats } from "../services/adminService";
+import React, { useEffect, useState, useMemo } from "react";
+import { adminService } from "../services/adminService";
 import { periodeService as configPeriodeService } from "@/features/config/services/periodeService";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
 import { User } from "../../auth/types";
-import Link from "next/link";
-
 import { useRouter } from "next/navigation";
 import { useAdminPilotage } from "../context/AdminPilotageContext";
 
@@ -20,51 +18,62 @@ export const AdminDashboard = () => {
         setSelectedPeriodId
     } = useAdminPilotage();
 
-    const [stats, setStats] = useState<AdminStats | null>(null);
+    const [allUsers, setAllUsers] = useState<User[]>([]);
+    const [lateUsers, setLateUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
+    // 1. Chargement de la liste globale des utilisateurs
     useEffect(() => {
-        // Chargement initial ou si les filtres sont vides, on n'affiche pas les stats
-        if (!selectedPeriodId || !selectedTypeId) {
-            setStats(null);
-            setIsLoading(false);
+        const fetchAll = async () => {
+            try {
+                const data = await adminService.getAllUtilisateurs();
+                setAllUsers(data);
+            } catch (err) {
+                console.error("Erreur getAllUtilisateurs:", err);
+            } finally {
+                if (!selectedPeriodId) setIsLoading(false);
+            }
+        };
+        fetchAll();
+    }, []);
+
+    // 2. Chargement des retardataires quand la période change
+    useEffect(() => {
+        if (!selectedPeriodId) {
+            setLateUsers([]);
             return;
         }
 
-        const fetchData = async () => {
+        const fetchLate = async () => {
             setIsRefreshing(true);
             try {
-                // 1. Récupérer les stats globales
-                const statsData = await adminService.getStats(
-                    "any",
-                    "any",
-                    Number(selectedTypeId)
-                );
-
-                // 2. Récupérer le nombre réel de retardataires pour synchroniser le chiffre rouge
                 const missing = await configPeriodeService.getLateUsers(selectedPeriodId);
-
-                // 3. Fusionner les données : Total (stats globales), Retards (réel), OK (différence)
-                const total = statsData.totalUsers;
-                const lateCount = missing.length;
-                const okCount = Math.max(0, total - lateCount);
-
-                setStats({
-                    totalUsers: total,
-                    reportsReceived: okCount,
-                    missingUsers: lateCount
-                });
-
+                setLateUsers(missing);
             } catch (err) {
-                console.error("Erreur fetchData Dashboard:", err);
+                console.error("Erreur getLateUsers:", err);
             } finally {
                 setIsRefreshing(false);
                 setIsLoading(false);
             }
         };
-        fetchData();
-    }, [selectedPeriodId, selectedTypeId]);
+        fetchLate();
+    }, [selectedPeriodId]);
+
+    // 3. Calculs dynamiques des compteurs
+    const counters = useMemo(() => {
+        const total = allUsers.length;
+        // Si aucune période n'est sélectionnée, on affiche 0 ou -- pour les autres compteurs
+        const late = selectedPeriodId ? lateUsers.length : 0;
+        const ok = selectedPeriodId ? Math.max(0, total - late) : 0;
+
+        return {
+            total,
+            late,
+            ok,
+            hasSelection: !!selectedPeriodId
+        };
+    }, [allUsers, lateUsers, selectedPeriodId]);
 
     const handleRedirect = () => {
         if (selectedPeriodId) {
@@ -72,7 +81,7 @@ export const AdminDashboard = () => {
         }
     };
 
-    const StatCard = ({ title, value, sub, color, isLate }: any) => (
+    const StatCard = ({ title, value, sub, color, isLate }: { title: string, value: string | number | undefined, sub: string, color: string, isLate?: boolean }) => (
         <div className={`bg-white border border-slate-200 rounded-xl p-8 shadow-sm flex flex-col gap-3 transition-all duration-500 overflow-hidden relative group hover:border-blue-200 ${isRefreshing ? "opacity-40 scale-[0.98] blur-[1px]" : "opacity-100 scale-100 blur-0"}`}>
             <div className={`absolute top-0 right-0 w-32 h-32 bg-gradient-to-br ${color} opacity-[0.03] -mr-12 -mt-12 rounded-full transition-transform duration-700 group-hover:scale-110`}></div>
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">{title}</p>
@@ -116,16 +125,39 @@ export const AdminDashboard = () => {
             </div>
 
             {/* Statistiques */}
-            {!stats && !isLoading ? (
-                <div className="py-20 text-center space-y-4 bg-slate-50/50 rounded-2xl border-2 border-dashed border-slate-100 mx-auto max-w-4xl">
-                    <div className="text-slate-300">
-                        <svg className="w-12 h-12 mx-auto opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                        </svg>
+            {(!counters.hasSelection && !isLoading) ? (
+                <div className="space-y-12">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <StatCard
+                            title="Total Agents"
+                            value={counters.total}
+                            sub="Inscrits"
+                            color="from-blue-500 to-indigo-500"
+                        />
+                        <StatCard
+                            title="Rapports Reçus"
+                            value="--"
+                            sub="Transmis"
+                            color="from-slate-100 to-slate-200"
+                        />
+                        <StatCard
+                            title="Manquants"
+                            value="--"
+                            sub="Retard"
+                            color="from-slate-100 to-slate-200"
+                        />
                     </div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Veuillez sélectionner une période pour analyser les transmissions</p>
+
+                    <div className="py-20 text-center space-y-4 bg-slate-50/50 rounded-2xl border-2 border-dashed border-slate-100 mx-auto max-w-4xl">
+                        <div className="text-slate-300">
+                            <svg className="w-12 h-12 mx-auto opacity-20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                        </div>
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Veuillez sélectionner une période pour analyser les transmissions</p>
+                    </div>
                 </div>
-            ) : isLoading || (isRefreshing && !stats) ? (
+            ) : isLoading || (isRefreshing && lateUsers.length === 0 && counters.total === 0) ? (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {[1, 2, 3].map((i) => (
                         <div key={i} className="h-32 bg-slate-50 rounded-xl animate-pulse" />
@@ -136,19 +168,19 @@ export const AdminDashboard = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <StatCard
                             title="Total Agents"
-                            value={stats?.totalUsers}
+                            value={counters.total}
                             sub="Inscrits"
                             color="from-blue-500 to-indigo-500" // Bleu
                         />
                         <StatCard
                             title="Rapports Reçus"
-                            value={stats?.reportsReceived}
+                            value={counters.ok}
                             sub="Transmis"
                             color="from-emerald-500 to-teal-500" // Vert
                         />
                         <StatCard
                             title="Manquants"
-                            value={stats?.missingUsers}
+                            value={counters.late}
                             sub="Retard"
                             color="from-red-500 to-rose-600" // Rouge
                             isLate={true}
