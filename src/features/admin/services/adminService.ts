@@ -11,6 +11,8 @@ export interface CalendarPeriod {
     id: number;
     dateDebut: string;
     dateFin: string;
+    typeCalendrierId?: number;
+    typeCalendrierName?: string;
 }
 
 // Mock users database
@@ -23,22 +25,22 @@ const MOCK_ALL_USERS: User[] = [
 ];
 
 let MOCK_PERIODS: CalendarPeriod[] = [
-    { id: 1, dateDebut: "2026-02-23", dateFin: "2026-02-27" },
-    { id: 2, dateDebut: "2026-03-02", dateFin: "2026-03-06" },
+    { id: 1, dateDebut: "2026-02-23", dateFin: "2026-02-27", typeCalendrierName: "Hebdomadaire" },
+    { id: 2, dateDebut: "2026-03-02", dateFin: "2026-03-06", typeCalendrierName: "Hebdomadaire" },
 ];
 
 export const adminService = {
     /**
      * Calcule les statistiques de conformité sur une période.
      */
-    getStats: async (dateDebut: string, dateFin: string): Promise<AdminStats> => {
+    getStats: async (dateDebut: string, dateFin: string, typeCalendrierId?: number): Promise<AdminStats> => {
         await new Promise((resolve) => setTimeout(resolve, 600));
 
         // Simulé: On compte les utilisateurs standards
         const standardUsers = MOCK_ALL_USERS.filter(u => u.role === "Utilisateur");
         const totalUsers = standardUsers.length;
 
-        // Simulé: On dit qu'il y a 3 rapports reçus
+        // Simulé: On dit qu'il y a 3 rapports reçus (on pourrait varier selon typeCalendrierId si on voulait pousser le mock)
         const reportsReceived = 3;
         const missingUsers = totalUsers - reportsReceived;
 
@@ -64,16 +66,39 @@ export const adminService = {
     },
 
     /**
-     * Ajoute une nouvelle période.
+     * Ajoute une nouvelle période en appelant le backend via le proxy Next.js.
      */
-    createPeriod: async (dateDebut: string, dateFin: string): Promise<CalendarPeriod> => {
-        await new Promise((resolve) => setTimeout(resolve, 800));
-        const newPeriod: CalendarPeriod = {
-            id: MOCK_PERIODS.length + 1,
-            dateDebut,
-            dateFin
-        };
-        MOCK_PERIODS = [...MOCK_PERIODS, newPeriod];
-        return newPeriod;
+    createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId: number): Promise<CalendarPeriod> => {
+        try {
+            const response = await fetch("/api/calendriers", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    dateDebut,
+                    dateFin,
+                    typeCalendrierId,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+
+            // Symfony retourne souvent l'objet créé sous 'data'
+            const newPeriod: CalendarPeriod = responseData.data || responseData;
+
+            // On met quand même à jour le mock local pour la consistance UI immédiate
+            // MOCK_PERIODS = [...MOCK_PERIODS, newPeriod];
+
+            return newPeriod;
+        } catch (error) {
+            console.error("Erreur createPeriod:", error);
+            throw error;
+        }
     }
 };
