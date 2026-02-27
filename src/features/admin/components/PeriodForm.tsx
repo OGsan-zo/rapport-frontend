@@ -32,7 +32,10 @@ export const PeriodForm = () => {
         setFeedback(null);
 
         if (!newPeriod.debut || !newPeriod.fin || !newPeriod.typeCalendrierId) {
-            setFeedback({ type: "error", message: "Tous les champs sont requis." });
+            setFeedback({
+                type: "error",
+                message: "Veuillez remplir tous les champs, y compris le type de calendrier."
+            });
             return;
         }
 
