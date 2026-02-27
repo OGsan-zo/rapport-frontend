@@ -73,7 +73,7 @@ export const Sidebar: React.FC = () => {
                         <div className="px-8 mb-3">
                             <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Pilotage</span>
                         </div>
-                        <Link href="/dashboard/supervision" className={linkClass("/dashboard/supervision")}>
+                        <Link href="/admin/supervision" className={linkClass("/admin/supervision")}>
                             Supervision
                         </Link>
                     </div>

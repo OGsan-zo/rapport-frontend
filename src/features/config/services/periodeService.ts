@@ -1,13 +1,16 @@
 import { CalendarPeriod } from "../types";
 import { User } from "../../auth/types";
+import { useFetchAuth } from "@/hooks/useFetchAuth";
 
+
+const fetchAuth = useFetchAuth();
 export const periodeService = {
     /**
      * Liste les périodes du calendrier depuis le backend Symfony via le proxy Next.js.
      */
     getPeriods: async (): Promise<CalendarPeriod[]> => {
         try {
-            const response = await fetch("/api/calendriers", {
+            const response = await fetchAuth("/api/calendriers", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -33,7 +36,7 @@ export const periodeService = {
      */
     createPeriod: async (dateDebut: string, dateFin: string, typeCalendrierId: number): Promise<CalendarPeriod> => {
         try {
-            const response = await fetch("/api/calendriers", {
+            const response = await fetchAuth("/api/calendriers", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -63,7 +66,7 @@ export const periodeService = {
      */
     getLateUsers: async (idCalendrier: number | string): Promise<User[]> => {
         try {
-            const response = await fetch(`/api/admin/retard?idCalendrier=${idCalendrier}`, {
+            const response = await fetchAuth(`/api/admin/retard?idCalendrier=${idCalendrier}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
