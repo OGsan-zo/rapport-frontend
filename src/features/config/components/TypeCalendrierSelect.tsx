@@ -19,10 +19,13 @@ export const TypeCalendrierSelect: React.FC<TypeCalendrierSelectProps> = ({
 }) => {
     const { data, isLoading, error } = useTypeCalendriers();
 
-    const options = data.map((type) => ({
-        id: type.id,
-        label: type.name,
-    }));
+    const options = [
+        { id: "", label: "Choisir un type..." },
+        ...data.map((type) => ({
+            id: type.id,
+            label: type.name,
+        }))
+    ];
 
     if (error) {
         return (
