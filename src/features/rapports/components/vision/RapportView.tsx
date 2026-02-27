@@ -1,12 +1,11 @@
 "use client";
 
 import React from "react";
-// Mise à jour de l'import vers ApiRapport
 import { ApiRapport } from "../../types"; 
 import { IMAGES } from "@/features/common/constants";
 
 interface RapportViewProps {
-    rapport: ApiRapport; // Utilisation du nouveau type
+    rapport: ApiRapport;
     scale?: number;
     containerId?: string;
 }
@@ -16,14 +15,46 @@ export const RapportView: React.FC<RapportViewProps> = ({
     scale = 1,
     containerId = "rapport-a4-container"
 }) => {
-    const formatDate = (dateStr: string) => {
-        if (!dateStr) return "";
-        const d = new Date(dateStr);
-        return d.toLocaleDateString("fr-FR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-        });
+    // Fonction avancée pour formater "DU 23 AU 27 FEVRIER 2026"
+    const formatPeriodeStr = (dateDebutStr?: string, dateFinStr?: string) => {
+        if (!dateDebutStr || !dateFinStr) return "N/A";
+        
+        const d1 = new Date(dateDebutStr);
+        const d2 = new Date(dateFinStr);
+
+        const day1 = d1.getDate();
+        const month1 = d1.toLocaleString("fr-FR", { month: "long" }).toUpperCase();
+        const year1 = d1.getFullYear();
+
+        const day2 = d2.getDate();
+        const month2 = d2.toLocaleString("fr-FR", { month: "long" }).toUpperCase();
+        const year2 = d2.getFullYear();
+
+        if (month1 === month2 && year1 === year2) {
+            return `DU ${day1} AU ${day2} ${month2} ${year2}`;
+        } else if (year1 === year2) {
+            return `DU ${day1} ${month1} AU ${day2} ${month2} ${year2}`;
+        } else {
+            return `DU ${day1} ${month1} ${year1} AU ${day2} ${month2} ${year2}`;
+        }
+    };
+
+    // Fonction pour générer la liste à puces proprement dans les cases
+    const renderListText = (text?: string) => {
+        if (!text) return null;
+        const items = text.split('\n').filter(item => item.trim() !== '');
+        if (items.length === 0) return null;
+
+        return (
+            <ul className="list-none m-0 p-0 space-y-1">
+                {items.map((item, index) => (
+                    <li key={index} className="flex gap-2 items-start text-justify">
+                        {items.length > 1 && <span className="text-black mt-[1px]">-</span>}
+                        <span>{item}</span>
+                    </li>
+                ))}
+            </ul>
+        );
     };
 
     return (
@@ -48,7 +79,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
             >
                 <div
                     id={containerId}
-                    className="pdf-sheet bg-white font-sans text-[13px] shadow-2xl"
+                    className="pdf-sheet bg-white font-sans text-[12px] shadow-2xl"
                     style={{
                         width: "210mm",
                         minHeight: "297mm",
@@ -57,91 +88,89 @@ export const RapportView: React.FC<RapportViewProps> = ({
                         transformOrigin: "top center",
                         boxSizing: "border-box",
                         border: "1px solid #f0f0f0",
+                        color: "#000"
                     }}
                 >
-                    {/* ======= EN-TÊTE ======= */}
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "32px", width: "100%" }}>
+                    {/* ======= EN-TÊTE LOGOS ======= */}
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "40px", width: "100%" }}>
+                        {/* REPOBLIKA */}
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                            <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo Madagascar" style={{ width: "45px", height: "auto" }} />
+                            <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo Madagascar" style={{ width: "55px", height: "auto" }} />
                             <div style={{ textAlign: "left" }}>
-                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", color: "#1e293b", margin: 0 }}>
-                                    Repoblikan&apos;i Madagasikara
+                                <p style={{ fontSize: "10px", textTransform: "uppercase", fontWeight: "bold", lineHeight: "1.2", margin: 0 }}>
+                                    Repoblikan'i Madagasikara
                                 </p>
-                                <p style={{ fontSize: "9px", fontStyle: "italic", color: "#64748b", margin: 0 }}>
+                                <p style={{ fontSize: "9px", fontStyle: "italic", margin: 0 }}>
                                     Fitiavana — Tanindrazana — Fandrosoana
                                 </p>
                             </div>
                         </div>
 
+                        {/* MESUPRES */}
                         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                             <div style={{ textAlign: "right" }}>
-                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", color: "#1e293b", margin: 0 }}>
+                                <p style={{ fontSize: "12px", fontWeight: "bold", textTransform: "uppercase", margin: 0 }}>
                                     MESUPRES
                                 </p>
                             </div>
-                            <img src={IMAGES.LOGO_MESUPRES} alt="Logo MESUPRES" style={{ width: "45px", height: "auto" }} />
+                            <img src={IMAGES.LOGO_MESUPRES} alt="Logo MESUPRES" style={{ width: "55px", height: "auto" }} />
                         </div>
                     </div>
 
-                    <div style={{ textAlign: "center", marginBottom: "24px" }}>
-                        <h1 style={{ fontSize: "14px", fontWeight: "bold", textTransform: "uppercase", borderBottom: "1.5px solid #1e293b", paddingBottom: "8px", display: "inline-block", paddingLeft: "16px", paddingRight: "16px", color: "#1e293b" }}>
-                            Rapport d&apos;Activités
-                        </h1>
-                    </div>
-
                     {/* ======= TABLEAU PRINCIPAL ======= */}
-                    <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed", border: "1px solid #1e293b" }}>
+                    <table style={{ width: "100%", borderCollapse: "collapse", tableLayout: "fixed", border: "1px solid #000" }}>
+                        <thead>
+                            {/* LIGNE 1 : ENTITÉ (Fond Vert Clair, centré, fusion de 3 colonnes) */}
+                            <tr>
+                                <th colSpan={3} style={{ border: "1px solid #000", padding: "12px", backgroundColor: "#D1E7B9", textAlign: "center", fontSize: "14px", fontWeight: "bold", textTransform: "uppercase" }}>
+                                    {rapport.user?.entite || "DIRECTION DES SYSTEMES D'INFORMATION ET DES NOUVELLES TECHNOLOGIES (DSINT)"}
+                                </th>
+                            </tr>
+                            
+                            {/* LIGNE 2 : SEMAINE (Fond Violet Clair, centré, fusion de 3 colonnes) */}
+                            <tr>
+                                <th colSpan={3} style={{ border: "1px solid #000", padding: "10px", backgroundColor: "#E2D1F9", textAlign: "center", fontSize: "13px", fontWeight: "bold", textTransform: "uppercase" }}>
+                                    SEMAINE {formatPeriodeStr(rapport.calendrier?.dateDebut, rapport.calendrier?.dateFin)}
+                                </th>
+                            </tr>
+
+                            {/* LIGNE 3 : TITRES DES COLONNES (Fond Bleu Clair, centré) */}
+                            <tr style={{ textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "12px", backgroundColor: "#BFDBFE" }}>
+                                <th style={{ border: "1px solid #000", padding: "10px", width: "33%" }}>ACTIVITES</th>
+                                <th style={{ border: "1px solid #000", padding: "10px", width: "33%" }}>EFFETS</th>
+                                <th style={{ border: "1px solid #000", padding: "10px", width: "34%" }}>IMPACTS</th>
+                            </tr>
+                        </thead>
                         <tbody>
-                            {/* Modification : rapport.utilisateur au lieu de rapport.user */}
-                            <tr className="bg-[#D1E7B9]">
-                                <td className="border-b border-r border-black w-[28%] p-3 font-bold uppercase text-[12px] text-black">
-                                    Entité :
-                                </td>
-                                <td className="border-b border-black p-3 font-bold uppercase text-[12px] text-black">
-                                    {rapport.user.entite || "N/A"}
-                                </td>
-                            </tr>
-
-                            <tr className="bg-[#E2D1F9]">
-                                <td className="border-b-2 border-r border-black p-3 font-bold uppercase text-[12px] text-black">
-                                    Semaine du :
-                                </td>
-                                <td className="border-b-2 border-black p-3 font-bold uppercase text-[12px] text-black">
-                                    {formatDate(rapport.calendrier.dateDebut)} AU {formatDate(rapport.calendrier.dateFin)}
-                                </td>
-                            </tr>
-
-                            <tr style={{ backgroundColor: "#F8FAFC", textAlign: "center", fontWeight: "bold", textTransform: "uppercase", fontSize: "11px", color: "#475569" }}>
-                                <td style={{ borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", padding: "12px" }}>Activités</td>
-                                <td style={{ borderBottom: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", padding: "12px" }}>Effets</td>
-                                <td style={{ borderBottom: "1px solid #e2e8f0", padding: "12px" }}>Impacts</td>
-                            </tr>
-
-                            {/* Lignes de données */}
-                            {rapport.activites.map((activite, actIndex) => (
+                            {/* LIGNES DE DONNÉES */}
+                            {rapport.activites?.map((activite, actIndex) => (
                                 <React.Fragment key={`act-${actIndex}`}>
-                                    {activite.effectsImpacts.map((ei, eiIndex) => (
+                                    {activite.effectsImpacts?.map((ei, eiIndex) => (
                                         <tr key={`${actIndex}-${eiIndex}`} style={{ breakInside: "avoid" }}>
+                                            {/* Colonne Activités */}
                                             {eiIndex === 0 && (
                                                 <td
                                                     rowSpan={activite.effectsImpacts.length}
                                                     style={{
-                                                        borderBottom: "1px solid #000000",
-                                                        borderRight: "1px solid #000000",
+                                                        border: "1px solid #000",
                                                         verticalAlign: "top",
-                                                        padding: "12px",
-                                                        fontWeight: "500"
+                                                        padding: "10px",
+                                                        fontWeight: "normal",
+                                                        textAlign: "justify"
                                                     }}
                                                 >
-                                                    {/* On privilégie 'name', sinon 'entite' (selon votre structure ApiRapport) */}
                                                     {activite.name || (activite as any).entite}
                                                 </td>
                                             )}
-                                            <td style={{ borderBottom: "1px solid #000000", borderRight: "1px solid #000000", verticalAlign: "top", padding: "12px" }}>
-                                                <div className="flex gap-2"><span>•</span><span>{ei.effect}</span></div>
+                                            
+                                            {/* Colonne Effets */}
+                                            <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
+                                                {renderListText(ei.effect)}
                                             </td>
-                                            <td style={{ borderBottom: "1px solid #000000", verticalAlign: "top", padding: "12px" }}>
-                                                <div className="flex gap-2"><span>•</span><span>{ei.impact}</span></div>
+                                            
+                                            {/* Colonne Impacts */}
+                                            <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
+                                                {renderListText(ei.impact)}
                                             </td>
                                         </tr>
                                     ))}
@@ -151,19 +180,18 @@ export const RapportView: React.FC<RapportViewProps> = ({
                     </table>
 
                     {/* ======= SIGNATURES ======= */}
-                    <div className="flex justify-between items-start mt-12 px-10">
-                        <div className="text-center text-[11px]">
-                            <p className="font-bold uppercase text-black">L&apos;Agent</p>
-                            <div className="h-16" />
-                            <p className="border-t-2 border-black w-40 mx-auto font-bold pt-1">
-                                {/* Accès sécurisé au nom de l'utilisateur */}
-                                {rapport.user.entite || rapport.user.email?.split('@')[0]}
+                    <div className="flex justify-between items-start mt-16 px-8">
+                        <div className="text-center text-[12px]">
+                            <p className="font-bold uppercase">L'Agent</p>
+                            <div className="h-20" /> {/* Espace pour la signature manuscrite */}
+                            <p className="border-t border-black w-48 mx-auto pt-2 font-bold uppercase">
+                                {rapport.user?.email?.split('@')[0] || "Nom de l'agent"}
                             </p>
                         </div>
-                        <div className="text-center text-[11px]">
-                            <p className="font-bold uppercase text-black">Le Directeur / Chef de Service</p>
-                            <div className="h-16" />
-                            <p className="border-t-2 border-black w-40 mx-auto" />
+                        <div className="text-center text-[12px]">
+                            <p className="font-bold uppercase">Le Directeur / Chef de Service</p>
+                            <div className="h-20" />
+                            <p className="border-t border-black w-48 mx-auto pt-2" />
                         </div>
                     </div>
                 </div>
