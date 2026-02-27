@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { periodeService } from "../services/periodeService";
 import { CalendarPeriod } from "../types";
 
-export const usePeriodes = (selectedTypeId?: string | number) => {
+export const usePeriodes = (selectedTypeId?: string | number,isInsert: boolean= false) => {
     const [data, setData] = useState<CalendarPeriod[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -11,7 +11,13 @@ export const usePeriodes = (selectedTypeId?: string | number) => {
         setIsLoading(true);
         setError(null);
         try {
-            const periods = await periodeService.getPeriods();
+            var periods: CalendarPeriod[] = [];
+            if (isInsert) {
+                periods = await periodeService.getPeriodsUtilisateur();
+            }
+            else {
+                periods = await periodeService.getPeriods();
+            }
             setData(periods);
         } catch (err: any) {
             setError(err.message || "Erreur lors du chargement des périodes");

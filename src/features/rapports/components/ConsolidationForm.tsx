@@ -14,13 +14,13 @@ import { usePdfExport } from "../hooks/usePdfExport";
 // Composants
 import { RapportView } from "./RapportView";
 import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
+import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 
 /**
  * Schéma de validation Zod
- * Note : statut est défini comme z.string() sans .optional() pour éviter l'erreur de type
  */
 const consolidationSchema = z.object({
-  idCalendrier: z.number(),
+  idCalendrier: z.number({ required_error: "La période est requise" }),
   dateDebut: z.string().optional(),
   dateFin: z.string().optional(),
   lignes: z.array(
@@ -28,7 +28,7 @@ const consolidationSchema = z.object({
       titre: z.string().min(1, "Le titre est requis"),
       description: z.string().min(1, "La description est requise"),
       impact: z.string().min(1, "L'impact est requis"),
-      statut: z.string() // Strictement string pour matcher l'erreur TS
+      statut: z.string()
     })
   ).min(1),
 });
@@ -38,6 +38,10 @@ type ConsolidationFormValues = z.infer<typeof consolidationSchema>;
 export const ConsolidationForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // ÉTAT POUR LE FILTRAGE DU TYPE DE CALENDRIER
+  const [selectedTypeId, setSelectedTypeId] = useState<string>("");
+
   const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
 
   // Initialisation du formulaire
@@ -67,18 +71,17 @@ export const ConsolidationForm = () => {
 
   /**
    * Mapping pour l'aperçu PDF
-   * Transforme les données du formulaire au format ApiRapport
    */
   const rapportPreview = useMemo<ApiRapport>(() => {
     return {
       id: 0,
       idCalendrier: watchedValues.idCalendrier,
       calendrier: {
-        id: 1,
+        id: watchedValues.idCalendrier || 1,
         dateDebut: watchedValues.dateDebut || "2026-01-01",
         dateFin: watchedValues.dateFin || "2026-01-07",
         typeCalendrier: {
-          name: "Hebdomadaire"
+          name: "Rapport"
         }
       },
       user: {
@@ -87,22 +90,18 @@ export const ConsolidationForm = () => {
         entite: "VOTRE DIRECTION",
         role: "Admin",
       },
-      activites: [
-        {
-          name: "Déploiement de la nouvelle application de rapports",
-          effectsImpacts: [
-            { effect: "Réduction du temps de traitement de 60%", impact: "Dématérialisation complète du processus de rapport" }
-          ],
-        },
-      ],
+      activites: watchedValues.lignes.map(l => ({
+        name: l.titre,
+        effectsImpacts: [{ effect: l.description, impact: l.impact }]
+      })),
     };
   }, [watchedValues]);
 
   const onSubmit = async (data: ConsolidationFormValues) => {
     setIsSubmitting(true);
     try {
-      // Appel au service corrigé précédemment
-      await rapportService.saveRapport(1, data.lignes);
+      // On utilise l'ID calendrier sélectionné pour l'envoi
+      await rapportService.saveRapport(data.idCalendrier, data.lignes);
       router.push("/dashboard");
     } catch (err) {
       console.error("Erreur submit:", err);
@@ -122,11 +121,28 @@ export const ConsolidationForm = () => {
         </div>
 
         <div className="flex flex-col sm:flex-row items-center gap-4">
+          {/* SELECTEUR DE TYPE (L'ID vient d'ici) */}
+          <div className="flex items-center gap-2 px-3 border-r border-slate-200">
+            <span className="text-[9px] font-bold uppercase text-slate-400">Type :</span>
+            <TypeCalendrierSelect
+              value={selectedTypeId}
+              onValueChange={(val) => {
+                setSelectedTypeId(val);
+                // On réinitialise la période si le type change pour éviter les erreurs
+                setValue("idCalendrier", undefined as any);
+              }}
+              className="min-w-[160px] border-none bg-transparent shadow-none focus:ring-0"
+            />
+          </div>
+
+          {/* SELECTEUR DE PERIODE (Filtre par selectedTypeId) */}
           <div className="bg-slate-50 p-1 rounded-xl border border-slate-200 flex items-center gap-2">
             <span className="text-[9px] font-black uppercase px-3 text-slate-500">Période :</span>
             <PeriodeSelect
               value={watchedValues.idCalendrier?.toString() || ""}
               onValueChange={(val) => setValue("idCalendrier", Number(val), { shouldValidate: true })}
+              typeCalendrierId={selectedTypeId} // Injection de la dépendance
+              isInsert={true}
               className="w-[260px] border-none bg-transparent focus:ring-0 shadow-none"
             />
           </div>
@@ -237,7 +253,7 @@ export const ConsolidationForm = () => {
       {/* Affichage des erreurs de validation globales */}
       {Object.keys(errors).length > 0 && (
         <div className="p-4 bg-red-50 border border-red-100 rounded-xl text-red-600 text-[10px] font-bold uppercase tracking-widest text-center">
-          Veuillez remplir tous les champs obligatoires avant de valider.
+          Veuillez remplir tous les champs obligatoires (Période et Activités) avant de valider.
         </div>
       )}
     </div>

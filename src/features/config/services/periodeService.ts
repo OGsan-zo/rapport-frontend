@@ -30,6 +30,28 @@ export const periodeService = {
             throw error;
         }
     },
+    getPeriodsUtilisateur: async (): Promise<CalendarPeriod[]> => {
+        try {
+            const response = await fetchAuth("/api/calendriers/utilisateur", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return responseData.data || responseData;
+        } catch (error) {
+            // console.error("Erreur getPeriods:", error);
+            throw error;
+        }
+    },
 
     /**
      * Ajoute une nouvelle période en appelant le backend via le proxy Next.js.

@@ -10,6 +10,7 @@ interface PeriodeSelectProps {
     typeCalendrierId?: string | number;
     label?: string;
     className?: string;
+    isInsert?: boolean;
 }
 
 export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
@@ -18,8 +19,9 @@ export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     typeCalendrierId,
     label = "Sélectionner une période",
     className = "",
+    isInsert = false
 }) => {
-    const { data, isLoading, error } = usePeriodes(typeCalendrierId);
+    const { data, isLoading, error } = usePeriodes(typeCalendrierId, isInsert);
 
     const formatDate = (dateStr: string) => {
         try {
