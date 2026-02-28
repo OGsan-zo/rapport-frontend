@@ -1,8 +1,7 @@
-import { useState, useEffect, useMemo } from "react";
-import { periodeService } from "../services/periodeService";
-import { CalendarPeriod } from "../types";
-
-export const usePeriodes = (selectedTypeId?: string | number,isInsert: boolean= false) => {
+import { useState, useEffect } from "react";
+import { periodeService } from "../services/periodeService"; 
+import { CalendrierResult , CalendarPeriod} from "../../rapports/types/calendrier/calendrierType";
+export const usePeriodes = (isInsert: boolean= false) => {
     const [data, setData] = useState<CalendarPeriod[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -29,22 +28,13 @@ export const usePeriodes = (selectedTypeId?: string | number,isInsert: boolean= 
     useEffect(() => {
         fetchPeriods();
     }, []);
-
-    const filteredData = useMemo(() => {
-        if (!selectedTypeId || selectedTypeId === "") return data;
-
-        const typeId = Number(selectedTypeId);
-        return data.filter(p => {
-            // Règle stricte demandée : vérifier l'ID dans l'objet typeCalendrier
-            return p.typeCalendrier?.id === typeId;
-        });
-    }, [data, selectedTypeId]);
-
-    return {
-        data: filteredData,
-        rawData: data,
-        isLoading,
-        error,
+    const result: CalendrierResult = {
+        data: data,
+        isLoading: isLoading,
+        error: error,
         refetch: fetchPeriods
     };
+
+    // On retourne l'objet typé
+    return result;
 };

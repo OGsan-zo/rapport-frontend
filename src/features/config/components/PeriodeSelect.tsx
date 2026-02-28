@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Select } from "@/components/ui/select";
-import { usePeriodes } from "../hooks/usePeriodes";
+import { CalendrierResult } from "@/features/rapports/types/calendrier/calendrierType";
 
 interface PeriodeSelectProps {
     value?: string | number;
@@ -10,18 +10,25 @@ interface PeriodeSelectProps {
     typeCalendrierId?: string | number;
     label?: string;
     className?: string;
-    isInsert?: boolean;
+    calendrierResult: CalendrierResult;
 }
 
 export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     value,
     onValueChange,
-    typeCalendrierId,
     label = "Sélectionner une période",
     className = "",
-    isInsert = false
+    calendrierResult,
+    typeCalendrierId
 }) => {
-    const { data, isLoading, error } = usePeriodes(typeCalendrierId, isInsert);
+    const allData = calendrierResult.data;
+
+
+    const data = typeCalendrierId 
+        ? allData.filter(p => p.typeCalendrier?.id == typeCalendrierId) 
+        : allData;
+    const error = calendrierResult.error;
+    const isLoading = calendrierResult.isLoading;
 
     const formatDate = (dateStr: string) => {
         try {

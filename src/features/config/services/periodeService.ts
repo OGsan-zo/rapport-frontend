@@ -1,4 +1,4 @@
-import { CalendarPeriod } from "../types";
+import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { User } from "../../auth/types";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
 

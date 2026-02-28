@@ -6,12 +6,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 // Imports séparés
-import { rapportSchema , RapportFormValues } from "../../types/rapportType";
-import { RapportToolbar } from "./RapportToolbar";
+import { rapportSchema , RapportFormValues } from "../../types/rapport";
+import { RapportToolbar } from "./rapports/RapportToolbar";
 import { LigneActivite } from "./LigneActivite";
 import { RapportView } from "../vision/RapportView";
 import { ApiRapport } from "../../types";
 import { usePdfExport } from "../../hooks/usePdfExport";
+import { usePeriodes } from "@/features/config/hooks/usePeriodes";
 
 export const ConsolidationForm = () => {
   const router = useRouter();
@@ -28,10 +29,13 @@ export const ConsolidationForm = () => {
   });
 
   const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
+  const calendrierResult = usePeriodes(true);
   const watchedValues = watch();
+
 
   const rapportPreview = useMemo<ApiRapport>(() => {
     return {
+      
       id: 0,
       idCalendrier: watchedValues.idCalendrier,
       calendrier: { id: watchedValues.idCalendrier || 1, dateDebut: "2026-01-01", dateFin: "2026-01-07", typeCalendrier: { name: "Rapport" } },
@@ -82,6 +86,7 @@ export const ConsolidationForm = () => {
         isPdfGenerating={isPdfGenerating}
         onPreviewPdf={() => exportToPdf("pdf-render-zone", "Apercu_Rapport.pdf")}
         isSubmitting={isSubmitting}
+        calendrierResult={calendrierResult}
       />
 
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">

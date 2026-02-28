@@ -1,6 +1,6 @@
 import React from "react";
 import { useFieldArray, Control, UseFormRegister } from "react-hook-form";
-import { RapportFormValues } from "../../types/rapportType";
+import { RapportFormValues } from "../../types/rapport";
 
 interface LigneActiviteProps {
   control: Control<RapportFormValues>;
