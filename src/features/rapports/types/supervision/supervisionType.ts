@@ -11,3 +11,14 @@ export interface SupervisionTableProps {
     generatingId: number | null;
     onPdfClick: (rapport: ApiRapport) => void;
 }
+
+export interface SupervisionToolbarProps {
+    selectedTypeId: string;
+    setSelectedTypeId: (val: string) => void;
+    selectedPeriodId: string;
+    setSelectedPeriodId: (val: string) => void;
+    entiteFilter: string;
+    setEntiteFilter: (val: string) => void;
+    entites: string[];
+    calendrierResult: any;
+}

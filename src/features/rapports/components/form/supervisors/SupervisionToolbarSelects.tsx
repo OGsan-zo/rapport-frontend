@@ -1,6 +1,5 @@
 import React from "react";
-import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
-import { PeriodeSelect } from "@/features/config/components/PeriodeSelect";
+import { ToolbarSelects } from "../utils/ToolbarSelect"; // Adaptez le chemin d'import selon votre structure
 
 interface SupervisionToolbarSelectsProps {
     selectedTypeId: string;
@@ -25,32 +24,19 @@ export const SupervisionToolbarSelects: React.FC<SupervisionToolbarSelectsProps>
 }) => {
     return (
         <>
-            {/* Select Type */}
-            <div className="flex items-center gap-2 px-3 border-r border-slate-200">
-                <span className="text-[9px] font-bold uppercase text-slate-400">Type :</span>
-                <TypeCalendrierSelect
-                    value={selectedTypeId}
-                    onValueChange={(val) => {
-                        setSelectedTypeId(val);
-                        setSelectedPeriodId(""); // On réinitialise la période
-                    }}
-                    className="min-w-[160px] border-none bg-transparent shadow-none focus:ring-0"
-                />
-            </div>
-            
-            {/* Select Semaine */}
-            <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex items-center gap-3">
-                <span className="text-[9px] font-bold uppercase px-3 text-slate-400 border-r border-slate-200">Semaine :</span>
-                <PeriodeSelect
-                    value={selectedPeriodId}
-                    onValueChange={setSelectedPeriodId}
-                    calendrierResult={calendrierResult}
-                    typeCalendrierId={selectedTypeId}
-                    className="w-[280px]"
-                />
-            </div>
+            {/* 1. Composant générique pour Type et Période */}
+            <ToolbarSelects
+                selectedTypeId={selectedTypeId}
+                onTypeChange={(val) => {
+                    setSelectedTypeId(val);
+                    setSelectedPeriodId(""); // On réinitialise la période lors du changement de type
+                }}
+                periodeValue={selectedPeriodId}
+                onPeriodeChange={setSelectedPeriodId}
+                calendrierResult={calendrierResult}
+            />
 
-            {/* Select Entité */}
+            {/* 2. Select Entité (Spécifique à la vue Supervision) */}
             <div className="relative min-w-[240px]">
                 <select
                     value={entiteFilter}
