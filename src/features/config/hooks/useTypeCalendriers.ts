@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TypeCalendrier } from "../types";
+import { TypeCalendrier } from "@/features/admin/services/adminService";
 import { typeCalendrierService } from "../services/typeCalendrierService";
 
 export function useTypeCalendriers() {

@@ -5,55 +5,105 @@ import { ApiRapport, RapportConsolide } from "../types";
  */
 let MOCK_RAPPORTS: ApiRapport[] = [
     {
-        id: 17, // ID numérique comme dans le JSON
-        user: {
-            email: "admin@gmail.com",
-            entite: "DSINT",
-            role: "Admin"
-        },
-        calendrier: {
-            dateDebut: "2026-02-09",
-            dateFin: "2026-02-13",
-            typeCalendrier: { name: "Hebdomadaire" }
-        },
-        activites: [
-            {
-                name: "Maintenance préventive des serveurs",
-                effectsImpacts: [
-                    { effect: "Disponibilité du service augmentée à 99.9%", impact: "Continuité de service garantie" },
-                    { effect: "Réduction des temps d'arrêt non planifiés", impact: "Productivité accrue des agents" }
-                ],
+            // dateValidation: null,
+            id: 26,
+            user: {
+                email: "admin@gmail.com",
+                entite: "Admin",
+                role: "Admin"
             },
-            {
-                name: "Optimisation des requêtes SQL",
-                effectsImpacts: [
-                    { effect: "Temps de réponse réduit de 40%", impact: "Meilleure expérience utilisateur" }
-                ],
-            }
-        ]
-    },
-    {
-        id: 18,
-        user: {
-            email: "user@gmail.com",
-            entite: "Ressources Humaines",
-            role: "Utilisateur"
-        },
-        calendrier: {
-            dateDebut: "2026-02-16",
-            dateFin: "2026-02-20",
-            typeCalendrier: { name: "Hebdomadaire" }
-        },
-        activites: [
-            {
-                name: "Déploiement de la nouvelle application de rapports",
-                effectsImpacts: [
-                    { effect: "Réduction du temps de traitement de 60%", impact: "Dématérialisation complète du processus de rapport" }
-                ],
+            calendrier: {
+                dateDebut: "2026-01-01",
+                dateFin: "2026-01-31",
+                typeCalendrier: {
+                    name: "Hebdomadaire"
+                }
             },
-        ],
-      
-    },
+            activites: [
+                {
+                    activite: {
+                        name: "Reboisement communautaire",
+                        id: 30
+                    },
+                    impacts: [
+                        {
+                            name: "Augmentation de la biodiversité",
+                            id: 7
+                        },
+                        {
+                            name: "Sensibilisation environnementale de la population",
+                            id: 8
+                        }
+                    ],
+                    effects: [
+                        {
+                            name: "Amélioration de la qualité de l'air",
+                            id: 9
+                        },
+                        {
+                            name: "Réduction de l'érosion des sols",
+                            id: 10
+                        }
+                    ]
+                },
+                {
+                    activite: {
+                        name: "Campagne de sensibilisation environnementale",
+                        id: 31
+                    },
+                    impacts: [
+                        {
+                            "name": "Amélioration de la propreté urbaine",
+                            "id": 11
+                        },
+                        {
+                            "name": "Diminution de la pollution",
+                            id: 12
+                        }
+                    ],
+                    effects: [
+                        {
+                            name: "Augmentation de la sensibilisation",
+                            id: 13
+                        },
+                        {
+                            name: "Changement de comportement des citoyens",
+                            id: 14
+                        },
+                        {
+                            name: "Réduction des déchets plastiques",
+                            id: 15
+                        }
+                    ]
+                },
+                {
+                    activite: {
+                        name: "Atelier de formation en gestion des déchets",
+                        id: 32
+                    },
+                    impacts: [
+                        {
+                            name: "Meilleure gestion des ressources locales",
+                            id: 16
+                        },
+                        {
+                            name: "Réduction de la pollution environnementale",
+                            id: 17
+                        }
+                    ],
+                    effects: [
+                        {
+                            name: "Acquisition de bonnes pratiques",
+                            id: 18
+                        },
+                        {
+                            name: "Réduction des déchets industriels",
+                            id: 19
+                        }
+                    ]
+                }
+            ]
+        }
 ];
 
 export const rapportService = {

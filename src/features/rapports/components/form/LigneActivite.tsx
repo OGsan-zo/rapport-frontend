@@ -11,9 +11,9 @@ interface LigneActiviteProps {
 }
 
 export const LigneActivite = ({ control, register, index, remove, canRemove }: LigneActiviteProps) => {
-  const { fields: effetsFields, append: appendEffet, remove: removeEffet } = useFieldArray({
+  const { fields: effectsFields, append: appendEffect, remove: removeEffect } = useFieldArray({
     control,
-    name: `lignes.${index}.effets`,
+    name: `lignes.${index}.effects`,
   });
 
   const { fields: impactsFields, append: appendImpact, remove: removeImpact } = useFieldArray({
@@ -37,26 +37,26 @@ export const LigneActivite = ({ control, register, index, remove, canRemove }: L
 
       {/* Liste des Effets */}
       <div className="border-l border-slate-100 p-3 space-y-2">
-        {effetsFields.map((field, i) => (
+        {effectsFields.map((field, i) => (
           <div key={field.id} className="flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm">
             <textarea
-              {...register(`lignes.${index}.effets.${i}.value`)}
+              {...register(`lignes.${index}.effects.${i}.value`)}
               className="w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[60px] p-0 placeholder:text-slate-300"
-              placeholder={`Effet ${i + 1}...`}
+              placeholder={`Effect ${i + 1}...`}
             />
             <button
               type="button"
-              onClick={() => removeEffet(i)}
-              disabled={effetsFields.length === 1}
+              onClick={() => removeEffect(i)}
+              disabled={effectsFields.length === 1}
               className="mt-1 text-slate-300 hover:text-red-500 disabled:opacity-0 transition-colors"
             >✕</button>
           </div>
         ))}
         <button
           type="button"
-          onClick={() => appendEffet({ value: "" })}
+          onClick={() => appendEffect({ value: "" })}
           className="w-full py-2 mt-2 border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all"
-        >+ Ajouter un effet</button>
+        >+ Ajouter un effect</button>
       </div>
 
       {/* Liste des Impacts */}

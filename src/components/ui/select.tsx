@@ -3,7 +3,7 @@
 import React from "react";
 
 interface SelectOption {
-    id: number | string;
+    id?: number | string;
     label: string;
 }
 

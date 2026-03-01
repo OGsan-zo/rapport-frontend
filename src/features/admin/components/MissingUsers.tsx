@@ -23,7 +23,7 @@ export const MissingUsers = () => {
     const calendrierResult = usePeriodes(false);
 
     useEffect(() => {
-        if (!selectedPeriodId || !selectedTypeId) {
+        if (!selectedPeriodId) {
             setUsers([]);
             setIsLoading(false);
             return;

@@ -1,4 +1,4 @@
-import { TypeCalendrier } from "../types";
+import { TypeCalendrier } from "@/features/admin/services/adminService";
 
 export const typeCalendrierService = {
     /**
