@@ -5,6 +5,7 @@ import { ApiRapport, ApiActivite, BaseNom } from "../../../types";
 
 interface RapportTableProps {
     rapport: ApiRapport;
+    isPdf?: boolean; // Nouvel argument optionnel
 }
 
 const formatDateStr = (dateStr?: string) => {
@@ -31,7 +32,10 @@ const formatPeriode = (rapport: ApiRapport) => {
     }
 };
 
-export const RapportTable: React.FC<RapportTableProps> = ({ rapport }) => {
+export const RapportTable: React.FC<RapportTableProps> = ({ 
+    rapport, 
+    isPdf = true // Valeur par défaut à true
+}) => {
     const entityName = rapport.user?.entite || "DIRECTION DES SYSTÈMES D'INFORMATION ET DES NOUVELLES TECHNOLOGIES (DSINT)";
     const periodeStr = formatPeriode(rapport);
 
@@ -110,7 +114,8 @@ export const RapportTable: React.FC<RapportTableProps> = ({ rapport }) => {
                                     <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
                                         {act.effects.map((e: BaseNom, i: number) => (
                                             <li key={i} style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
-                                                <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>
+                                                {/* On affiche le point seulement si isPdf est true */}
+                                                {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
                                                 <span style={{ textAlign: "justify", color: "#000000" }}>{e.name}</span>
                                             </li>
                                         ))}
@@ -125,7 +130,8 @@ export const RapportTable: React.FC<RapportTableProps> = ({ rapport }) => {
                                     <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
                                         {act.impacts.map((imp: BaseNom, i: number) => (
                                             <li key={i} style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
-                                                <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>
+                                                {/* On affiche le point seulement si isPdf est true */}
+                                                {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
                                                 <span style={{ textAlign: "justify", color: "#000000" }}>{imp.name}</span>
                                             </li>
                                         ))}
