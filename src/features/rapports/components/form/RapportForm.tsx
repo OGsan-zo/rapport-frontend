@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 // Imports séparés
-import { rapportSchema , RapportFormValues } from "../../types/rapport";
+import { rapportSchema, RapportFormValues } from "../../types/rapport";
 import { RapportToolbar } from "./rapports/RapportToolbar";
 import { LigneActivite } from "./LigneActivite";
 import { RapportView } from "../vision/RapportView";
@@ -35,40 +35,40 @@ export const ConsolidationForm = () => {
 
   const user = useUser();
   const rapportPreview = useMemo<ApiRapport>(() => {
-      const selectedCalendrier = calendrierResult.data?.find(
-          (c) => c.id === Number(watchedValues.idCalendrier)
-      );
+    const selectedCalendrier = calendrierResult.data?.find(
+      (c) => c.id === Number(watchedValues.idCalendrier)
+    );
 
-      return {
-        id: 0,
-        idCalendrier: Number(watchedValues.idCalendrier),
-        // Si selectedCalendrier est undefined, on fournit un objet vide ou par défaut
-        calendrier: selectedCalendrier || {
-            id: Number(watchedValues.idCalendrier) || 1,
-            dateDebut: "Non définie",
-            dateFin: "Non définie",
-            typeCalendrier: { name: "Rapport" }
+    return {
+      id: 0,
+      idCalendrier: Number(watchedValues.idCalendrier),
+      // Si selectedCalendrier est undefined, on fournit un objet vide ou par défaut
+      calendrier: selectedCalendrier || {
+        id: Number(watchedValues.idCalendrier) || 1,
+        dateDebut: "Non définie",
+        dateFin: "Non définie",
+        typeCalendrier: { name: "Rapport" }
+      },
+      user: user || { id: 0, email: "utilisateur@system.mg", entite: "VOTRE DIRECTION", role: "Admin" } as any,
+      activites: watchedValues.lignes.map(l => ({
+        activite: {
+          name: l.titre
         },
-        user: user || { id: 0, email: "utilisateur@system.mg", entite: "VOTRE DIRECTION", role: "Admin" } as any,
-        activites: watchedValues.lignes.map(l => ({
-          activite: { 
-              name: l.titre 
-          },
-          effects: l.effects
-              ?.filter(e => e.value && e.value.trim() !== "")
-              .map(e => ({ name: e.value })) || [],
-          
-          impacts: l.impacts
-              ?.filter(i => i.value && i.value.trim() !== "")
-              .map(i => ({ name: i.value })) || []
-        })),
-        statut: "BROUILLON"
-      };
+        effects: l.effects
+          ?.filter(e => e.value && e.value.trim() !== "")
+          .map(e => ({ name: e.value })) || [],
+
+        impacts: l.impacts
+          ?.filter(i => i.value && i.value.trim() !== "")
+          .map(i => ({ name: i.value })) || []
+      })),
+      statut: "BROUILLON"
+    };
   }, [watchedValues, calendrierResult.data]); // Ajout de calendrierResult.data ici
   const onSubmit = async (data: RapportFormValues) => {
     setIsSubmitting(true);
     try {
-      
+
       console.log("Payload :", rapportPreview);
       await rapportService.saveRapport(rapportPreview);
       router.push("/dashboard");
@@ -83,8 +83,8 @@ export const ConsolidationForm = () => {
   return (
     // L'ajout du <form> permet au bouton "Enregistrer" du composant enfant de déclencher le onSubmit
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 max-w-6xl mx-auto pb-20">
-      
-      <RapportToolbar 
+
+      <RapportToolbar
         selectedTypeId={selectedTypeId}
         onTypeChange={(val) => {
           setSelectedTypeId(val);
@@ -138,8 +138,8 @@ export const ConsolidationForm = () => {
 
       {/* Rendu PDF caché */}
       <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-        <div id="pdf-render-zone" className="w-[1000px]">
-          <RapportView rapport={rapportPreview} />
+        <div id="pdf-render-zone" style={{ width: "210mm" }}>
+          <RapportView data={[rapportPreview]} isPrintMode={true} />
         </div>
       </div>
 

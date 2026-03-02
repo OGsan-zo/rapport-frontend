@@ -3,12 +3,17 @@ import { ApiRapport } from "../../types";
 export interface SupervisionToolbarActionsProps {
     hasFilters: boolean;
     onClearFilters: () => void;
+    rapports: ApiRapport[];
+    entiteFilter: string;
+    onConsulter: () => void;
+    onExportWord: () => void;
+    isGenerating: boolean;
 }
 
 export interface SupervisionTableProps {
     rapports: ApiRapport[];
     isLoading: boolean;
-    generatingId: number | null;
+    generatingId: number | string | null;
     onPdfClick: (rapport: ApiRapport) => void;
 }
 
@@ -21,4 +26,8 @@ export interface SupervisionToolbarProps {
     setEntiteFilter: (val: string) => void;
     entites: string[];
     calendrierResult: any;
+    rapports: ApiRapport[];
+    onConsulter: () => void;
+    onExportWord: () => void;
+    isGenerating: boolean;
 }

@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import { rapportService } from "../../services/rapportService";
-import { ApiRapport } from "../../types"; 
-import { usePdfExport } from "../../hooks/usePdfExport";
+import { ApiRapport } from "../../types";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import { usePdfExport } from "../../hooks/usePdfExport";
+import { exportToWord } from "../../utils/exportUtils";
 
 // Imports des sous-composants
 import { RapportView } from "./RapportView";
@@ -15,21 +16,24 @@ export const SupervisionView: React.FC = () => {
     // --- ÉTATS ---
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [generatingId, setGeneratingId] = useState<number | string | null>(null);
 
     const [selectedTypeId, setSelectedTypeId] = useState<string>("");
     const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
     const [entiteFilter, setEntiteFilter] = useState("");
 
-    // PDF States
-    const { exportToPdf } = usePdfExport();
-    const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport | null>(null);
-    const [generatingId, setGeneratingId] = useState<number | null>(null);
-    
+    // Hook d'exportation (qui ouvre dans un nouvel onglet)
+    const { exportToPdf, isGenerating } = usePdfExport();
+
+    // Data for the hidden rendering zone
+    const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport[] | null>(null);
+
     const calendrierResult = usePeriodes(false);
 
     // --- CHARGEMENT ---
     useEffect(() => {
         const load = async () => {
+            setIsLoading(true);
             try {
                 const data = await rapportService.getAllRapports(Number(selectedPeriodId));
                 setRapports(data);
@@ -52,29 +56,55 @@ export const SupervisionView: React.FC = () => {
     }, [rapports]);
 
     const filtered = useMemo(() => {
-        return rapports;
-    }, [rapports, selectedPeriodId]);
+        if (!entiteFilter) return rapports;
+        return rapports.filter(r => r.user?.entite === entiteFilter);
+    }, [rapports, entiteFilter]);
 
     // --- ACTIONS ---
-    const handlePdfClick = async (rapport: ApiRapport) => {
-        let idFichier = rapport.id || 0;
-        setGeneratingId(idFichier);
-        setSelectedForPdf(rapport);
+    const handleConsulter = async (reports: ApiRapport[]) => {
+        if (reports.length === 0) return;
 
+        // Similaire à la logique Dashboard : rendu masqué puis export
+        const id = reports.length === 1 ? (reports[0].id || "temp") : "consolidation";
+        setGeneratingId(id);
+        setSelectedForPdf(reports);
+
+        // Laisser le temps au composant caché de se monter
         setTimeout(async () => {
-            try {
-                await exportToPdf("rapport-a4-container", `Rapport_${rapport.user?.entite || 'Entite'}_${idFichier}.pdf`);
-            } finally {
-                setGeneratingId(null);
-                setSelectedForPdf(null);
-            }
-        }, 500);
+            const filename = reports.length > 1
+                ? "Consolidation_Rapports.pdf"
+                : `Rapport_${reports[0].user?.entite || "Inconnu"}.pdf`;
+
+            await exportToPdf("rapport-a4-container", filename);
+
+            setGeneratingId(null);
+            setSelectedForPdf(null);
+        }, 600);
+    };
+
+    const handleExportWord = async (reports: ApiRapport[]) => {
+        if (reports.length === 0) return;
+
+        const id = reports.length === 1 ? (reports[0].id || "temp-word") : "consolidation-word";
+        setGeneratingId(id);
+        setSelectedForPdf(reports);
+
+        setTimeout(() => {
+            const filename = reports.length > 1
+                ? "Consolidation_Rapports.doc"
+                : `Rapport_${reports[0].user?.entite || "Inconnu"}.doc`;
+
+            exportToWord("rapport-a4-container", filename);
+
+            setGeneratingId(null);
+            setSelectedForPdf(null);
+        }, 600);
     };
 
     return (
         <div className="space-y-10 pb-20">
-            {/* 1. Barre d'outils avec filtres */}
-            <SupervisionToolbar 
+            {/* 1. Barre d'outils avec filtres et bouton Consulter la sélection */}
+            <SupervisionToolbar
                 selectedTypeId={selectedTypeId}
                 setSelectedTypeId={setSelectedTypeId}
                 selectedPeriodId={selectedPeriodId}
@@ -83,6 +113,10 @@ export const SupervisionView: React.FC = () => {
                 setEntiteFilter={setEntiteFilter}
                 entites={entites}
                 calendrierResult={calendrierResult}
+                rapports={filtered}
+                onConsulter={() => handleConsulter(filtered)}
+                onExportWord={() => handleExportWord(filtered)}
+                isGenerating={isGenerating}
             />
 
             {/* 2. Compteur */}
@@ -94,17 +128,19 @@ export const SupervisionView: React.FC = () => {
             </div>
 
             {/* 3. Tableau des rapports */}
-            <SupervisionTable 
+            <SupervisionTable
                 rapports={filtered}
                 isLoading={isLoading}
                 generatingId={generatingId}
-                onPdfClick={handlePdfClick}
+                onPdfClick={(r) => handleConsulter([r])}
             />
 
-            {/* 4. Rendu masqué pour capture PDF */}
+            {/* 4. ZONE DE RENDU MASQUÉE (Stratégie Dashboard) */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-                    <RapportView rapport={selectedForPdf} />
+                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
+                        <RapportView data={selectedForPdf} isPrintMode={true} />
+                    </div>
                 </div>
             )}
         </div>
