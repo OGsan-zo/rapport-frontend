@@ -18,15 +18,6 @@ export interface CalendarPeriod {
     typeCalendrier: TypeCalendrier;
 }
 
-// Mock users database
-const MOCK_ALL_USERS: User[] = [
-    { id: 1, email: "admin@mesupres.gov.mg", entite: "Admin Syst", role: "Admin" },
-    { id: 2, email: "agent@mesupres.gov.mg", entite: "Agent DSINT", role: "Utilisateur" },
-    { id: 4, email: "jean@mesupres.gov.mg", entite: "Jean Rakoto", role: "Utilisateur" },
-    { id: 5, email: "marie@mesupres.gov.mg", entite: "Marie Randria", role: "Utilisateur" },
-    { id: 6, email: "paul@mesupres.gov.mg", entite: "Paul Rabary", role: "Utilisateur" },
-];
-
 let MOCK_PERIODS: CalendarPeriod[] = [
     {
         id: 1,
@@ -102,30 +93,52 @@ export const adminService = {
     },
 
     /**
-     * 
-     * Calcule les statistiques de conformité sur une période.
+     * Récupère un utilisateur par son ID.
      */
+    getUserById: async (id: number): Promise<User> => {
+        try {
+            const response = await fetchAuth(`/api/utilisateurs?id=${id}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store"
+            });
 
-    getStats: async (dateDebut: string, dateFin: string, typeCalendrierId?: number): Promise<AdminStats> => {
-        await new Promise((resolve) => setTimeout(resolve, 600));
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
 
-        // Simulation de données filtrées
-        const modifier = typeCalendrierId ? (typeCalendrierId * 10) : 0;
-
-        return {
-            totalUsers: 120 + modifier,
-            reportsReceived: 95 + (modifier / 2),
-            missingUsers: 25 + (modifier / 4),
-        };
+            const responseData = await response.json();
+            return responseData.data || responseData;
+        } catch (error) {
+            throw error;
+        }
     },
 
     /**
-     * Liste les utilisateurs n'ayant pas envoyé de rapport.
+     * Met à jour les informations d'un utilisateur.
      */
-    getMissingUsers: async (dateDebut: string, dateFin: string): Promise<User[]> => {
-        await new Promise((resolve) => setTimeout(resolve, 800));
+    updateUser: async (id: number, data: any): Promise<User> => {
+        try {
+            const response = await fetchAuth(`/api/utilisateurs?id=${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data)
+            });
 
-        // Simulé: Jean et Paul n'ont pas envoyé
-        return MOCK_ALL_USERS.filter(u => u.email.includes("jean") || u.email.includes("paul"));
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return responseData.data || responseData;
+        } catch (error) {
+            throw error;
+        }
     },
 };

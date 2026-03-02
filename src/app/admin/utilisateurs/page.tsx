@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { UserList } from "@/features/admin/components/UserList";
 import { UserAdminForm } from "@/features/admin/components/UserAdminForm";
+import { UserEditForm } from "@/features/admin/components/UserEditForm";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { authService } from "@/features/auth/services/authService";
@@ -12,38 +13,39 @@ export default function AdminUsersPage() {
 
     const router = useRouter();
     const [showForm, setShowForm] = useState(false);
+    const [userToEdit, setUserToEdit] = useState<User | null>(null);
     const [refreshKey, setRefreshKey] = useState(0);
     const [user, setUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
-    const login= process.env.NEXT_PUBLIC_LOGIN_URL || '/login';
+    const login = process.env.NEXT_PUBLIC_LOGIN_URL || '/login';
     useEffect(() => {
         checkAuth()
-    },[]);
+    }, []);
 
     const checkAuth = async () => {
-      try {
-        const user = await authService.checkAuth();
-        setUser(user);
-        if (user.role !== "Admin") {
-        authService.logout();
-          router.push(login);
+        try {
+            const user = await authService.checkAuth();
+            setUser(user);
+            if (user.role !== "Admin") {
+                authService.logout();
+                router.push(login);
+            }
+        } catch (err) {
+            authService.logout();
+            router.push(login);
         }
-      } catch (err) {
-        authService.logout();
-        router.push(login);
-      }
-      finally{
-        setLoading(false);
-      }
-      // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
+        finally {
+            setLoading(false);
+        }
+        // Note: setLoading(false) est géré dans le finally de fetchEvents pour ne pas masquer le contenu
     };
 
     // Pendant le chargement, on n'affiche rien pour éviter le flash
     if (loading) {
         return (
-        <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
-            <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
-        </header>
+            <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
+                <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+            </header>
         )
     }
 
@@ -57,6 +59,7 @@ export default function AdminUsersPage() {
 
     const handleSuccess = () => {
         setShowForm(false);
+        setUserToEdit(null);
         setRefreshKey(prev => prev + 1);
     };
 
@@ -76,8 +79,20 @@ export default function AdminUsersPage() {
                         onCancel={() => setShowForm(false)}
                     />
                 </div>
+            ) : userToEdit ? (
+                <div className="flex justify-center py-10">
+                    <UserEditForm
+                        user={userToEdit}
+                        onSuccess={handleSuccess}
+                        onCancel={() => setUserToEdit(null)}
+                    />
+                </div>
             ) : (
-                <UserList refreshKey={refreshKey} onAddUser={() => setShowForm(true)} />
+                <UserList
+                    refreshKey={refreshKey}
+                    onAddUser={() => setShowForm(true)}
+                    onEditUser={(u) => setUserToEdit(u)}
+                />
             )}
         </div>
     );

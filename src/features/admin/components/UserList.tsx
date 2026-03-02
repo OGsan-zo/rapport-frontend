@@ -4,10 +4,11 @@ import { adminService } from "@/features/admin/services/adminService";
 
 interface UserListProps {
     onAddUser: () => void;
+    onEditUser: (user: User) => void;
     refreshKey: number;
 }
 
-export const UserList: React.FC<UserListProps> = ({ onAddUser, refreshKey }) => {
+export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refreshKey }) => {
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
@@ -80,9 +81,13 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, refreshKey }) => 
                                     </span>
                                 </td>
                                 <td className="px-6 py-4 text-right">
-                                    <button className="text-slate-400 hover:text-slate-900 transition-colors">
+                                    <button
+                                        onClick={() => onEditUser(user)}
+                                        className="text-slate-400 hover:text-blue-600 transition-colors p-1"
+                                        title="Modifier l'utilisateur"
+                                    >
                                         <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
                                         </svg>
                                     </button>
                                 </td>
