@@ -178,35 +178,12 @@ export const rapportService = {
     /**
      * Enregistre un nouveau rapport avec la structure ApiRapport.
      */
-    saveRapport: async (idCalendrier: number, activites: any[]): Promise<ApiRapport> => {
+    saveRapport: async (rapport: ApiRapport): Promise<ApiRapport> => {
         await new Promise((resolve) => setTimeout(resolve, 1000));
 
-        // Simulation d'un nouvel objet respectant l'interface ApiRapport
-        const newRapport: ApiRapport = {
-            id: Math.floor(Math.random() * 10000), // L'API utilise souvent des IDs numériques
-            
-            // Structure imbriquée pour le calendrier
-            calendrier: {
-                id: idCalendrier,
-                dateDebut: "2026-03-02", // Devrait normalement être récupéré via le calendrierId
-                dateFin: "2026-03-08",
-                typeCalendrier: { name: "Hebdomadaire" }
-            },
-
-            // Structure imbriquée pour l'utilisateur/entité
-            user: {
-                email: "contact@domaine.mg",
-                entite: "DSINT", 
-                role: "Utilisateur"
-            },
-
-            // Mapping des lignes 
-            activites: activites
-        };
-
         // Mise à jour locale du mock (attention à déclarer MOCK_RAPPORTS avec 'let')
-        MOCK_RAPPORTS = [newRapport, ...MOCK_RAPPORTS];
+        MOCK_RAPPORTS = [rapport, ...MOCK_RAPPORTS];
         
-        return newRapport;
+        return rapport;
     },
 };

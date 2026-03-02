@@ -22,6 +22,7 @@ export interface ApiActivite {
  */
 export interface ApiRapport {
     id?: number;
+    idCalendrier?: number;
     user: User;
     calendrier: CalendarPeriod;
     activites: ApiActivite[];

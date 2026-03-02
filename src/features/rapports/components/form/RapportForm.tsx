@@ -41,6 +41,7 @@ export const ConsolidationForm = () => {
 
       return {
         id: 0,
+        idCalendrier: Number(watchedValues.idCalendrier),
         // Si selectedCalendrier est undefined, on fournit un objet vide ou par défaut
         calendrier: selectedCalendrier || {
             id: Number(watchedValues.idCalendrier) || 1,
@@ -67,16 +68,8 @@ export const ConsolidationForm = () => {
   const onSubmit = async (data: RapportFormValues) => {
     setIsSubmitting(true);
     try {
-      const formattedPayload = {
-        idCalendrier: data.idCalendrier,
-        activites: data.lignes.map((ligne) => ({
-          activite: ligne.titre,
-          effects: ligne.effects.filter(e => e.value.trim() !== "").map(e => ({ name: e.value.trim() })),
-          impacts: ligne.impacts.filter(i => i.value.trim() !== "").map(i => ({ name: i.value.trim() })),
-        })),
-      };
-
-      console.log("Payload :", formattedPayload);
+      
+      console.log("Payload :", rapportPreview);
       alert("Rapport enregistré avec succès !");
     } catch (err) {
       console.error("Erreur :", err);
