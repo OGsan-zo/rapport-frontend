@@ -139,33 +139,24 @@ export const rapportService = {
     /**
      * Récupère tous les rapports avec les nouveaux chemins d'accès.
      */
-    getAllRapports: async (filters?: { semaine?: string; entite?: string }): Promise<ApiRapport[]> => {
-        // Simulation du délai réseau
-            await new Promise((resolve) => setTimeout(resolve, 600));
-            
-            // On part des données brutes (assurez-vous que MOCK_RAPPORTS est bien typé ApiRapport[])
-            let result = [...MOCK_RAPPORTS];
+    getAllRapports: async (idCalendrier?: number): Promise<ApiRapport[]> => {
+        try {
+            // L'appel se fait sur la route interne de Next.js
+            const response = await fetch(`/api/rapports/calendrier?idCalendrier=${encodeURIComponent(idCalendrier || 0)}`);
 
-            // 1. Filtrage par semaine (si une date est fournie)
-            if (filters?.semaine) {
-                result = result.filter((r) => 
-                    r.calendrier.dateDebut <= filters.semaine! && 
-                    r.calendrier.dateFin >= filters.semaine!
-                );
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
             }
+            const responseData = await response.json();
+            const data: ApiRapport[] = responseData.data;
 
-            // 2. Filtrage par entité (Accès via utilisateur.entite pour ApiRapport)
-            if (filters?.entite) {
-                result = result.filter((r) => 
-                    r.user?.entite === filters.entite
-                );
-            }
-
-            // 3. Tri par date de début décroissante (les plus récents en premier)
-            return result.sort((a, b) => 
-                (b.calendrier?.dateDebut || "").localeCompare(a.calendrier?.dateDebut || "")
-            );
-        },
+            // Tri par date de début décroissante (les plus récents en premier)
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    },
 
         /**
          * Récupère un rapport par son identifiant (attention: id est number).
