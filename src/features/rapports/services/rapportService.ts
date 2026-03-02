@@ -195,4 +195,30 @@ export const rapportService = {
             throw error;
         }
     },
+    updateRapport: async (idCalendrier: number, rapport: ApiRapport): Promise<ApiRapport> => {
+        try {
+            // L'appel se fait sur la route interne de Next.js
+            const response = await fetch(`/api/rapports/${idCalendrier}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(rapport),
+                cache: "no-store" // désactiver le cache si nécessaire
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            const data: ApiRapport = responseData.data;
+
+            // Ici on peut trier ou traiter les données si nécessaire
+            return data;
+        } catch (error) {
+            throw error;
+        }
+    },
 };
