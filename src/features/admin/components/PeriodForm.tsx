@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { periodeService } from "@/features/config/services/periodeService";
-import { CalendarPeriod } from "../services/adminService";
+import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 
 export const PeriodForm = () => {

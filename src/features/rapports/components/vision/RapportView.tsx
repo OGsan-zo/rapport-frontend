@@ -15,6 +15,8 @@ export const RapportView: React.FC<RapportViewProps> = ({
     scale = 1,
     containerId = "rapport-a4-container"
 }) => {
+    const dateDebut = rapport.calendrier?.dateDebut;
+    const dateFin = rapport.calendrier?.dateFin;
     // Fonction avancée pour formater "DU 23 AU 27 FEVRIER 2026"
     const formatPeriodeStr = (dateDebutStr?: string, dateFinStr?: string) => {
         if (!dateDebutStr || !dateFinStr) return "N/A";
@@ -130,7 +132,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                             {/* LIGNE 2 : SEMAINE (Fond Violet Clair, centré, fusion de 3 colonnes) */}
                             <tr>
                                 <th colSpan={3} style={{ border: "1px solid #000", padding: "10px", backgroundColor: "#E2D1F9", textAlign: "center", fontSize: "13px", fontWeight: "bold", textTransform: "uppercase" }}>
-                                    SEMAINE {formatPeriodeStr(rapport.calendrier?.dateDebut, rapport.calendrier?.dateFin)}
+                                    SEMAINE {formatPeriodeStr(dateDebut, dateFin)}
                                 </th>
                             </tr>
 
@@ -143,38 +145,79 @@ export const RapportView: React.FC<RapportViewProps> = ({
                         </thead>
                         <tbody>
                             {/* LIGNES DE DONNÉES */}
-                            {rapport.activites?.map((activite, actIndex) => (
-                                <React.Fragment key={`act-${actIndex}`}>
-                                    {activite.effectsImpacts?.map((ei, eiIndex) => (
-                                        <tr key={`${actIndex}-${eiIndex}`} style={{ breakInside: "avoid" }}>
-                                            {/* Colonne Activités */}
-                                            {eiIndex === 0 && (
-                                                <td
-                                                    rowSpan={activite.effectsImpacts.length}
-                                                    style={{
-                                                        border: "1px solid #000",
-                                                        verticalAlign: "top",
-                                                        padding: "10px",
-                                                        fontWeight: "normal",
-                                                        textAlign: "justify"
-                                                    }}
-                                                >
-                                                    {activite.name || (activite as any).entite}
-                                                </td>
-                                            )}
-                                            
-                                            {/* Colonne Effets */}
-                                            <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
-                                                {renderListText(ei.effect)}
-                                            </td>
-                                            
-                                            {/* Colonne Impacts */}
-                                            <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
-                                                {renderListText(ei.impact)}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </React.Fragment>
+                            {rapport.activites?.map((act, actIndex) => (
+                                <tr key={`act-${actIndex}`} style={{ breakInside: "avoid" }}>
+                                    
+                                    {/* Colonne Activités */}
+                                    <td
+                                        style={{
+                                            border: "1px solid #000",
+                                            verticalAlign: "top",
+                                            padding: "10px",
+                                            fontWeight: "normal",
+                                            textAlign: "justify"
+                                        }}
+                                    >
+                                        {act.activite?.name || "Activité non spécifiée"}
+                                    </td>
+                                    
+                                    {/* Colonne Effets */}
+                                    <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
+                                        {act.effects && act.effects.length > 0 ? (
+                                            <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
+                                                {act.effects.map((effect, effetIndex) => (
+                                                    <li 
+                                                        key={`effet-${effect.id || effetIndex}`}
+                                                        style={{ 
+                                                            display: "flex",
+                                                            alignItems: "flex-start", // Aligne le point avec la première ligne du texte
+                                                            marginBottom: "6px",
+                                                            textAlign: "left"
+                                                        }}
+                                                    >
+                                                        <span style={{ marginRight: "8px", lineHeight: "1.4" }}>
+                                                            •
+                                                        </span>
+                                                        <span style={{ lineHeight: "1.4" }}>
+                                                            {effect.name}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <span style={{ fontStyle: "italic", color: "#666" }}>Aucun effet</span>
+                                        )}
+                                    </td>
+                                    
+                                    {/* Colonne Impacts */}
+                                    <td style={{ border: "1px solid #000", verticalAlign: "top", padding: "10px" }}>
+                                        {act.impacts && act.impacts.length > 0 ? (
+                                            <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
+                                                {act.impacts.map((impact, impactIndex) => (
+                                                    <li 
+                                                        key={`impact-${impact.id || impactIndex}`}
+                                                        style={{ 
+                                                            display: "flex",
+                                                            alignItems: "flex-start",
+                                                            marginBottom: "6px",
+                                                            textAlign: "left"
+                                                        }}
+                                                    >
+                                                        <span style={{ marginRight: "8px", lineHeight: "1.4" }}>
+                                                            •
+                                                        </span>
+                                                        <span style={{ lineHeight: "1.4" }}>
+                                                            {impact.name}
+                                                        </span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        ) : (
+                                            <span style={{ fontStyle: "italic", color: "#666" }}>Aucun impact</span>
+                                        )}
+                                    </td>
+                                    
+                                </tr>
                             ))}
                         </tbody>
                     </table>

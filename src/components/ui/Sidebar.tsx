@@ -4,24 +4,12 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
-import { User } from "@/features/auth/types";
-import { authService } from "@/features/auth/services/authService";
+import { useUser } from "@/features/auth/contexts/UserContext";
 
 
 export const Sidebar: React.FC = () => {
-    const [user, setUser] = useState<User | null>(null);
-
-    useEffect(() => {
-        const getUser = async () => {
-            try {
-                const userData = await authService.checkAuth();
-                setUser(userData);
-            } catch (err) {
-                setUser(null);
-            }
-        };
-        getUser();
-    }, []);
+    const user = useUser();
+    // console.log(user);
 
     const pathname = usePathname();
 

@@ -1,5 +1,6 @@
 import { User } from "../../auth/types";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
+import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 export interface AdminStats {
     totalUsers: number;
     reportsReceived: number;
@@ -11,12 +12,6 @@ export interface TypeCalendrier {
     name: string;
 }
 
-export interface CalendarPeriod {
-    id: number;
-    dateDebut: string;
-    dateFin: string;
-    typeCalendrier: TypeCalendrier;
-}
 
 let MOCK_PERIODS: CalendarPeriod[] = [
     {

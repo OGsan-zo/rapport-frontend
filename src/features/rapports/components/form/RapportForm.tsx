@@ -13,6 +13,7 @@ import { RapportView } from "../vision/RapportView";
 import { ApiRapport } from "../../types";
 import { usePdfExport } from "../../hooks/usePdfExport";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import { useUser } from "@/features/auth/contexts/UserContext";
 
 export const ConsolidationForm = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ export const ConsolidationForm = () => {
     resolver: zodResolver(rapportSchema),
     defaultValues: {
       idCalendrier: undefined,
-      lignes: [{ titre: "", effets: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" }],
+      lignes: [{ titre: "", effects: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" }],
     },
   });
 
@@ -32,37 +33,43 @@ export const ConsolidationForm = () => {
   const calendrierResult = usePeriodes(true);
   const watchedValues = watch();
 
-
+  const user = useUser();
   const rapportPreview = useMemo<ApiRapport>(() => {
-    return {
-      
-      id: 0,
-      idCalendrier: watchedValues.idCalendrier,
-      calendrier: { id: watchedValues.idCalendrier || 1, dateDebut: "2026-01-01", dateFin: "2026-01-07", typeCalendrier: { name: "Rapport" } },
-      user: { id: 0, email: "utilisateur@system.mg", entite: "VOTRE DIRECTION", role: "Admin" },
-      activites: watchedValues.lignes.map(l => ({
-        name: l.titre,
-        effectsImpacts: [{ 
-          effect: l.effets?.map(e => e.value).filter(v => v.trim() !== "").join("\n") || "", 
-          impact: l.impacts?.map(i => i.value).filter(v => v.trim() !== "").join("\n") || "" 
-        }]
-      })),
-    };
-  }, [watchedValues]);
+      const selectedCalendrier = calendrierResult.data?.find(
+          (c) => c.id === Number(watchedValues.idCalendrier)
+      );
 
+      return {
+        id: 0,
+        idCalendrier: Number(watchedValues.idCalendrier),
+        // Si selectedCalendrier est undefined, on fournit un objet vide ou par défaut
+        calendrier: selectedCalendrier || {
+            id: Number(watchedValues.idCalendrier) || 1,
+            dateDebut: "Non définie",
+            dateFin: "Non définie",
+            typeCalendrier: { name: "Rapport" }
+        },
+        user: user || { id: 0, email: "utilisateur@system.mg", entite: "VOTRE DIRECTION", role: "Admin" } as any,
+        activites: watchedValues.lignes.map(l => ({
+          activite: { 
+              name: l.titre 
+          },
+          effects: l.effects
+              ?.filter(e => e.value && e.value.trim() !== "")
+              .map(e => ({ name: e.value })) || [],
+          
+          impacts: l.impacts
+              ?.filter(i => i.value && i.value.trim() !== "")
+              .map(i => ({ name: i.value })) || []
+        })),
+        statut: "BROUILLON"
+      };
+  }, [watchedValues, calendrierResult.data]); // Ajout de calendrierResult.data ici
   const onSubmit = async (data: RapportFormValues) => {
     setIsSubmitting(true);
     try {
-      const formattedPayload = {
-        idCalendrier: data.idCalendrier,
-        activites: data.lignes.map((ligne) => ({
-          activite: ligne.titre,
-          effects: ligne.effets.filter(e => e.value.trim() !== "").map(e => ({ name: e.value.trim() })),
-          impacts: ligne.impacts.filter(i => i.value.trim() !== "").map(i => ({ name: i.value.trim() })),
-        })),
-      };
-
-      console.log("Payload :", formattedPayload);
+      
+      console.log("Payload :", rapportPreview);
       alert("Rapport enregistré avec succès !");
     } catch (err) {
       console.error("Erreur :", err);
@@ -95,7 +102,7 @@ export const ConsolidationForm = () => {
             <div className="grid grid-cols-[70px_1fr_1.5fr_1.5fr_70px] bg-slate-50/80 border-b border-slate-200">
               <div className="p-4 text-[10px] font-black text-slate-400 text-center tracking-widest uppercase">#</div>
               <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Titre de l'activité</div>
-              <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Effets</div>
+              <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Effects</div>
               <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Impacts</div>
               <div className="p-4 border-l border-slate-200/50" />
             </div>
@@ -118,7 +125,7 @@ export const ConsolidationForm = () => {
 
       <button
         type="button"
-        onClick={() => append({ titre: "", effets: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" })}
+        onClick={() => append({ titre: "", effects: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" })}
         className="w-full py-10 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
       >
         <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
