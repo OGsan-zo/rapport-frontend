@@ -67,25 +67,25 @@ export default function DashboardPage() {
     return (
         <div className="space-y-10 pb-20 px-4 md:px-0 max-w-7xl mx-auto">
             {/* 1. Header & Filtres */}
-            <DashboardToolbar 
-                selectedPeriodId={selectedPeriodId} 
-                setSelectedPeriodId={setSelectedPeriodId} 
+            <DashboardToolbar
+                selectedPeriodId={selectedPeriodId}
+                setSelectedPeriodId={setSelectedPeriodId}
                 calendrierResult={calendrierResult}
             />
 
             {/* 2. Tableau des rapports */}
-            <DashboardTable 
-                rapports={filtered} 
-                isLoading={isLoading} 
-                generatingId={generatingId} 
-                onPdfClick={handlePdfClick} 
+            <DashboardTable
+                rapports={filtered}
+                isLoading={isLoading}
+                generatingId={generatingId}
+                onPdfClick={handlePdfClick}
             />
 
             {/* Zone de rendu PDF masquée */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-                    <div id="rapport-a4-container">
-                        <RapportView rapport={selectedForPdf} />
+                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
+                        <RapportView data={[selectedForPdf]} isPrintMode={true} />
                     </div>
                 </div>
             )}

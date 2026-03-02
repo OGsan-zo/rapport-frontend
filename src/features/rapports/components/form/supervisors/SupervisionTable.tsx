@@ -58,12 +58,15 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                                         <td className="px-6 py-5 text-right">
                                             <button
                                                 onClick={() => onPdfClick(rapport)}
-                                                disabled={generatingId !== null}
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all disabled:opacity-50"
+                                                disabled={generatingId === rapport.id}
+                                                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-md shadow-slate-200 disabled:opacity-50"
                                             >
                                                 {generatingId === rapport.id ? (
                                                     <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                                ) : "Consulter / PDF"}
+                                                ) : (
+                                                    <span>👁️</span>
+                                                )}
+                                                Consulter
                                             </button>
                                         </td>
                                     </tr>

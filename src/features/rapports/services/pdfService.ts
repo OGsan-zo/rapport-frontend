@@ -14,7 +14,13 @@ export const pdfService = {
             backgroundColor: "#ffffff",
         });
 
-        const imgData = canvas.toDataURL("image/jpeg", 0.95);
+        const imgData = canvas.toDataURL("image/png");
+
+        // --- VALIDATION SIGNATURE (Anti-Crash) ---
+        if (!imgData.startsWith("data:image/png")) {
+            console.error("Signature d'image PNG invalide détectée");
+            throw new Error("Format d'image non supporté (PNG attendu)");
+        }
 
         // Dimensions A4 en mm
         const pdfWidth = 210;
@@ -39,7 +45,16 @@ export const pdfService = {
         const footerText = `© ${year} - DSINT - MESUPRES`;
 
         // Ajout de la première page
-        pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeightInPdf, undefined, "FAST");
+        pdf.addImage(
+            imgData,
+            "PNG",
+            0,
+            Number(position) || 0,
+            Number(pdfWidth) || 0,
+            Number(imgHeightInPdf) || 0,
+            undefined,
+            "FAST"
+        );
         this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
 
         heightLeft -= pdfHeight;
@@ -48,7 +63,16 @@ export const pdfService = {
         while (heightLeft > 0) {
             position = heightLeft - imgHeightInPdf;
             pdf.addPage();
-            pdf.addImage(imgData, "JPEG", 0, position, pdfWidth, imgHeightInPdf, undefined, "FAST");
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                Number(position) || 0,
+                Number(pdfWidth) || 0,
+                Number(imgHeightInPdf) || 0,
+                undefined,
+                "FAST"
+            );
             this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
             heightLeft -= pdfHeight;
         }

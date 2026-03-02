@@ -14,6 +14,9 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
     setEntiteFilter,
     entites,
     calendrierResult,
+    rapports,
+    onConsulter,
+    isGenerating,
 }) => {
 
     const hasFilters = Boolean(selectedPeriodId || entiteFilter);
@@ -24,7 +27,7 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
     };
 
     return (
-        <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-6 mb-4 border-b border-slate-100 flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-6 mb-4 border-b border-slate-100 flex flex-col items-start gap-6 lg:flex-row lg:items-center lg:justify-between font-sans">
 
             {/* 1. Le Titre */}
             <ToolbarTitle
@@ -51,6 +54,10 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
                 <SupervisionToolbarActions
                     hasFilters={hasFilters}
                     onClearFilters={handleClearFilters}
+                    rapports={rapports}
+                    entiteFilter={entiteFilter}
+                    onConsulter={onConsulter}
+                    isGenerating={isGenerating}
                 />
 
             </div>
