@@ -115,14 +115,24 @@ export const adminService = {
     /**
      * Met à jour les informations d'un utilisateur.
      */
-    updateUser: async (id: number, data: any): Promise<User> => {
+    updateUser: async (id: number, data: { email: string; entite: string; idRole: number; mdp?: string }): Promise<User> => {
         try {
+            const payload: any = {
+                email: data.email,
+                entite: data.entite,
+                idRole: Number(data.idRole),
+            };
+
+            if (data.mdp && data.mdp.trim() !== "") {
+                payload.mdp = data.mdp;
+            }
+
             const response = await fetchAuth(`/api/utilisateurs?id=${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(data)
+                body: JSON.stringify(payload)
             });
 
             if (!response.ok) {

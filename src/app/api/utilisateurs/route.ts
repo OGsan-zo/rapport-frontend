@@ -25,6 +25,6 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: "ID de l'utilisateur requis pour la modification" }, { status: 400 });
     }
 
-    const allowedFields = ["email", "nom", "prenom", "adresse", "mdp", "role"];
-    return callApiPut(request, `utilisateurs/${id}`, allowedFields);
+    const requiredFields = ["email", "entite", "idRole"];
+    return callApiPut(request, `utilisateurs/${id}`, requiredFields);
 }

@@ -1,11 +1,9 @@
 export interface User {
   id?: number;
   email: string;
-  nom?: string;
-  prenom?: string;
-  adresse?: string;
   entite: string;
-  role: "Admin" | "Utilisateur";
+  idRole?: number;
+  role: "Admin" | "Utilisateur" | string;
 }
 
 export interface Entite {
