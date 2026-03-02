@@ -1,16 +1,48 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { periodeService } from "@/features/config/services/periodeService";
 import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 
+const periodSchema = z.object({
+    debut: z.string().min(1, "La date de début est requise"),
+    fin: z.string().min(1, "La date de fin est requise"),
+    typeCalendrierId: z.string().min(1, "Le type de calendrier est requis"),
+}).refine((data) => new Date(data.debut).getTime() < new Date(data.fin).getTime(), {
+    message: "Attention : La date de fin doit être strictement après la date de début. Veuillez corriger les dates pour pouvoir valider.",
+    path: ["fin"],
+});
+
+type PeriodFormValues = z.infer<typeof periodSchema>;
+
 export const PeriodForm = () => {
     const [periods, setPeriods] = useState<CalendarPeriod[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [newPeriod, setNewPeriod] = useState({ debut: "", fin: "", typeCalendrierId: "" });
-    const [isSubmitting, setIsSubmitting] = useState(false);
     const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        watch,
+        trigger,
+        formState: { errors, isSubmitting, isValid, isDirty }
+    } = useForm<PeriodFormValues>({
+        resolver: zodResolver(periodSchema),
+        defaultValues: {
+            debut: "",
+            fin: "",
+            typeCalendrierId: ""
+        },
+        mode: "onChange"
+    });
+
+    const typeCalendrierId = watch("typeCalendrierId");
 
     const fetchPeriods = async () => {
         setIsLoading(true);
@@ -28,51 +60,36 @@ export const PeriodForm = () => {
         fetchPeriods();
     }, []);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: PeriodFormValues) => {
         setFeedback(null);
-
-        if (!newPeriod.debut || !newPeriod.fin || !newPeriod.typeCalendrierId) {
-            setFeedback({
-                type: "error",
-                message: "Veuillez remplir tous les champs, y compris le type de calendrier."
-            });
-            return;
-        }
-
-        setIsSubmitting(true);
         try {
             await periodeService.createPeriod(
-                newPeriod.debut,
-                newPeriod.fin,
-                Number(newPeriod.typeCalendrierId)
+                data.debut,
+                data.fin,
+                Number(data.typeCalendrierId)
             );
-            setNewPeriod({ debut: "", fin: "", typeCalendrierId: "" });
+            reset();
             setFeedback({ type: "success", message: "Période créée avec succès !" });
             fetchPeriods();
 
-            // Masquer le message de succès après 3 secondes
             setTimeout(() => setFeedback(null), 3000);
         } catch (err: any) {
             setFeedback({
                 type: "error",
                 message: err.message || "Une erreur est survenue lors de la création."
             });
-        } finally {
-            setIsSubmitting(false);
         }
     };
 
     return (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Formulaire - Clean */}
             <div className="lg:col-span-1 space-y-8">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Calendrier</h1>
                     <p className="text-slate-400 text-[11px] font-medium uppercase tracking-widest mt-2 px-1 border-l-2 border-slate-900">Configuration des périodes</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm shadow-slate-100 space-y-8">
+                <form onSubmit={handleSubmit(onSubmit)} className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm shadow-slate-100 space-y-8">
                     {feedback && (
                         <div className={`p-4 rounded-lg text-xs font-bold uppercase tracking-widest border ${feedback.type === "success"
                             ? "bg-emerald-50 border-emerald-100 text-emerald-600"
@@ -82,45 +99,63 @@ export const PeriodForm = () => {
                         </div>
                     )}
 
+                    {/* Bloc d'alerte spécifique demandé par l'utilisateur */}
+                    {errors.fin && (
+                        <div className="mb-4 p-3 rounded-md bg-red-50 border border-red-200 flex items-center gap-2 text-red-600 font-bold">
+                            <span>⚠️</span>
+                            <p className="text-sm">
+                                Attention : La date de fin doit être strictement après la date de début.
+                                Veuillez corriger les dates pour pouvoir valider.
+                            </p>
+                        </div>
+                    )}
+
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date de début</label>
                         <input
                             type="date"
-                            required
-                            value={newPeriod.debut}
-                            onChange={(e) => setNewPeriod({ ...newPeriod, debut: e.target.value })}
-                            className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm font-medium focus:ring-1 focus:ring-slate-900 outline-none transition-all text-slate-700 bg-slate-50/30"
+                            {...register("debut", { onChange: () => trigger("fin") })}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm font-medium focus:ring-1 focus:ring-slate-900 outline-none transition-all text-slate-700 bg-slate-50/30 ${errors.fin ? "border-red-500 bg-red-50" : "border-slate-200"
+                                }`}
                         />
                     </div>
+
                     <div className="space-y-3">
                         <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date de fin</label>
                         <input
                             type="date"
-                            required
-                            value={newPeriod.fin}
-                            onChange={(e) => setNewPeriod({ ...newPeriod, fin: e.target.value })}
-                            className="w-full border border-slate-200 rounded-lg px-4 py-3 text-sm font-medium focus:ring-1 focus:ring-slate-900 outline-none transition-all text-slate-700 bg-slate-50/30"
+                            {...register("fin")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm font-medium focus:ring-1 focus:ring-slate-900 outline-none transition-all text-slate-700 bg-slate-50/30 ${errors.fin ? "border-red-500 bg-red-50" : "border-slate-200"
+                                }`}
                         />
                     </div>
 
                     <div className="space-y-3">
                         <TypeCalendrierSelect
-                            value={newPeriod.typeCalendrierId}
-                            onValueChange={(val) => setNewPeriod({ ...newPeriod, typeCalendrierId: val })}
+                            value={typeCalendrierId}
+                            onValueChange={(val) => setValue("typeCalendrierId", val, { shouldValidate: true })}
                         />
+                        {errors.typeCalendrierId && <p className="text-[9px] font-bold text-rose-500 uppercase tracking-tighter ml-1">{errors.typeCalendrierId.message}</p>}
                     </div>
 
-                    <button
-                        type="submit"
-                        disabled={isSubmitting}
-                        className="w-full py-3.5 bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest rounded-lg hover:bg-slate-800 transition-all shadow-md shadow-slate-200 active:scale-95 disabled:opacity-50"
-                    >
-                        {isSubmitting ? "Enregistrement..." : "Créer la période"}
-                    </button>
+                    <div className="space-y-4">
+                        <button
+                            type="submit"
+                            disabled={isSubmitting || !isValid}
+                            className="w-full py-3.5 bg-slate-900 text-white font-bold text-[10px] uppercase tracking-widest rounded-lg hover:bg-slate-800 transition-all shadow-md shadow-slate-200 active:scale-95 disabled:opacity-50 group relative"
+                        >
+                            {isSubmitting ? "Enregistrement..." : "Créer la période"}
+                        </button>
+
+                        {(!isValid && isDirty) && (
+                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest text-center animate-pulse">
+                                Veuillez corriger les erreurs de dates avant de valider
+                            </p>
+                        )}
+                    </div>
                 </form>
             </div>
 
-            {/* Liste des périodes - Modernized */}
             <div className="lg:col-span-2 space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="h-0.5 w-4 bg-slate-900"></div>
