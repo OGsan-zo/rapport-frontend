@@ -31,16 +31,16 @@ export const SupervisionView: React.FC = () => {
     useEffect(() => {
         const load = async () => {
             try {
-                const data = await rapportService.getAllRapports();
+                const data = await rapportService.getAllRapports(Number(selectedPeriodId));
                 setRapports(data);
             } catch (err) {
-                console.error("Erreur lors du chargement des rapports:", err);
+                console.log("Erreur lors du chargement des rapports:", err);
             } finally {
                 setIsLoading(false);
             }
         };
         load();
-    }, []);
+    }, [selectedPeriodId]);
 
     // --- LOGIQUE FILTRES ---
     const entites = useMemo(() => {
@@ -52,12 +52,8 @@ export const SupervisionView: React.FC = () => {
     }, [rapports]);
 
     const filtered = useMemo(() => {
-        return rapports.filter((r) => {
-            const matchesEntite = entiteFilter === "" || r.user?.entite === entiteFilter;
-            const matchesSemaine = !selectedPeriodId || r.calendrier?.id === Number(selectedPeriodId);
-            return matchesEntite && matchesSemaine;
-        });
-    }, [rapports, entiteFilter, selectedPeriodId]);
+        return rapports;
+    }, [rapports, selectedPeriodId]);
 
     // --- ACTIONS ---
     const handlePdfClick = async (rapport: ApiRapport) => {
