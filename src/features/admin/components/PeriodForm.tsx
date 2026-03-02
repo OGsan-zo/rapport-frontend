@@ -127,36 +127,38 @@ export const PeriodForm = () => {
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Semaines Institutionnelles</h3>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm shadow-slate-100">
-                    <table className="w-full border-collapse">
-                        <thead className="bg-slate-50/50 border-b border-slate-200 text-left">
-                            <tr>
-                                <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-400 w-16 text-center">ID</th>
-                                <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Période Institutionnelle</th>
-                                <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Type</th>
-                                <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 text-center">Statut</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-100">
-                            {isLoading ? (
-                                <tr><td colSpan={4} className="p-12 text-center text-slate-300 italic animate-pulse uppercase text-[10px] tracking-widest">Récupération des données...</td></tr>
-                            ) : (
-                                periods.map((p: CalendarPeriod) => (
-                                    <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
-                                        <td className="p-4 text-[10px] font-bold text-slate-300 border-r border-slate-100 text-center">#{String(p.id).padStart(3, '0')}</td>
-                                        <td className="p-4 text-sm text-slate-700 font-bold border-r border-slate-100">
-                                            Semaine du {new Date(p.dateDebut).toLocaleDateString()} au {new Date(p.dateFin).toLocaleDateString()}
-                                        </td>
-                                        <td className="p-4 text-[10px] font-bold text-slate-500 border-r border-slate-100 uppercase tracking-wide">
-                                            {p.typeCalendrierName || "Standard"}
-                                        </td>
-                                        <td className="p-4 text-center">
-                                            <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-bold uppercase tracking-widest border border-emerald-100 rounded-md">Activée</span>
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-y-auto max-h-[400px]">
+                        <table className="w-full border-collapse">
+                            <thead className="bg-slate-50 border-b border-slate-200 text-left sticky top-0 z-10">
+                                <tr>
+                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-400 w-16 text-center">ID</th>
+                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Période Institutionnelle</th>
+                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Type</th>
+                                    <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 text-center">Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-slate-100">
+                                {isLoading ? (
+                                    <tr><td colSpan={4} className="p-12 text-center text-slate-300 italic animate-pulse uppercase text-[10px] tracking-widest">Récupération des données...</td></tr>
+                                ) : (
+                                    periods.map((p: CalendarPeriod) => (
+                                        <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
+                                            <td className="p-4 text-[10px] font-bold text-slate-300 border-r border-slate-100 text-center">#{String(p.id).padStart(3, '0')}</td>
+                                            <td className="p-4 text-sm text-slate-700 font-bold border-r border-slate-100">
+                                                Semaine du {new Date(p.dateDebut).toLocaleDateString()} au {new Date(p.dateFin).toLocaleDateString()}
+                                            </td>
+                                            <td className="p-4 text-[10px] font-bold text-slate-500 border-r border-slate-100 uppercase tracking-wide">
+                                                {p.typeCalendrierName || "Standard"}
+                                            </td>
+                                            <td className="p-4 text-center">
+                                                <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-bold uppercase tracking-widest border border-emerald-100 rounded-md">Activée</span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

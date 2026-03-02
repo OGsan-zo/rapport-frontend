@@ -47,7 +47,7 @@ export const Select: React.FC<SelectProps> = ({
                 {...props}
             >
                 {options.map((opt) => (
-                    <option key={opt.id} value={opt.id}>
+                    <option key={opt.id} value={opt.id} className="py-2">
                         {opt.label}
                     </option>
                 ))}
