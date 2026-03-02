@@ -6,6 +6,7 @@ export interface SupervisionToolbarActionsProps {
     rapports: ApiRapport[];
     entiteFilter: string;
     onConsulter: () => void;
+    onExportWord: () => void;
     isGenerating: boolean;
 }
 
@@ -27,5 +28,6 @@ export interface SupervisionToolbarProps {
     calendrierResult: any;
     rapports: ApiRapport[];
     onConsulter: () => void;
+    onExportWord: () => void;
     isGenerating: boolean;
 }

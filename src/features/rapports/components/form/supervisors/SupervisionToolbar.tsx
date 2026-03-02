@@ -16,6 +16,7 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
     calendrierResult,
     rapports,
     onConsulter,
+    onExportWord,
     isGenerating,
 }) => {
 
@@ -57,6 +58,7 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
                     rapports={rapports}
                     entiteFilter={entiteFilter}
                     onConsulter={onConsulter}
+                    onExportWord={onExportWord}
                     isGenerating={isGenerating}
                 />
 

@@ -5,6 +5,7 @@ import { rapportService } from "../../services/rapportService";
 import { ApiRapport } from "../../types";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
 import { usePdfExport } from "../../hooks/usePdfExport";
+import { exportToWord } from "../../utils/exportUtils";
 
 // Imports des sous-composants
 import { RapportView } from "./RapportView";
@@ -81,6 +82,25 @@ export const SupervisionView: React.FC = () => {
         }, 600);
     };
 
+    const handleExportWord = async (reports: ApiRapport[]) => {
+        if (reports.length === 0) return;
+
+        const id = reports.length === 1 ? (reports[0].id || "temp-word") : "consolidation-word";
+        setGeneratingId(id);
+        setSelectedForPdf(reports);
+
+        setTimeout(() => {
+            const filename = reports.length > 1
+                ? "Consolidation_Rapports.doc"
+                : `Rapport_${reports[0].user?.entite || "Inconnu"}.doc`;
+
+            exportToWord("rapport-a4-container", filename);
+
+            setGeneratingId(null);
+            setSelectedForPdf(null);
+        }, 600);
+    };
+
     return (
         <div className="space-y-10 pb-20">
             {/* 1. Barre d'outils avec filtres et bouton Consulter la sélection */}
@@ -95,6 +115,7 @@ export const SupervisionView: React.FC = () => {
                 calendrierResult={calendrierResult}
                 rapports={filtered}
                 onConsulter={() => handleConsulter(filtered)}
+                onExportWord={() => handleExportWord(filtered)}
                 isGenerating={isGenerating}
             />
 
