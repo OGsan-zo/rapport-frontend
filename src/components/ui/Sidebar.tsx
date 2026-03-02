@@ -7,13 +7,13 @@ import { usePathname } from "next/navigation";
 import { useUser } from "@/features/auth/contexts/UserContext";
 
 
-export const Sidebar: React.FC = () => {
+export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
     const user = useUser();
     // console.log(user);
 
     const pathname = usePathname();
 
-    const isSuperior = user && (user.role === "Admin" );
+    const isSuperior = user && (user.role === "Admin");
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
     const linkClass = (href: string) =>
@@ -26,6 +26,20 @@ export const Sidebar: React.FC = () => {
 
     return (
         <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50 transition-all">
+            {/* Mobile close button */}
+            {onClose && (
+                <div className="flex justify-end px-4 pt-4 lg:hidden">
+                    <button
+                        onClick={onClose}
+                        className="p-1.5 rounded-md text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                        aria-label="Fermer le menu"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            )}
             {/* Header avec Logos Institutionnels */}
             <div className="px-8 py-8 flex flex-col gap-6">
                 <div className="flex items-center gap-4">

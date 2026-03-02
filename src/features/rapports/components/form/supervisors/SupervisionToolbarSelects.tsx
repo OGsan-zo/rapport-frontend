@@ -1,5 +1,5 @@
 import React from "react";
-import { ToolbarSelects } from "../utils/ToolbarSelect"; // Adaptez le chemin d'import selon votre structure
+import { ToolbarSelects } from "../utils/ToolbarSelect";
 
 interface SupervisionToolbarSelectsProps {
     selectedTypeId: string;
@@ -23,13 +23,13 @@ export const SupervisionToolbarSelects: React.FC<SupervisionToolbarSelectsProps>
     calendrierResult,
 }) => {
     return (
-        <>
-            {/* 1. Composant générique pour Type et Période */}
+        <div className="flex flex-col lg:flex-row items-stretch lg:items-end gap-4 w-full">
+            {/* 1. Type et Période (composant générique) */}
             <ToolbarSelects
                 selectedTypeId={selectedTypeId}
                 onTypeChange={(val) => {
                     setSelectedTypeId(val);
-                    setSelectedPeriodId(""); // On réinitialise la période lors du changement de type
+                    setSelectedPeriodId("");
                 }}
                 periodeValue={selectedPeriodId}
                 onPeriodeChange={setSelectedPeriodId}
@@ -37,11 +37,14 @@ export const SupervisionToolbarSelects: React.FC<SupervisionToolbarSelectsProps>
             />
 
             {/* 2. Select Entité (Spécifique à la vue Supervision) */}
-            <div className="relative min-w-[240px]">
+            <div className="flex flex-col gap-1 w-full lg:w-auto">
+                <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
+                    Service
+                </span>
                 <select
                     value={entiteFilter}
                     onChange={(e) => setEntiteFilter(e.target.value)}
-                    className="w-full bg-white border border-slate-200 px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg outline-none cursor-pointer text-slate-600"
+                    className="w-full lg:w-auto bg-white border border-slate-200 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg outline-none cursor-pointer text-slate-600 min-h-[40px]"
                 >
                     <option value="">Tous les services</option>
                     {entites.map((entite) => (
@@ -49,6 +52,6 @@ export const SupervisionToolbarSelects: React.FC<SupervisionToolbarSelectsProps>
                     ))}
                 </select>
             </div>
-        </>
+        </div>
     );
 };

@@ -16,7 +16,7 @@ interface PeriodeSelectProps {
 export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     value,
     onValueChange,
-    label = "Sélectionner une période",
+    label = "",
     className = "",
     calendrierResult,
     typeCalendrierId

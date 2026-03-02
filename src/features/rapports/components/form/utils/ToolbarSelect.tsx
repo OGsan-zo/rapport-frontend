@@ -11,28 +11,34 @@ export const ToolbarSelects = ({
   calendrierResult,
 }: ToolbarSelectsProps) => {
   return (
-    <>
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 w-full">
       {/* Select Type */}
-      <div className="flex items-center gap-2 px-3 border-r border-slate-200">
-        <span className="text-[9px] font-bold uppercase text-slate-400">Type :</span>
+      <div className="flex flex-col gap-1 w-full lg:w-auto lg:border-r lg:border-slate-200 lg:pr-4">
+        <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
+          Type de calendrier
+        </span>
         <TypeCalendrierSelect
           value={selectedTypeId}
           onValueChange={onTypeChange}
-          className="min-w-[160px] border-none bg-transparent shadow-none focus:ring-0"
+          className="w-full border-none bg-transparent shadow-none focus:ring-0"
         />
       </div>
 
       {/* Select Période */}
-      <div className="bg-slate-50 p-1 rounded-xl border border-slate-200 flex items-center gap-2">
-        <span className="text-[9px] font-black uppercase px-3 text-slate-500">Période :</span>
-        <PeriodeSelect
-          value={periodeValue}
-          onValueChange={onPeriodeChange}
-          typeCalendrierId={selectedTypeId}
-          calendrierResult={calendrierResult}
-          className="w-[260px] border-none bg-transparent focus:ring-0 shadow-none"
-        />
+      <div className="flex flex-col gap-1 w-full lg:w-auto">
+        <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
+          Période
+        </span>
+        <div className="bg-slate-50 px-3 py-1 rounded-xl border border-slate-200 w-full">
+          <PeriodeSelect
+            value={periodeValue}
+            onValueChange={onPeriodeChange}
+            typeCalendrierId={selectedTypeId}
+            calendrierResult={calendrierResult}
+            className="w-full border-none bg-transparent focus:ring-0 shadow-none"
+          />
+        </div>
       </div>
-    </>
+    </div>
   );
 };

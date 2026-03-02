@@ -13,13 +13,13 @@ export const MissingUsersToolbar: React.FC<MissingUsersToolbarProps> = ({
 }) => {
     return (
         <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
-            <ToolbarTitle 
-                title="Agents Manquants" 
-                description="Surveillance des transmissions de rapports" 
+            <ToolbarTitle
+                title="Agents Manquants"
+                description="Surveillance des transmissions de rapports"
             />
 
-            <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex flex-col sm:flex-row items-center gap-3">
-                <ToolbarSelects 
+            <div className="bg-slate-50 p-1.5 rounded-xl border border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+                <ToolbarSelects
                     selectedTypeId={selectedTypeId}
                     onTypeChange={(val) => {
                         setSelectedTypeId(val);

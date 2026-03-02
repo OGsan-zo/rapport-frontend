@@ -127,7 +127,7 @@ export const PeriodForm = () => {
                     <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Semaines Institutionnelles</h3>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm shadow-slate-100">
-                    <div className="overflow-y-auto max-h-[400px]">
+                    <div className="overflow-x-auto overflow-y-auto max-h-[400px]">
                         <table className="w-full border-collapse">
                             <thead className="bg-slate-50 border-b border-slate-200 text-left sticky top-0 z-10">
                                 <tr>

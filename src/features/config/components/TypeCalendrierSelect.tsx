@@ -14,7 +14,7 @@ interface TypeCalendrierSelectProps {
 export const TypeCalendrierSelect: React.FC<TypeCalendrierSelectProps> = ({
     value,
     onValueChange,
-    label = "Type de calendrier",
+    label = "",
     className = "",
 }) => {
     const { data, isLoading, error } = useTypeCalendriers();

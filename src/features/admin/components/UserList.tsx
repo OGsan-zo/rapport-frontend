@@ -54,7 +54,7 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
             </div>
 
             <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-                <div className="overflow-y-auto max-h-[500px]">
+                <div className="overflow-x-auto overflow-y-auto max-h-[500px]">
                     <table className="w-full text-left text-sm">
                         <thead className="sticky top-0 z-10 bg-slate-50 border-b border-slate-200">
                             <tr>
