@@ -9,11 +9,13 @@ import { RapportFooter } from "./sub/RapportFooter";
 interface RapportViewProps {
     data: ApiRapport[];
     isPrintMode?: boolean;
+    isPdf?: boolean;
 }
 
 export const RapportView: React.FC<RapportViewProps> = ({
     data,
-    isPrintMode = false
+    isPrintMode = false,
+    isPdf = true
 }) => {
     if (!data || data.length === 0) return null;
 
@@ -51,7 +53,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 <div className="flex flex-col gap-10">
                     {data.map((rapport, index) => (
                         <div key={rapport.id || index} className="w-full">
-                            <RapportTable rapport={rapport} />
+                            <RapportTable rapport={rapport} isPdf={isPdf} />
                         </div>
                     ))}
                 </div>

@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { callApiPost , callApiGet} from "@/lib/callApi";
+import { callApiPost , callApiGet, callApiPut } from "@/lib/callApi";
 
 export async function POST(request: NextRequest) {
   const requiredFields = [
@@ -12,4 +12,3 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   return callApiGet(request, "rapports");
 }
-

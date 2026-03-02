@@ -22,7 +22,10 @@ export const SupervisionView: React.FC = () => {
     const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
     const [entiteFilter, setEntiteFilter] = useState("");
 
-    // Hook d'exportation (qui ouvre dans un nouvel onglet)
+    // --- NOUVEL ÉTAT POUR LES POINTS ---
+    const [isPdfMode, setIsPdfMode] = useState<boolean>(true);
+
+    // Hook d'exportation
     const { exportToPdf, isGenerating } = usePdfExport();
 
     // Data for the hidden rendering zone
@@ -64,12 +67,13 @@ export const SupervisionView: React.FC = () => {
     const handleConsulter = async (reports: ApiRapport[]) => {
         if (reports.length === 0) return;
 
-        // Similaire à la logique Dashboard : rendu masqué puis export
+        // On s'assure que le mode PDF est activé (avec points)
+        setIsPdfMode(true);
+        
         const id = reports.length === 1 ? (reports[0].id || "temp") : "consolidation";
         setGeneratingId(id);
         setSelectedForPdf(reports);
 
-        // Laisser le temps au composant caché de se monter
         setTimeout(async () => {
             const filename = reports.length > 1
                 ? "Consolidation_Rapports.pdf"
@@ -85,6 +89,9 @@ export const SupervisionView: React.FC = () => {
     const handleExportWord = async (reports: ApiRapport[]) => {
         if (reports.length === 0) return;
 
+        // Désactivation des points pour l'export Word
+        setIsPdfMode(false);
+
         const id = reports.length === 1 ? (reports[0].id || "temp-word") : "consolidation-word";
         setGeneratingId(id);
         setSelectedForPdf(reports);
@@ -98,12 +105,14 @@ export const SupervisionView: React.FC = () => {
 
             setGeneratingId(null);
             setSelectedForPdf(null);
+            // On peut remettre par défaut après l'export
+            setIsPdfMode(true);
         }, 600);
     };
 
     return (
         <div className="space-y-10 pb-20">
-            {/* 1. Barre d'outils avec filtres et bouton Consulter la sélection */}
+            {/* 1. Barre d'outils */}
             <SupervisionToolbar
                 selectedTypeId={selectedTypeId}
                 setSelectedTypeId={setSelectedTypeId}
@@ -135,11 +144,15 @@ export const SupervisionView: React.FC = () => {
                 onPdfClick={(r) => handleConsulter([r])}
             />
 
-            {/* 4. ZONE DE RENDU MASQUÉE (Stratégie Dashboard) */}
+            {/* 4. ZONE DE RENDU MASQUÉE */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
                     <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        <RapportView data={selectedForPdf} isPrintMode={true} />
+                        <RapportView 
+                            data={selectedForPdf} 
+                            isPrintMode={true} 
+                            isPdf={isPdfMode} // Transmission de l'argument ici
+                        />
                     </div>
                 </div>
             )}
