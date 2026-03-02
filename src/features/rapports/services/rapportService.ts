@@ -179,11 +179,29 @@ export const rapportService = {
      * Enregistre un nouveau rapport avec la structure ApiRapport.
      */
     saveRapport: async (rapport: ApiRapport): Promise<ApiRapport> => {
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+        try {
+            // L'appel se fait sur la route interne de Next.js
+            const response = await fetch("/api/rapports", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(rapport),
+                // Désactiver le cache si vous voulez des données en temps réel
+                cache: "no-store" 
+            });
 
-        // Mise à jour locale du mock (attention à déclarer MOCK_RAPPORTS avec 'let')
-        MOCK_RAPPORTS = [rapport, ...MOCK_RAPPORTS];
-        
-        return rapport;
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+            }
+            const responseData = await response.json();
+            const data: ApiRapport = responseData.data;
+
+            // Tri par date de début décroissante (les plus récents en premier)
+            return data;
+        } catch (error) {
+            throw error;
+        }
     },
 };

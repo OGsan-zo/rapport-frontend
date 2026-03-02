@@ -14,7 +14,7 @@ import { ApiRapport } from "../../types";
 import { usePdfExport } from "../../hooks/usePdfExport";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
 import { useUser } from "@/features/auth/contexts/UserContext";
-
+import { rapportService } from "@/features/rapports/services/rapportService";
 export const ConsolidationForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -70,6 +70,8 @@ export const ConsolidationForm = () => {
     try {
       
       console.log("Payload :", rapportPreview);
+      await rapportService.saveRapport(rapportPreview);
+      router.push("/dashboard");
       alert("Rapport enregistré avec succès !");
     } catch (err) {
       console.error("Erreur :", err);
