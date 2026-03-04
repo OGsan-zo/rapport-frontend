@@ -209,7 +209,7 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                throw new Error(errorData.message || errorData.error|| `Erreur serveur: ${response.status}`);
             }
 
             const responseData = await response.json();
