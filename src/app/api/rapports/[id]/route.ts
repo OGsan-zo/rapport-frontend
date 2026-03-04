@@ -19,7 +19,7 @@ export async function PUT(
 ) {
   const { id } = await context.params;
 
-  const url = `/api/rapports/${id}`;
+  const url = `/rapports/${id}`;
 
   return await callApiPut(req, url, []);
 }

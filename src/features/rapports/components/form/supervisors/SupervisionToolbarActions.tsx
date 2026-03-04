@@ -40,6 +40,15 @@ export const SupervisionToolbarActions: React.FC<SupervisionToolbarActionsProps>
                     )}
                     <span>Word</span>
                 </button>
+
+                {/* Bouton Historique */}
+                <button
+                    onClick={() => { }} // Sera géré via SupervisionView ou prop si nécessaire
+                    className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-slate-600 hover:bg-slate-100 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all border border-slate-100 shadow-sm shadow-slate-100/50"
+                >
+                    <span>🕒</span>
+                    <span>Historique</span>
+                </button>
             </div>
 
             {/* Bouton Effacer (affiché seulement si filtre actif) */}

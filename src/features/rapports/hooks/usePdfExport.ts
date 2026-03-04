@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { pdfService } from "../services/pdfService";
+import { toast } from "react-hot-toast";
 
 export const usePdfExport = () => {
     const [isGenerating, setIsGenerating] = useState(false);
@@ -26,14 +27,15 @@ export const usePdfExport = () => {
 
             // Si le bloqueur de fenêtres surgissantes est actif
             if (!newWindow) {
-                alert("Veuillez autoriser les fenêtres surgissantes pour visualiser le PDF.");
+                toast.error("Veuillez autoriser les fenêtres surgissantes pour visualiser le PDF.");
             }
 
             // Nettoyage de l'URL après un délai (pour laisser le temps au navigateur de charger)
             setTimeout(() => URL.revokeObjectURL(url), 10000);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erreur lors de la génération du PDF:", error);
+            toast.error(error.message || "Erreur lors de la génération du PDF.");
         } finally {
             setIsGenerating(false);
         }

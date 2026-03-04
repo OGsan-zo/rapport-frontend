@@ -13,7 +13,7 @@ export const rapportService = {
                     "Content-Type": "application/json",
                 },
                 // Désactiver le cache si vous voulez des données en temps réel
-                cache: "no-store" 
+                cache: "no-store"
             });
 
             if (!response.ok) {
@@ -30,13 +30,11 @@ export const rapportService = {
         }
     },
 
-    /**
-     * Récupère tous les rapports avec les nouveaux chemins d'accès.
-     */
     getAllRapports: async (idCalendrier?: number): Promise<ApiRapport[]> => {
+        if (!idCalendrier || idCalendrier <= 0) throw new Error("ID Calendrier invalide");
         try {
             // L'appel se fait sur la route interne de Next.js
-            const response = await fetch(`/api/rapports/calendrier?idCalendrier=${encodeURIComponent(idCalendrier || 0)}`);
+            const response = await fetch(`/api/rapports/calendrier?idCalendrier=${encodeURIComponent(idCalendrier)}`);
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
@@ -65,7 +63,7 @@ export const rapportService = {
                 },
                 body: JSON.stringify(rapport),
                 // Désactiver le cache si vous voulez des données en temps réel
-                cache: "no-store" 
+                cache: "no-store"
             });
 
             if (!response.ok) {
@@ -111,7 +109,7 @@ export const rapportService = {
         try {
             // L'appel se fait sur la route interne de Next.js
             const body = {
-                id:idCalendrierUtilisateur
+                id: idCalendrierUtilisateur
             }
             const response = await fetch("/api/rapports/changerValidation", {
                 method: "POST",
@@ -120,7 +118,7 @@ export const rapportService = {
                 },
                 body: JSON.stringify(body),
                 // Désactiver le cache si vous voulez des données en temps réel
-                cache: "no-store" 
+                cache: "no-store"
             });
 
             if (!response.ok) {
@@ -132,6 +130,31 @@ export const rapportService = {
 
             // Tri par date de début décroissante (les plus récents en premier)
             return data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
+     * Récupère l'historique des modifications d'un rapport.
+     */
+    getHistorique: async (idUtilisateur: number, idCalendrier: number): Promise<ApiRapport[]> => {
+        if (!idCalendrier || idCalendrier <= 0) throw new Error("ID Calendrier invalide");
+        try {
+            const response = await fetch(`/api/rapports/historique?idUtilisateur=${idUtilisateur}&idCalendrier=${idCalendrier}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+            }
+            const responseData = await response.json();
+            return responseData.data || [];
         } catch (error) {
             throw error;
         }
