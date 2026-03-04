@@ -19,3 +19,6 @@ npm install axios
 
 # Pour tout mettre installer 
 npm install --legacy-peer-deps
+
+#Pour installer toast
+npm install react-hot-toast
