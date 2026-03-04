@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-// import { AuthProvider } from "@/features/auth/contexts/AuthContext";
 import { UserProvider } from "@/features/auth/contexts/UserContext";
+// 1. Importer le Toaster
+import { Toaster } from "react-hot-toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,18 +20,30 @@ export const metadata: Metadata = {
   description: "Rapport - Mesuspres",
 };
 
+// ... vos imports
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+    <html lang="fr">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <UserProvider>
           {children}
+          <Toaster 
+            position="top-right"
+            toastOptions={{
+              duration: 4000,
+              style: {
+                background: '#333',
+                color: '#fff',
+                fontSize: '12px',
+                fontWeight: 'bold',
+              },
+            }}
+          />
         </UserProvider>
       </body>
     </html>

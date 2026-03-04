@@ -27,3 +27,9 @@ export interface AuthResponse {
   user: User;
   token: string;
 }
+
+export interface UserContextType {
+  user: User | null;
+  refreshUser: () => Promise<void>; // Fonction pour forcer la mise à jour
+}
+
