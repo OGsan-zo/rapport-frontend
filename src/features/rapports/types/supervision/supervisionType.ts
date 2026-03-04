@@ -15,6 +15,7 @@ export interface SupervisionTableProps {
     isLoading: boolean;
     generatingId: number | string | null;
     onPdfClick: (rapport: ApiRapport) => void;
+    onHistoryClick: (rapport: ApiRapport) => void;
 }
 
 export interface SupervisionToolbarProps {

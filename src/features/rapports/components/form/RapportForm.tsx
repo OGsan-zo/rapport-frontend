@@ -15,6 +15,7 @@ import { usePdfExport } from "../../hooks/usePdfExport";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
 import { useUser } from "@/features/auth/contexts/UserContext";
 import { rapportService } from "@/features/rapports/services/rapportService";
+import { toast } from "react-hot-toast";
 export const ConsolidationForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -69,12 +70,13 @@ export const ConsolidationForm = () => {
     setIsSubmitting(true);
     try {
 
-      console.log("Payload :", rapportPreview);
+      // console.log("Payload :", rapportPreview);
       await rapportService.saveRapport(rapportPreview);
+      toast.success("Rapport enregistré avec succès !");
       router.push("/dashboard");
-      alert("Rapport enregistré avec succès !");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Erreur :", err);
+      toast.error(err.message || "Erreur lors de l'enregistrement du rapport.");
     } finally {
       setIsSubmitting(false);
     }

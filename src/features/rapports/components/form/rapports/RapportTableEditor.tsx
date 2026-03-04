@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect ,useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { ApiRapport } from "@/features/rapports/types"; // Ajustez l'import
 import { LigneActiviteEditor } from "../utils/LigneActiviteEditor";
@@ -11,10 +11,11 @@ import { toast } from "react-hot-toast"; // Ou votre système de notification
 
 interface RapportTableEditorProps {
   rapport: ApiRapport; // Obligatoire pour avoir l'ID du calendrier
+  activePeriodId: string; // Ajout de la période active
   onSuccess?: () => void;
 }
 
-export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess }) => {
+export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, activePeriodId, onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Initialisation du formulaire
@@ -43,8 +44,13 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
 
   // LOGIQUE DE SOUMISSION
   const onSubmit = async (data: any) => {
-    console.log("Données Formulaire:", data);
-    console.log("ID Rapport:", rapport);
+    const idCal = Number(activePeriodId);
+
+    if (!idCal || idCal <= 0) {
+      toast.error("Erreur : Période de calendrier non définie. Impossible d'enregistrer.");
+      return;
+    }
+
     if (!rapport.id) {
       toast.error("ID rapport manquant");
       return;
@@ -55,20 +61,21 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       // 1. Re-formater les données pour l'API
       const payload: ApiRapport = {
         ...rapport,
+        idCalendrier: idCal, // Utilisation de l'ID passé depuis le dashboard
         activites: data.lignes.map((l: any) => ({
           activite: { name: l.titre },
           effects: l.effects.filter((e: any) => e.value.trim() !== "").map((e: any) => ({ name: e.value })),
           impacts: l.impacts.filter((i: any) => i.value.trim() !== "").map((i: any) => ({ name: i.value }))
         }))
       };
-      console.log(payload);
-      // 2. Appel au service (on utilise l'ID du calendrier comme demandé par votre fonction)
+      console.log("Payload envoyé:", payload);
+      // 2. Appel au service
       await rapportService.updateRapport(rapport.id, payload);
-      
+
       toast.success("Rapport mis à jour avec succès");
       if (onSuccess) onSuccess();
     } catch (error: any) {
-    //   console.error(error);
+      //   console.error(error);
       toast.error(error.message || "Erreur lors de la mise à jour");
     } finally {
       setIsSubmitting(false);
@@ -76,8 +83,8 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit(onSubmit, (errors) => console.log("Erreurs Formulaire:", errors))} 
+    <form
+      onSubmit={handleSubmit(onSubmit, (errors) => console.log("Erreurs Formulaire:", errors))}
       className="space-y-6"
     >
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">

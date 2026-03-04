@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react"; // Ajout de useState
 import { SupervisionTableProps } from "@/features/rapports/types/supervision/supervisionType";
 import { rapportService } from "@/features/rapports/services/rapportService";
+import { toast } from "react-hot-toast";
 
 const formatDate = (dateStr?: string) => {
     if (!dateStr) return "N/A";
@@ -21,7 +22,8 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
     rapports: initialRapports, // On renomme pour l'utiliser comme valeur initiale
     isLoading,
     generatingId,
-    onPdfClick
+    onPdfClick,
+    onHistoryClick, // Added this prop
 }) => {
     // 1. Créer un état local pour la liste des rapports
     const [listRapports, setListRapports] = useState(initialRapports);
@@ -34,7 +36,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
 
     // 2. Fonction de mise à jour locale de l'UI
     const updateRapportStatusLocal = (id: number, newStatut: string) => {
-        setListRapports(prev => 
+        setListRapports(prev =>
             prev.map(r => r.id === id ? { ...r, statut: newStatut } : r)
         );
     };
@@ -46,16 +48,16 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
 
             // Appel API
             await rapportService.changerValidationRapport(id);
-            
+
             // 3. Changement d'état local selon le statut actuel
             // Si c'était VALIDE -> ça devient TRANSMIS (ou BROUILLON)
             // Si c'était TRANSMIS -> ça devient VALIDE
             const nextStatut = currentStatut === "VALIDE" ? "TRANSMIS" : "VALIDE";
             updateRapportStatusLocal(id, nextStatut);
 
-        } catch (error) {
+        } catch (error: any) {
             console.error("Erreur lors de la modification:", error);
-            alert("Une erreur est survenue.");
+            toast.error(error.message || "Une erreur est survenue lors de la validation.");
         } finally {
             setLocalValidatingId(null);
         }
@@ -120,6 +122,14 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
 
                                                 {/* Le texte change aussi selon l'état du chargement */}
                                                 {generatingId === rapport.id ? "Chargement..." : "Consulter"}
+                                            </button>
+
+                                            <button
+                                                onClick={() => onHistoryClick(rapport)}
+                                                title="Historique des modifications"
+                                                className="inline-flex items-center justify-center p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900 rounded-lg transition-all"
+                                            >
+                                                <span className="text-sm">🕒</span>
                                             </button>
                                         </td>
                                     </tr>

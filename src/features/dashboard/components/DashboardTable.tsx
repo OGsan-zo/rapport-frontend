@@ -11,13 +11,15 @@ interface DashboardTableProps {
     isLoading: boolean;
     generatingId: number | null;
     onPdfClick: (rapport: ApiRapport) => void;
+    activePeriodId: string;
 }
 
-export const DashboardTable: React.FC<DashboardTableProps> = ({ 
-    rapports, 
-    isLoading, 
-    generatingId, 
-    onPdfClick 
+export const DashboardTable: React.FC<DashboardTableProps> = ({
+    rapports,
+    isLoading,
+    generatingId,
+    onPdfClick,
+    activePeriodId
 }) => {
     // ÉTAT LOCAL : Rapport en cours d'édition
     const [editingRapport, setEditingRapport] = useState<ApiRapport | null>(null);
@@ -40,7 +42,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
             <div className="space-y-6">
                 <div className="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200">
                     <div className="flex items-center gap-4">
-                        <button 
+                        <button
                             onClick={() => setEditingRapport(null)}
                             className="p-2 hover:bg-white rounded-full transition-colors text-slate-500 hover:text-slate-900"
                         >
@@ -56,16 +58,17 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                 </div>
 
                 {/* Utilisation de l'éditeur que nous avons créé précédemment */}
-                <RapportTableEditor 
-                    rapport={editingRapport} 
+                <RapportTableEditor
+                    rapport={editingRapport}
+                    activePeriodId={activePeriodId} // Passage à l'éditeur
                     onSuccess={() => {
                         // setEditingRapport(null); // Ferme l'éditeur
                         // router.refresh();        // Rafraîchit les données serveur
-                    }} 
+                    }}
                 />
-                
+
                 <div className="flex justify-end gap-3 mt-6">
-                     <button 
+                    <button
                         onClick={() => setEditingRapport(null)}
                         className="px-6 py-3 text-xs font-black uppercase tracking-widest text-slate-500 hover:text-slate-800 transition-all"
                     >
