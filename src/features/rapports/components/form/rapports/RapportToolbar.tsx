@@ -22,7 +22,7 @@ export const RapportToolbar = ({
       
       {/* 1. Le Titre */}
       <ToolbarTitle 
-        title="Rapport Hebdomadaire" 
+        title="Rapport" 
         description="Consolidation des activités" 
       />
 
