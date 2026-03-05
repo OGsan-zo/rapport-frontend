@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Select } from "@/components/ui/select";
+import { AppSelect } from "@/features/common/components/ui/AppSelect";
 import { CalendrierResult } from "@/features/rapports/types/calendrier/calendrierType";
 
 interface PeriodeSelectProps {
@@ -24,8 +24,8 @@ export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     const allData = calendrierResult.data;
 
 
-    const data = typeCalendrierId 
-        ? allData.filter(p => p.typeCalendrier?.id == typeCalendrierId) 
+    const data = typeCalendrierId
+        ? allData.filter(p => p.typeCalendrier?.id == typeCalendrierId)
         : allData;
     const error = calendrierResult.error;
     const isLoading = calendrierResult.isLoading;
@@ -43,7 +43,7 @@ export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     const options = [
         { id: "", label: "Choisir une période..." },
         ...data.map((p) => ({
-            id: p.id,
+            id: p.id ?? "",
             label: `Du ${formatDate(p.dateDebut)} au ${formatDate(p.dateFin)}`,
         }))
     ];
@@ -57,7 +57,7 @@ export const PeriodeSelect: React.FC<PeriodeSelectProps> = ({
     }
 
     return (
-        <Select
+        <AppSelect
             label={label}
             options={options}
             value={value}

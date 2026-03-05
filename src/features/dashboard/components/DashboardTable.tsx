@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { ApiRapport } from "@/features/rapports/types";
 import { RapportTableEditor } from "@/features/rapports/components/form/rapports/RapportTableEditor";
 import { useRouter } from "next/navigation";
+import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkeleton";
 
 interface DashboardTableProps {
     rapports: ApiRapport[];
@@ -41,16 +42,16 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
     };
 
     // 2. Fonction de succès appelée par l'éditeur
-    const handleUpdateSuccess = (idPrecedent: number,updatedData: ApiRapport) => {
+    const handleUpdateSuccess = (idPrecedent: number, updatedData: ApiRapport) => {
         // Mise à jour de la liste locale (on remplace le vieux rapport par le nouveau)
         console.log("Updated Data:", updatedData);
-        setListRapports(prev => 
+        setListRapports(prev =>
             prev.map(r => r.id === idPrecedent ? updatedData : r)
         );
-        
+
         // Quitter le mode édition
         setEditingRapport(null);
-        
+
         // Optionnel : Forcer Next.js à rafraîchir le cache serveur
         router.refresh();
     };
@@ -73,9 +74,9 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                     </div>
                 </div>
 
-                <RapportTableEditor 
-                    rapport={editingRapport} 
-                    onSuccess={handleUpdateSuccess} 
+                <RapportTableEditor
+                    rapport={editingRapport}
+                    onSuccess={handleUpdateSuccess}
                 />
 
                 <div className="flex justify-end gap-3">
@@ -90,46 +91,48 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
     // --- VUE TABLEAU ---
     return (
         <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse min-w-[800px]">
-                    <thead>
-                        <tr className="bg-slate-50/50 border-b border-slate-200">
-                            <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
-                            <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
-                            <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
-                            <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                        {isLoading ? (
-                            <tr><td colSpan={4} className="p-10 text-center animate-pulse">Chargement...</td></tr>
-                        ) : listRapports.map((rapport) => (
-                            <tr key={rapport.id} className="hover:bg-slate-50/40 transition-colors">
-                                <td className="px-6 py-5 border-r border-slate-100">
-                                    <div className="text-sm font-black text-slate-900">Du {formatDate(rapport.calendrier.dateDebut)}</div>
-                                    <div className="text-[10px] font-medium text-slate-400 uppercase">au {formatDate(rapport.calendrier.dateFin)}</div>
-                                </td>
-                                <td className="px-6 py-4 border-r border-slate-100">
-                                    <span className="text-[11px] font-bold text-slate-600 uppercase">{rapport.user.entite || "N/A"}</span>
-                                </td>
-                                <td className="px-6 py-4 border-r border-slate-100 text-center">
-                                    <span className={`px-3 py-1 text-[9px] font-black uppercase rounded-md border ${statusClasses[rapport.statut || "EN COURS"]}`}>
-                                        {rapport.statut || "EN COURS"}
-                                    </span>
-                                </td>
-                                <td className="px-6 py-4 text-right space-x-2">
-                                    <button onClick={() => setEditingRapport(rapport)} className="px-4 py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-lg hover:bg-slate-700">
-                                        Modifier
-                                    </button>
-                                    <button onClick={() => onPdfClick(rapport)} disabled={generatingId === rapport.id} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-black uppercase rounded-lg">
-                                        {generatingId === rapport.id ? "..." : "PDF"}
-                                    </button>
-                                </td>
+            {isLoading ? (
+                <AppTableSkeleton rows={5} cols={4} />
+            ) : (
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse min-w-[800px]">
+                        <thead>
+                            <tr className="bg-slate-50/50 border-b border-slate-200">
+                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
+                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
+                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
+                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                            {listRapports.map((rapport: ApiRapport) => (
+                                <tr key={rapport.id} className="hover:bg-slate-50/40 transition-colors">
+                                    <td className="px-6 py-5 border-r border-slate-100">
+                                        <div className="text-sm font-black text-slate-900">Du {formatDate(rapport.calendrier.dateDebut)}</div>
+                                        <div className="text-[10px] font-medium text-slate-400 uppercase">au {formatDate(rapport.calendrier.dateFin)}</div>
+                                    </td>
+                                    <td className="px-6 py-4 border-r border-slate-100">
+                                        <span className="text-[11px] font-bold text-slate-600 uppercase">{rapport.user.entite || "N/A"}</span>
+                                    </td>
+                                    <td className="px-6 py-4 border-r border-slate-100 text-center">
+                                        <span className={`px-3 py-1 text-[9px] font-black uppercase rounded-md border ${statusClasses[rapport.statut || "EN COURS"]}`}>
+                                            {rapport.statut || "EN COURS"}
+                                        </span>
+                                    </td>
+                                    <td className="px-6 py-4 text-right space-x-2">
+                                        <button onClick={() => setEditingRapport(rapport)} className="px-4 py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-lg hover:bg-slate-700">
+                                            Modifier
+                                        </button>
+                                        <button onClick={() => onPdfClick(rapport)} disabled={generatingId === rapport.id} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-black uppercase rounded-lg">
+                                            {generatingId === rapport.id ? "..." : "PDF"}
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };

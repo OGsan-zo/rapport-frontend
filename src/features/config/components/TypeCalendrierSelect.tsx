@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Select } from "@/components/ui/select";
+import { AppSelect } from "@/features/common/components/ui/AppSelect";
 import { useTypeCalendriers } from "../hooks/useTypeCalendriers";
 
 interface TypeCalendrierSelectProps {
@@ -22,7 +22,7 @@ export const TypeCalendrierSelect: React.FC<TypeCalendrierSelectProps> = ({
     const options = [
         { id: "", label: "Choisir un type..." },
         ...data.map((type) => ({
-            id: type.id,
+            id: type.id ?? "",
             label: type.name,
         }))
     ];
@@ -36,7 +36,7 @@ export const TypeCalendrierSelect: React.FC<TypeCalendrierSelectProps> = ({
     }
 
     return (
-        <Select
+        <AppSelect
             label={label}
             options={options}
             value={value}
