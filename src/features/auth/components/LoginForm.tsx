@@ -17,7 +17,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
  * Formulaire de connexion sobre et professionnel.
  */
 export const LoginForm = () => {
-    const { login, isLoading, error, user } = useLogin();
+    const { login, isLoading, isRedirecting, error, user } = useLogin();
 
     const {
         register,
@@ -42,23 +42,39 @@ export const LoginForm = () => {
         login(data);
     };
 
-    if (user) {
+    /**
+     * Écran de Bienvenue / Transition (Post-Login)
+     */
+    if (isRedirecting && user) {
         return (
-            <div className="w-full max-w-sm p-8 bg-white border border-gray-300 rounded-lg shadow-sm text-center space-y-4">
+            <div className="w-full max-w-sm p-10 bg-white border border-slate-100 rounded-2xl shadow-xl space-y-8 text-center animate-in fade-in zoom-in duration-500">
                 <div className="flex justify-center">
-                    <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
-                        <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center relative">
+                        <div className="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-20" />
+                        <svg className="w-10 h-10 text-green-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
                         </svg>
                     </div>
                 </div>
-                <div>
-                    <h2 className="text-lg font-bold text-gray-900">Bienvenue, {user.entite}</h2>
-                    <p className="text-sm text-gray-500 mt-1">Connexion réussie. Redirection en cours…</p>
+
+                <div className="space-y-3">
+                    <div className="space-y-1">
+                        <p className="text-green-600 text-xs font-bold uppercase tracking-[0.2em]">Connexion réussie</p>
+                        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+                            Bienvenue, <span className="text-blue-600">{user.email.split('@')[0]}</span>
+                        </h2>
+                    </div>
+                    <p className="text-sm text-slate-400 font-medium leading-relaxed">
+                        Préparation de votre espace de travail pour <br />
+                        <span className="text-slate-900 font-bold">{user.entite}</span>
+                    </p>
                 </div>
-                <p className="text-xs text-gray-400">
-                    Rôle : <span className="font-semibold text-gray-600">{user.role}</span>
-                </p>
+
+                <div className="flex justify-center items-center gap-2 text-slate-300">
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
+                </div>
             </div>
         );
     }

@@ -19,18 +19,23 @@ export const useUser = () => {
 // 2. Le Composant Provider qui gère l'affectation
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     const fetchUser = async () => {
+        setIsLoading(true);
         try {
             const userData = await authService.checkAuth();
             setUser(userData);
         } catch (error) {
             setUser(null);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const logout = async () => {
+        setIsLoading(true);
         try {
             await authService.logout();
             setUser(null);
@@ -40,6 +45,8 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
             // On nettoie quand même l'état local au cas où
             setUser(null);
             router.push("/login");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -51,6 +58,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     // On passe l'objet complet au Provider
     const value: UserContextType = {
         user,
+        loading: isLoading,
         setUser,
         logout,
         refreshUser: fetchUser,

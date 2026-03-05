@@ -30,6 +30,7 @@ export interface AuthResponse {
 
 export interface UserContextType {
   user: User | null;
+  loading: boolean;
   setUser: (user: User | null) => void;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
