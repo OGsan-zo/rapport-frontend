@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { profileService } from "@/features/profile/services/profileService";
+import toast from "react-hot-toast";
 
 export default function SecurityPage() {
     const [password, setPassword] = useState("");
@@ -22,12 +23,15 @@ export default function SecurityPage() {
 
         try {
             const result = await profileService.updatePassword(password);
+            let message = result.message;
             if (result.success) {
-                setMessage({ type: "success", text: result.message });
+                setMessage({ type: "success", text: message });
                 setPassword("");
                 setConfirmPassword("");
+                toast.success(message);
             } else {
-                setMessage({ type: "error", text: "Une erreur est survenue." });
+                setMessage({ type: "error", text: message });
+                toast.error(message)
             }
         } catch (error) {
             setMessage({ type: "error", text: "Impossible de mettre à jour le mot de passe." });

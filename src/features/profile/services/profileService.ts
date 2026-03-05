@@ -14,7 +14,7 @@ export const profileService = {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ password }),
+                body: JSON.stringify({ mdp:password }),
             });
 
             const data = await response.json();
@@ -22,7 +22,7 @@ export const profileService = {
             if (!response.ok) {
                 return {
                     success: false,
-                    message: data.message || "Une erreur est survenue lors de la mise à jour du mot de passe."
+                    message: data.message ||data.error|| "Une erreur est survenue lors de la mise à jour du mot de passe."
                 };
             }
 
