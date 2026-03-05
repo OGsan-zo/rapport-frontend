@@ -48,7 +48,7 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
             idRole: Number(data.idRole)
         };
 
-        console.log("Payload envoyé:", payload);
+        // console.log("Payload envoyé:", payload);
 
         try {
             await adminService.createUser(payload);

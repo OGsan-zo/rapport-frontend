@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { formatLongDate } from "@/features/common/utils/dateUtils";
 import { periodeService } from "@/features/config/services/periodeService";
 import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
@@ -24,18 +25,6 @@ export const PeriodForm = () => {
     const [periods, setPeriods] = useState<CalendarPeriod[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
-
-    /**
- * Formate une date en : "DD Mois YYYY" (ex: 01 Janvier 2026)
- */
-    const formatLongDate = (dateString: string) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('fr-FR', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        }).replace(/^\w/, (c) => c.toUpperCase()); // Optionnel : met la première lettre du mois en majuscule
-    };
 
     const {
         register,

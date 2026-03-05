@@ -29,7 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 authService.logout();
                 router.push(login);
             }
-        } catch (err) {
+            } catch (err) {
             authService.logout();
             router.push(login);
         } finally {
@@ -46,9 +46,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         );
     }
 
-    if (!user || user.role !== "Admin") {
-        return null;
-    }
+    // if (!user || user.role !== "Admin") {
+    //     return null;
+    // }
 
     return (
         <AdminPilotageProvider>

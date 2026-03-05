@@ -134,6 +134,11 @@ Ce guide répertorie les points d'entrée techniques pour faire évoluer l'appli
     *   **Variable** : `onSubmit` / `register` (React Hook Form)
     *   **Explication** : Ajoutez le HTML du champ et liez-le avec `register`.
 
+*   **Action** : Ajouter une nouvelle fonctionnalité de recherche
+    *   **Fichier** : [src/app/dashboard/rapports/recherche/page.tsx](file:///home/zo-kely/Documents/Studies/ITU/Stage/ESPA/Mr-RADO/rapport-frontend/src/app/dashboard/rapports/recherche/page.tsx)
+    *   **Service** : [src/features/rapports/services/rechercheService.ts](file:///home/zo-kely/Documents/Studies/ITU/Stage/ESPA/Mr-RADO/rapport-frontend/src/features/rapports/services/rechercheService.ts)
+    *   **Explication** : Le module de recherche permet de filtrer les rapports par une date unique. Le service fait appel à `/api/rapports/recherche?date=...`.
+
 *   **Action** : Modifier la logique de calcul des stats
     *   **Fichier** : [src/features/admin/services/adminService.ts](file:///home/zo-kely/Documents/Studies/ITU/Stage/ESPA/Mr-RADO/rapport-frontend/src/features/admin/services/adminService.ts)
     *   **Composant** : `adminService.getAllUtilisateurs`
