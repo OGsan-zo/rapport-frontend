@@ -23,7 +23,7 @@ export const RapportToolbar = ({
       {/* 1. Le Titre */}
       <ToolbarTitle 
         title="Rapport" 
-        description="Consolidation des activités" 
+        description="Definition des activités" 
       />
 
       {/* Container Flex pour aligner correctement Selects et Boutons */}

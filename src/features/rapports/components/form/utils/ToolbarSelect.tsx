@@ -27,7 +27,7 @@ export const ToolbarSelects = ({
       {/* Select Période */}
       <div className="flex flex-col gap-1 w-full lg:w-auto">
         <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest ml-1">
-          Période institutionnelle
+          Période
         </span>
         <PeriodeSelect
           value={periodeValue}

@@ -31,12 +31,12 @@ export const DashboardToolbar: React.FC<DashboardToolbarProps> = ({
                         className="w-full sm:w-[280px] border-none bg-transparent shadow-none focus:ring-0"
                     />
                 </div> */}
-                <Link
+                {/* <Link
                     href="/dashboard/nouveau"
                     className="w-full sm:w-auto text-center px-8 py-2.5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-800 transition-all shadow-lg shadow-slate-200"
                 >
                     Nouveau
-                </Link>
+                </Link> */}
             </div>
         </div>
     );
