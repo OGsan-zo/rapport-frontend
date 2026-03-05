@@ -7,7 +7,12 @@ export const APP_CONSTANTS = {
         owner: process.env.NEXT_PUBLIC_COPYRIGHT_OWNER || 'MESUPRES',
         startYear: process.env.NEXT_PUBLIC_COPYRIGHT_YEAR || '2026'
     },
-    apiPrefix: '/api'
+    apiPrefix: '/api',
+    colors: {
+        mesupres: "#003366", // Bleu Profond MESUPRES
+        mesupresLight: "#e6f0ff",
+        mesupresHover: "#004080",
+    }
 };
 
 export const IMAGES = {
