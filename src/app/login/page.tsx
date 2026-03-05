@@ -1,6 +1,5 @@
-import React from "react";
 import { LoginForm } from "@/features/auth/components/LoginForm";
-import { IMAGES } from "@/features/common/constants";
+import { IMAGES } from "@/config/constants";
 import Image from "next/image";
 import Link from "next/link";
 

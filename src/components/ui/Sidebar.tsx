@@ -1,8 +1,8 @@
 import React, { useMemo, useEffect } from "react";
 import Link from "next/link";
-import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/features/auth/contexts/UserContext";
+import { APP_CONSTANTS, IMAGES } from "@/config/constants";
 
 interface MenuItem {
     label: string;
@@ -88,7 +88,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
             <div className="px-8 py-10 flex flex-col items-center text-center gap-6">
                 <img
                     src={IMAGES.LOGO_MESUPRES}
-                    alt="Logo MESUPRES"
+                    alt={`Logo ${APP_CONSTANTS.ministryName}`}
                     className="h-16 w-auto mix-blend-multiply object-contain transition-transform hover:scale-105 duration-300"
                 />
                 <div className="space-y-2">
@@ -97,7 +97,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                     </h1>
                     <div className="h-[1px] w-8 bg-slate-100 mx-auto" />
                     <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
-                        ESPA / DSINT
+                        {APP_CONSTANTS.appName} / {APP_CONSTANTS.departmentName}
                     </p>
                 </div>
             </div>

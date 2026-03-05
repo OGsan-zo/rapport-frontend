@@ -4,10 +4,12 @@ import React, { useState } from "react";
 import { Sidebar } from "../ui/Sidebar";
 import { Navbar } from "../ui/Navbar";
 import { useUser } from "@/features/auth/contexts/UserContext";
+import { APP_CONSTANTS } from "@/config/constants";
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const { user } = useUser();
+    const currentYear = new Date().getFullYear();
 
     return (
         <div className="flex min-h-screen bg-white font-sans selection:bg-black selection:text-white">
@@ -59,11 +61,11 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                     <footer className="py-10 px-10 border-t border-slate-50 mt-16">
                         <div className="flex flex-col md:flex-row justify-between items-center gap-4 max-w-7xl mx-auto w-full">
                             <p className="text-[9px] text-slate-300 font-medium uppercase tracking-[0.2em]">
-                                © 2026 — <span className="text-slate-400">DSINT</span> — MESUPRES
+                                © {APP_CONSTANTS.copyright.startYear} — {currentYear} — <span className="text-slate-400">{APP_CONSTANTS.departmentName}</span> — {APP_CONSTANTS.ministryName}
                             </p>
                             <div className="flex items-center gap-6">
                                 <span className="text-[9px] text-slate-200 font-medium uppercase tracking-widest whitespace-nowrap italic">
-                                    Direction des Systèmes d&apos;Information et du Numérique Technologique
+                                    {APP_CONSTANTS.departmentFullName}
                                 </span>
                             </div>
                         </div>

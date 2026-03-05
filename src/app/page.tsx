@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { IMAGES } from "@/features/common/constants";
+import { IMAGES } from "@/config/constants";
 
 /**
  * Page d'accueil - Modèle Landing Page SaaS / Tech.

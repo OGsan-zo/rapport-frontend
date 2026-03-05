@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useLogin } from "../hooks/useLogin";
+import { APP_CONSTANTS, IMAGES } from "@/config/constants";
 
 const loginSchema = z.object({
     email: z.string().email({ message: "Adresse email invalide." }),
@@ -50,9 +51,18 @@ export const LoginForm = () => {
         return (
             <div className="fixed inset-0 z-[100] bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500">
                 <div className="w-full max-w-[28rem] flex flex-col items-center text-center space-y-8 sm:space-y-10 animate-in zoom-in duration-700 ease-out">
+                    {/* Brand Identity Headliner */}
+                    <div className="animate-in slide-in-from-top-4 duration-1000 delay-100">
+                        <img
+                            src={IMAGES.LOGO_MESUPRES}
+                            alt={`Logo ${APP_CONSTANTS.ministryName}`}
+                            className="h-20 sm:h-24 w-auto mix-blend-multiply object-contain"
+                        />
+                    </div>
+
                     {/* Loader Élégant / Success Icon */}
                     <div className="relative">
-                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-green-50 rounded-full flex items-center justify-center relative shadow-sm border border-green-100">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 bg-green-50 rounded-full flex items-center justify-center relative shadow-sm border border-green-100">
                             <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25" />
                             <svg className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />

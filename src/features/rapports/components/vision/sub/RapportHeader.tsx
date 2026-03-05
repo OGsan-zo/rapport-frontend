@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { IMAGES } from "@/features/common/constants";
+import { APP_CONSTANTS, IMAGES } from "@/config/constants";
 
 interface RapportHeaderProps {
 }
@@ -30,7 +30,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
             <div className="flex items-center gap-3">
                 <div className="flex flex-col items-end">
                     <p className="text-[14px] font-black uppercase tracking-tighter leading-none" style={{ color: "#0f172a" }}>
-                        MESUPRES
+                        {APP_CONSTANTS.ministryName}
                     </p>
                     <p className="text-[8px] font-bold uppercase tracking-widest mt-0.5" style={{ color: "#94a3b8" }}>
                         Ministère
@@ -38,7 +38,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
                 </div>
                 <img
                     src={IMAGES.LOGO_MESUPRES}
-                    alt="Logo MESUPRES"
+                    alt={`Logo ${APP_CONSTANTS.ministryName}`}
                     className="w-14 h-auto object-contain"
                 />
             </div>
