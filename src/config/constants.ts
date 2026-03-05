@@ -5,7 +5,7 @@ export const APP_CONSTANTS = {
     departmentFullName: process.env.NEXT_PUBLIC_DEPARTMENT_FULL_NAME || "Direction des Systèmes d'Information et du Numérique Technologique",
     copyright: {
         owner: process.env.NEXT_PUBLIC_COPYRIGHT_OWNER || 'MESUPRES',
-        startYear: process.env.NEXT_PUBLIC_COPYRIGHT_YEAR || '2024'
+        startYear: process.env.NEXT_PUBLIC_COPYRIGHT_YEAR || '2026'
     },
     apiPrefix: '/api'
 };
