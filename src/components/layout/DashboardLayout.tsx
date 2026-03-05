@@ -58,14 +58,16 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                     </main>
 
                     {/* Footer Centralisé */}
-                    <footer className="py-10 px-10 border-t border-slate-50 mt-16">
-                        <div className="flex flex-col md:flex-row justify-between items-center gap-4 max-w-7xl mx-auto w-full">
-                            <p className="text-[9px] text-slate-300 font-medium uppercase tracking-[0.2em]">
-                                © {APP_CONSTANTS.copyright.startYear} — {currentYear} — <span className="text-slate-400">{APP_CONSTANTS.departmentName}</span> — {APP_CONSTANTS.ministryName}
+                    <footer className="py-10 px-10 border-t border-slate-100 mt-16">
+                        <div className="flex flex-col items-center justify-center gap-4 max-w-7xl mx-auto w-full text-center">
+                            {/* Changement en text-slate-900 pour le noir et text-center */}
+                            <p className="text-[9px] text-slate-900 font-semibold uppercase tracking-[0.2em]">
+                                © {currentYear} — <span className="text-black">{APP_CONSTANTS.departmentName}</span> — {APP_CONSTANTS.ministryName}
                             </p>
-                            <div className="flex items-center gap-6">
-                                <span className="text-[9px] text-slate-200 font-medium uppercase tracking-widest whitespace-nowrap italic">
-                                    {APP_CONSTANTS.departmentFullName}
+                            
+                            <div className="flex items-center justify-center gap-6">
+                                <span className="text-[9px] text-slate-900 font-medium uppercase tracking-widest whitespace-nowrap italic">
+                                    {/* Ton texte optionnel ici */}
                                 </span>
                             </div>
                         </div>

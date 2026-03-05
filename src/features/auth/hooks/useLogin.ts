@@ -14,6 +14,7 @@ export const useLogin = () => {
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [user, setUserLocal] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [notice, setNotice] = useState<string | null>(null);
     const { setUser } = useUser();
     const router = useRouter();
 
@@ -34,6 +35,14 @@ export const useLogin = () => {
 
             // Redirection après un délai de "courtoisie" pour laisser voir le message de bienvenue
             setTimeout(() => {
+                // const isFirstLogin = !response.user.dateValidation;
+
+                // if (isFirstLogin) {
+                //     setNotice("Première connexion : Veuillez personnaliser votre mot de passe.");
+                //     router.push("/dashboard/profile/security");
+                //     return;
+                // }
+
                 const role = response.user.role;
                 if (role === "Admin") {
                     router.push("/admin/supervision");
@@ -52,5 +61,5 @@ export const useLogin = () => {
         }
     };
 
-    return { login, isLoading, isRedirecting, error, user };
+    return { login, isLoading, isRedirecting, error, notice, user };
 };

@@ -123,7 +123,7 @@ export const LoginForm = () => {
                         {...register("email")}
                         id="email"
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder="entite@mesupres.mg"
                         className={`w-full px-3 py-2 border rounded text-sm text-gray-900 placeholder-gray-400 transition-colors outline-none focus:ring-2 focus:ring-blue-500 ${errors.email ? "border-red-500" : "border-slate-200"
                             }`}
                         disabled={isLoading}
@@ -176,7 +176,7 @@ export const LoginForm = () => {
                 </button>
             </form>
 
-            <div className="border-t border-gray-200 pt-4 space-y-3">
+            {/* <div className="border-t border-gray-200 pt-4 space-y-3">
                 <div className="flex gap-2">
                     <button
                         type="button"
@@ -198,7 +198,8 @@ export const LoginForm = () => {
                 <p className="text-xs text-gray-400 text-center">
                     Compte supérieur : utilisez un email contenant «&nbsp;admin&nbsp;»
                 </p>
-            </div>
+            </div> */}
+            
         </div>
     );
 };
