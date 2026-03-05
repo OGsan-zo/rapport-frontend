@@ -31,55 +31,9 @@ const ALL_LINKS: MenuItem[] = [
     },
 ];
 
-const UserBadgeSkeleton = () => (
-    <div className="px-8 py-4 animate-pulse">
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="h-10 w-10 rounded-full bg-slate-200" />
-            <div className="flex-1 space-y-2">
-                <div className="h-3 bg-slate-200 rounded w-24" />
-                <div className="h-2 bg-slate-100 rounded w-16" />
-            </div>
-        </div>
-    </div>
-);
-
-const UserBadge = ({ user }: { user: any }) => (
-    <div className="px-8 py-4 transition-all duration-500 ease-out translate-y-0 opacity-100">
-        <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-50 border border-slate-100 hover:border-blue-100 hover:bg-blue-50/30 transition-colors group">
-            <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm group-hover:bg-blue-600 group-hover:text-white transition-colors uppercase">
-                {user.email.substring(0, 2)}
-            </div>
-            <div className="flex-1 min-w-0">
-                <h2 className="text-[11px] font-bold text-slate-900 truncate uppercase tracking-wider">
-                    {user.email.split('@')[0]}
-                </h2>
-                <p className="text-[9px] font-medium text-slate-400 truncate uppercase tracking-widest mt-0.5">
-                    {user.role} — {user.entite}
-                </p>
-            </div>
-        </div>
-    </div>
-);
-
-const NavSkeleton = () => (
-    <div className="px-8 space-y-4 animate-pulse mt-6">
-        <div className="h-2 bg-slate-100 rounded w-12 mb-6" />
-        <div className="space-y-3">
-            {[1, 2, 3].map(i => (
-                <div key={i} className="h-8 bg-slate-50 rounded-lg w-full" />
-            ))}
-        </div>
-    </div>
-);
-
 export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
-    const { user, loading } = useUser();
+    const { user } = useUser();
     const pathname = usePathname();
-
-    // Surveillance du changement d'utilisateur (pour log ou triggers spécifiques)
-    useEffect(() => {
-        // console.log("Sidebar: User/Role changed", user?.role);
-    }, [user]);
 
     // Filtrage dynamique des liens via useMemo
     const menuItems = useMemo(() => {
@@ -131,34 +85,27 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                 </div>
             )}
 
-            <div className="px-8 py-8 flex flex-col gap-6">
-                <div className="flex items-center gap-4">
-                    <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="h-8 w-auto mix-blend-multiply" />
-                    <div className="h-6 w-[1px] bg-slate-200" />
-                    <img src={IMAGES.LOGO_MESUPRES} alt="Logo" className="h-8 w-auto mix-blend-multiply" />
-                </div>
-                <div>
-                    <h1 className="text-[11px] font-bold text-slate-900 tracking-[0.2em] uppercase leading-tight">
+            <div className="px-8 py-10 flex flex-col items-center text-center gap-6">
+                <img
+                    src={IMAGES.LOGO_MESUPRES}
+                    alt="Logo MESUPRES"
+                    className="h-16 w-auto mix-blend-multiply object-contain transition-transform hover:scale-105 duration-300"
+                />
+                <div className="space-y-2">
+                    <h1 className="text-[11px] font-bold text-slate-900 tracking-[0.25em] uppercase leading-tight">
                         Rapport d&apos;Activités
                     </h1>
-                    <p className="text-[9px] font-medium text-slate-400 uppercase tracking-widest mt-1">
+                    <div className="h-[1px] w-8 bg-slate-100 mx-auto" />
+                    <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
                         ESPA / DSINT
                     </p>
                 </div>
             </div>
 
-            {/* User Badge / Skeleton (Étape 1) */}
-            {loading ? <UserBadgeSkeleton /> : (user && <UserBadge user={user} />)}
-
-            {/* Navigation (Étape 2) */}
-            <nav className={`flex-1 overflow-y-auto transition-all duration-700 delay-150 ${loading ? 'opacity-0 translate-y-2' : 'opacity-100 translate-y-0'}`}>
-                {loading ? <NavSkeleton /> : (
-                    <>
-                        {renderSection("Navigation", "Navigation")}
-                        {renderSection("Pilotage", "Pilotage")}
-                        {renderSection("Administration", "Administration")}
-                    </>
-                )}
+            <nav className="flex-1 overflow-y-auto pt-4 transition-all duration-300">
+                {renderSection("Navigation", "Navigation")}
+                {renderSection("Pilotage", "Pilotage")}
+                {renderSection("Administration", "Administration")}
             </nav>
         </aside>
     );

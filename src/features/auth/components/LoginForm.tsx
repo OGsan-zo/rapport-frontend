@@ -44,36 +44,52 @@ export const LoginForm = () => {
 
     /**
      * Écran de Bienvenue / Transition (Post-Login)
+     * 100% Responsive & Pixel-Perfect
      */
     if (isRedirecting && user) {
         return (
-            <div className="w-full max-w-sm p-10 bg-white border border-slate-100 rounded-2xl shadow-xl space-y-8 text-center animate-in fade-in zoom-in duration-500">
-                <div className="flex justify-center">
-                    <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center relative">
-                        <div className="absolute inset-0 bg-green-100 rounded-full animate-ping opacity-20" />
-                        <svg className="w-10 h-10 text-green-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
+            <div className="fixed inset-0 z-[100] bg-white flex items-center justify-center p-4 sm:p-6 lg:p-8 animate-in fade-in duration-500">
+                <div className="w-full max-w-[28rem] flex flex-col items-center text-center space-y-8 sm:space-y-10 animate-in zoom-in duration-700 ease-out">
+                    {/* Loader Élégant / Success Icon */}
+                    <div className="relative">
+                        <div className="w-20 h-20 sm:w-24 sm:h-24 bg-green-50 rounded-full flex items-center justify-center relative shadow-sm border border-green-100">
+                            <div className="absolute inset-0 bg-green-200 rounded-full animate-ping opacity-25" />
+                            <svg className="w-10 h-10 sm:w-12 sm:h-12 text-green-500 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        {/* Subtle secondary loader circle */}
+                        <div className="absolute -inset-2 border-2 border-slate-50 border-t-blue-500 rounded-full animate-spin [animation-duration:3s]" />
                     </div>
-                </div>
 
-                <div className="space-y-3">
-                    <div className="space-y-1">
-                        <p className="text-green-600 text-xs font-bold uppercase tracking-[0.2em]">Connexion réussie</p>
-                        <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
-                            Bienvenue, <span className="text-blue-600">{user.email.split('@')[0]}</span>
-                        </h2>
+                    <div className="space-y-4 sm:space-y-6">
+                        <div className="space-y-2">
+                            <p className="text-green-600 text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.3em] opacity-80 animate-in slide-in-from-bottom-2 duration-700 delay-200">
+                                Connexion réussie
+                            </p>
+                            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight animate-in slide-in-from-bottom-3 duration-700 delay-300">
+                                Bienvenue, <span className="text-blue-600 inline-block">{user.email.split('@')[0]}</span>
+                            </h2>
+                        </div>
+
+                        <div className="h-[1px] w-12 bg-slate-100 mx-auto animate-in scale-x-0 duration-700 delay-400" />
+
+                        <p className="text-sm sm:text-base text-slate-400 font-medium leading-relaxed max-w-[18rem] sm:max-w-none mx-auto animate-in slide-in-from-bottom-4 duration-700 delay-500">
+                            Accès autorisé pour <br className="hidden sm:block" />
+                            <span className="text-slate-900 font-bold uppercase tracking-wider text-xs sm:text-sm">{user.entite}</span>
+                        </p>
                     </div>
-                    <p className="text-sm text-slate-400 font-medium leading-relaxed">
-                        Préparation de votre espace de travail pour <br />
-                        <span className="text-slate-900 font-bold">{user.entite}</span>
-                    </p>
-                </div>
 
-                <div className="flex justify-center items-center gap-2 text-slate-300">
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
-                    <div className="w-1.5 h-1.5 bg-blue-500 rounded-full animate-bounce" />
+                    {/* EliteBook Style Loading Indicator */}
+                    <div className="flex justify-center items-center gap-3 pt-4 sm:pt-6">
+                        {[0, 150, 300].map((delay, i) => (
+                            <div
+                                key={i}
+                                className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-blue-500 rounded-full animate-bounce"
+                                style={{ animationDelay: `${delay}ms` }}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         );

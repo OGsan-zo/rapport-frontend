@@ -40,7 +40,7 @@ export const useLogin = () => {
                 } else {
                     router.push("/dashboard/nouveau");
                 }
-            }, 1500);
+            }, 1200);
 
             return response.user;
         } catch (err: any) {
