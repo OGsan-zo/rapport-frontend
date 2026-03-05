@@ -16,7 +16,7 @@ interface MenuItem {
 const ALL_LINKS: MenuItem[] = [
     { label: "Dashboard", href: "/dashboard", roles: ["Admin", "Utilisateur"], section: "Navigation" },
     { label: "Nouveau", href: "/dashboard/nouveau", roles: ["Admin", "Utilisateur"], section: "Navigation" },
-    { label: "Supervision", href: "/admin/supervision", roles: ["Admin"], section: "Pilotage" },
+    { label: "Supervision", href: "/admin/supervision", roles: ["Admin","Supervisor"], section: "Pilotage" },
     { label: "Stats", href: "/admin/dashboard", roles: ["Admin"], section: "Administration" },
     { label: "Périodes", href: "/admin/periodes", roles: ["Admin"], section: "Administration" },
     {
