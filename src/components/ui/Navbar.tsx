@@ -44,7 +44,7 @@ export const Navbar: React.FC = () => {
             className="flex items-center gap-2.5 py-1.5 px-3 border border-slate-100 rounded-xl hover:bg-slate-50 transition-all active:scale-95 group"
           >
             <div className="h-6 w-6 bg-slate-100 text-slate-600 rounded-lg flex items-center justify-center text-[10px] font-black group-hover:bg-blue-600 group-hover:text-white transition-colors shadow-sm uppercase">
-              {/* {user?.entite?.substring(0, 2) || "U"} */}
+              {user?.entite?.substring(0, 2) || "U"}
             </div>
             <div className="flex flex-col items-start mr-1">
               <span className="text-[10px] font-bold text-slate-900 uppercase leading-none">Mon Compte</span>
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
           </button>
 
           {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-52 bg-white border border-slate-100 rounded-2xl shadow-2xl py-2 z-50 animate-in fade-in slide-in-from-top-2 duration-300 overflow-hidden">
+            <div className="absolute right-0 mt-2 w-64 bg-white border border-slate-100 rounded-2xl shadow-2xl py-2 z-50">
               <div className="px-4 py-3 border-b border-slate-50 mb-1 bg-slate-50/50">
                 <p className="text-[10px] font-medium text-slate-900 lowercase truncate">{user?.email}</p>
                 {/* <p className="text-[9px] text-slate-400 font-medium truncate mt-0.5 lowercase">{user?.email}</p> */}
