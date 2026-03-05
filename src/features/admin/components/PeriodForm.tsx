@@ -7,6 +7,7 @@ import * as z from "zod";
 import { periodeService } from "@/features/config/services/periodeService";
 import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
+import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkeleton";
 
 const periodSchema = z.object({
     debut: z.string().min(1, "La date de début est requise"),
@@ -174,7 +175,11 @@ export const PeriodForm = () => {
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {isLoading ? (
-                                    <tr><td colSpan={4} className="p-12 text-center text-slate-300 italic animate-pulse uppercase text-[10px] tracking-widest">Récupération des données...</td></tr>
+                                    <tr>
+                                        <td colSpan={4} className="p-0">
+                                            <AppTableSkeleton rows={8} cols={4} className="border-0 shadow-none rounded-none" />
+                                        </td>
+                                    </tr>
                                 ) : (
                                     periods.map((p: CalendarPeriod) => (
                                         <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">

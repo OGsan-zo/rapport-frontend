@@ -1,8 +1,9 @@
-import React, { useMemo, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+"use client";
+
+import React, { useMemo, useState, useEffect } from "react";
 import { useUser } from "@/features/auth/contexts/UserContext";
 import { APP_CONSTANTS, IMAGES } from "@/config/constants";
+import { SidebarItem } from "./SidebarItem";
 
 interface MenuItem {
     label: string;
@@ -33,21 +34,17 @@ const ALL_LINKS: MenuItem[] = [
 
 export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
     const { user } = useUser();
-    const pathname = usePathname();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     // Filtrage dynamique des liens via useMemo
     const menuItems = useMemo(() => {
         if (!user) return [];
         return ALL_LINKS.filter(link => link.roles.includes(user.role));
     }, [user]);
-
-    const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
-
-    const linkClass = (href: string) =>
-        `flex items-center gap-3 px-8 py-2.5 text-[11px] font-medium uppercase tracking-widest transition-all ${isActive(href)
-            ? "text-blue-600 bg-blue-50/50 border-r-2 border-blue-500"
-            : "text-slate-500 hover:text-slate-900 border-r-2 border-transparent hover:bg-slate-50"
-        }`;
 
     const renderSection = (section: MenuItem["section"], title: string) => {
         const items = menuItems.filter(item => item.section === section);
@@ -59,14 +56,27 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                     <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">{title}</span>
                 </div>
                 {items.map(item => (
-                    <Link key={item.href} href={item.href} className={linkClass(item.href)}>
-                        {item.icon}
-                        {item.label}
-                    </Link>
+                    <SidebarItem
+                        key={item.href}
+                        label={item.label}
+                        href={item.href}
+                        icon={item.icon}
+                        onClick={onClose}
+                    />
                 ))}
             </div>
         );
     };
+
+    if (!mounted) {
+        return (
+            <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50">
+                <div className="px-8 py-10 flex flex-col items-center text-center gap-6">
+                    <div className="h-16 w-16 bg-slate-50 flex items-center justify-center rounded-lg animate-pulse" />
+                </div>
+            </aside>
+        );
+    }
 
     return (
         <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50 transition-all shadow-sm">

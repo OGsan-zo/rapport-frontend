@@ -11,33 +11,31 @@ export const ToolbarSelects = ({
   calendrierResult,
 }: ToolbarSelectsProps) => {
   return (
-    <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-3 w-full">
+    <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-4 w-full">
       {/* Select Type */}
-      <div className="flex flex-col gap-1 w-full lg:w-auto lg:border-r lg:border-slate-200 lg:pr-4">
-        <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
+      <div className="flex flex-col gap-1 w-full lg:w-auto lg:border-r lg:border-slate-100 lg:pr-6">
+        <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest ml-1">
           Type de calendrier
         </span>
         <TypeCalendrierSelect
           value={selectedTypeId}
           onValueChange={onTypeChange}
-          className="w-full border-none bg-transparent shadow-none focus:ring-0"
+          className="min-w-[200px]"
         />
       </div>
 
       {/* Select Période */}
       <div className="flex flex-col gap-1 w-full lg:w-auto">
-        <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
-          Période
+        <span className="text-[9px] font-black uppercase text-slate-400 tracking-widest ml-1">
+          Période institutionnelle
         </span>
-        <div className="bg-slate-50 px-3 py-1 rounded-xl border border-slate-200 w-full">
-          <PeriodeSelect
-            value={periodeValue}
-            onValueChange={onPeriodeChange}
-            typeCalendrierId={selectedTypeId}
-            calendrierResult={calendrierResult}
-            className="w-full border-none bg-transparent focus:ring-0 shadow-none"
-          />
-        </div>
+        <PeriodeSelect
+          value={periodeValue}
+          onValueChange={onPeriodeChange}
+          typeCalendrierId={selectedTypeId}
+          calendrierResult={calendrierResult}
+          className="min-w-[280px]"
+        />
       </div>
     </div>
   );

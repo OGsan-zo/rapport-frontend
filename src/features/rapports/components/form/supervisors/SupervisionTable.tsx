@@ -7,6 +7,7 @@ import { rapportService } from "@/features/rapports/services/rapportService";
 import { RapportTableEditor } from "@/features/rapports/components/form/rapports/RapportTableEditor";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkeleton";
 
 const formatDate = (dateStr?: string) => {
     if (!dateStr) return "N/A";
@@ -43,11 +44,11 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
 
     // --- LOGIQUE DE MISE À JOUR LOCALE ---
     const handleUpdateSuccess = (idPrecedent: number, updatedRapport: ApiRapport) => {
-    // 1. Mise à jour locale (pour l'affichage immédiat)
+        // 1. Mise à jour locale (pour l'affichage immédiat)
         setListRapports(prev =>
             prev.map(r => r.id === idPrecedent ? updatedRapport : r)
         );
-        
+
         // 2. Notification du parent
         if (onUpdate) {
             onUpdate(idPrecedent, updatedRapport);
@@ -55,7 +56,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
 
         setEditingRapport(null);
         // Optionnel : router.refresh() si vous voulez forcer Next.js à resynchroniser le serveur
-        router.refresh(); 
+        router.refresh();
     };
 
     const handleValidateInternal = async (id?: number, currentStatut?: string) => {
@@ -91,9 +92,9 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                     </div>
                 </div>
 
-                <RapportTableEditor 
-                    rapport={editingRapport} 
-                    onSuccess={handleUpdateSuccess} 
+                <RapportTableEditor
+                    rapport={editingRapport}
+                    onSuccess={handleUpdateSuccess}
                 />
 
                 <button onClick={() => setEditingRapport(null)} className="text-xs font-black uppercase text-slate-400 hover:text-slate-600">
@@ -106,86 +107,88 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
     // --- VUE TABLEAU ---
     return (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-            <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                    <thead className="bg-slate-50/50 border-b border-slate-200">
-                        <tr>
-                            <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
-                            <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
-                            <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
-                            <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                        {isLoading ? (
-                            Array(4).fill(0).map((_, i) => <tr key={i}><td colSpan={4} className="p-10 text-center text-slate-400">Chargement...</td></tr>)
-                        ) : listRapports.length > 0 ? (
-                            listRapports.map((rapport) => {
-                                const statut = (rapport as any).statut || "EN COURS";
-                                const isValide = statut === "VALIDE";
-                                const dynamicButtonClass = buttonStatusClasses[statut] || buttonStatusClasses.DEFAULT;
+            {isLoading ? (
+                <AppTableSkeleton rows={6} cols={4} />
+            ) : (
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                        <thead className="bg-slate-50/50 border-b border-slate-200">
+                            <tr>
+                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
+                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
+                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
+                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                            {listRapports.length > 0 ? (
+                                listRapports.map((rapport: ApiRapport) => {
+                                    const statut = (rapport as any).statut || "EN COURS";
+                                    const isValide = statut === "VALIDE";
+                                    const dynamicButtonClass = buttonStatusClasses[statut] || buttonStatusClasses.DEFAULT;
 
-                                return (
-                                    <tr key={rapport.id} className="hover:bg-slate-50/50 transition-colors">
-                                        <td className="px-6 py-5">
-                                            <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user?.entite}</div>
-                                            <div className="text-[10px] text-slate-400">{rapport.user?.email}</div>
-                                        </td>
-                                        <td className="px-6 py-5 text-xs text-slate-500 italic">
-                                            Du {formatDate(rapport.calendrier?.dateDebut)} au {formatDate(rapport.calendrier?.dateFin)}
-                                        </td>
-                                        <td className="px-6 py-5 text-center">
-                                            <span className={`px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full ${statusClasses[statut] || statusClasses.TRANSMIS}`}>
-                                                {statut}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-5 text-right flex justify-end gap-2">
-                                            {/* NOUVEAU BOUTON MODIFIER */}
-                                            <button
-                                                onClick={() => setEditingRapport(rapport)}
-                                                className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-900 hover:text-white rounded-lg transition-all"
-                                                title="Modifier le contenu"
-                                            >
-                                                ✏️
-                                            </button>
+                                    return (
+                                        <tr key={rapport.id} className="hover:bg-slate-50/50 transition-colors">
+                                            <td className="px-6 py-5">
+                                                <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user?.entite}</div>
+                                                <div className="text-[10px] text-slate-400">{rapport.user?.email}</div>
+                                            </td>
+                                            <td className="px-6 py-5 text-xs text-slate-500 italic">
+                                                Du {formatDate(rapport.calendrier?.dateDebut)} au {formatDate(rapport.calendrier?.dateFin)}
+                                            </td>
+                                            <td className="px-6 py-5 text-center">
+                                                <span className={`px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full ${statusClasses[statut] || statusClasses.TRANSMIS}`}>
+                                                    {statut}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-5 text-right flex justify-end gap-2">
+                                                {/* NOUVEAU BOUTON MODIFIER */}
+                                                <button
+                                                    onClick={() => setEditingRapport(rapport)}
+                                                    className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-900 hover:text-white rounded-lg transition-all"
+                                                    title="Modifier le contenu"
+                                                >
+                                                    ✏️
+                                                </button>
 
-                                            <button
-                                                onClick={() => handleValidateInternal(rapport.id, statut)}
-                                                disabled={localValidatingId === rapport.id}
-                                                className={`inline-flex items-center gap-2 px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-md disabled:opacity-70 ${dynamicButtonClass}`}
-                                            >
-                                                {localValidatingId === rapport.id ? (
-                                                    <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                                                ) : (
-                                                    <span>{isValide ? "✖" : "✅"}</span>
-                                                )}
-                                                {isValide ? "Annuler" : "Valider"}
-                                            </button>
+                                                <button
+                                                    onClick={() => handleValidateInternal(rapport.id, statut)}
+                                                    disabled={localValidatingId === rapport.id}
+                                                    className={`inline-flex items-center gap-2 px-4 py-2 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-md disabled:opacity-70 ${dynamicButtonClass}`}
+                                                >
+                                                    {localValidatingId === rapport.id ? (
+                                                        <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                                                    ) : (
+                                                        <span>{isValide ? "✖" : "✅"}</span>
+                                                    )}
+                                                    {isValide ? "Annuler" : "Valider"}
+                                                </button>
 
-                                            <button
-                                                onClick={() => onPdfClick(rapport)}
-                                                disabled={generatingId === rapport.id}
-                                                className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-md"
-                                            >
-                                                {generatingId === rapport.id ? "..." : "Consulter"}
-                                            </button>
+                                                <button
+                                                    onClick={() => onPdfClick(rapport)}
+                                                    disabled={generatingId === rapport.id}
+                                                    className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 text-white hover:bg-slate-800 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all shadow-md"
+                                                >
+                                                    {generatingId === rapport.id ? "..." : "Consulter"}
+                                                </button>
 
-                                            <button
-                                                onClick={() => onHistoryClick(rapport)}
-                                                className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg transition-all"
-                                            >
-                                                🕒
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            })
-                        ) : (
-                            <tr><td colSpan={4} className="py-20 text-center text-slate-400 uppercase text-[10px] font-black">Aucun rapport.</td></tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
+                                                <button
+                                                    onClick={() => onHistoryClick(rapport)}
+                                                    className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg transition-all"
+                                                >
+                                                    🕒
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                })
+                            ) : (
+                                <tr><td colSpan={4} className="py-20 text-center text-slate-400 uppercase text-[10px] font-black">Aucun rapport.</td></tr>
+                            )}
+                        </tbody>
+                    </table>
+                </div>
+            )}
         </div>
     );
 };
