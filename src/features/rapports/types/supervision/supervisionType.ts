@@ -16,6 +16,7 @@ export interface SupervisionTableProps {
     generatingId: number | string | null;
     onPdfClick: (rapport: ApiRapport) => void;
     onHistoryClick: (rapport: ApiRapport) => void;
+    onUpdate?: (idPrecedent: number, updatedRapport: ApiRapport) => void;
 }
 
 export interface SupervisionToolbarProps {

@@ -30,6 +30,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
     generatingId,
     onPdfClick,
     onHistoryClick,
+    onUpdate
 }) => {
     const [listRapports, setListRapports] = useState<ApiRapport[]>(initialRapports);
     const [localValidatingId, setLocalValidatingId] = useState<number | null>(null);
@@ -41,13 +42,20 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
     }, [initialRapports]);
 
     // --- LOGIQUE DE MISE À JOUR LOCALE ---
-    const handleUpdateSuccess = (idPrecedent: number,updatedRapport: ApiRapport) => {
+    const handleUpdateSuccess = (idPrecedent: number, updatedRapport: ApiRapport) => {
+    // 1. Mise à jour locale (pour l'affichage immédiat)
         setListRapports(prev =>
             prev.map(r => r.id === idPrecedent ? updatedRapport : r)
         );
+        
+        // 2. Notification du parent
+        if (onUpdate) {
+            onUpdate(idPrecedent, updatedRapport);
+        }
+
         setEditingRapport(null);
-        // toast.success("Rapport modifié avec succès");
-        router.refresh();
+        // Optionnel : router.refresh() si vous voulez forcer Next.js à resynchroniser le serveur
+        router.refresh(); 
     };
 
     const handleValidateInternal = async (id?: number, currentStatut?: string) => {
@@ -59,7 +67,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
             setListRapports(prev =>
                 prev.map(r => r.id === id ? { ...r, statut: nextStatut } : r)
             );
-            toast.success(`Statut mis à jour : ${nextStatut}`);
+            // toast.success(`Statut mis à jour : ${nextStatut}`);
         } catch (error: any) {
             toast.error(error.message || "Une erreur est survenue lors de la validation.");
         } finally {
@@ -113,7 +121,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                             Array(4).fill(0).map((_, i) => <tr key={i}><td colSpan={4} className="p-10 text-center text-slate-400">Chargement...</td></tr>)
                         ) : listRapports.length > 0 ? (
                             listRapports.map((rapport) => {
-                                const statut = (rapport as any).statut || "TRANSMIS";
+                                const statut = (rapport as any).statut || "EN COURS";
                                 const isValide = statut === "VALIDE";
                                 const dynamicButtonClass = buttonStatusClasses[statut] || buttonStatusClasses.DEFAULT;
 
