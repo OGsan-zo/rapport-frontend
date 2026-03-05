@@ -55,35 +55,42 @@ export const exportToPdf = async (elementId: string, filename: string) => {
  * @param elementId The ID of the HTML element to capture.
  * @param filename The name of the resulting Word file.
  */
-export const exportToWord = (elementId: string, filename: string) => {
+export const exportToWord = async (elementId: string, filename: string) => {
     const element = document.getElementById(elementId);
-    if (!element) {
-        console.error(`Element with ID ${elementId} not found.`);
-        return;
-    }
+    if (!element) return;
 
-    // 1. Get the HTML content
-    const htmlContent = element.innerHTML;
+    // 1. Conversion de toutes les images en Base64 pour qu'elles soient "embarquées"
+    const convertImagesToBase64 = async (parent: HTMLElement) => {
+        const imgs = parent.getElementsByTagName('img');
+        for (const img of Array.from(imgs)) {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.naturalWidth;
+            canvas.height = img.naturalHeight;
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+                ctx.drawImage(img, 0, 0);
+                img.src = canvas.toDataURL("image/png");
+                // On fixe la largeur pour Word
+                img.setAttribute('width', '60'); 
+            }
+        }
+    };
 
-    // 2. Prepare the Word-compatible HTML wrapper
-    // We include Office namespaces and specific styles to ensure fidelity.
+    const clone = element.cloneNode(true) as HTMLElement;
+    await convertImagesToBase64(clone);
+
+    const htmlContent = clone.innerHTML;
+
+    // 2. Préparation du document avec un style spécifique pour Word
     const fileContent = `
-        <html xmlns:o='urn:schemas-microsoft-com:office:office' 
-              xmlns:w='urn:schemas-microsoft-com:office:word' 
-              xmlns='http://www.w3.org/TR/REC-html40'>
+        <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
         <head>
             <meta charset='utf-8'>
-            <title>Export Rapport Word</title>
             <style>
-                /* Force standard Word table behaviors */
-                table { border-collapse: collapse; width: 100%; border: 1px solid black; }
-                th, td { border: 1px solid black; padding: 10px; vertical-align: top; }
-                
-                /* Mapping for our specific colors */
-                .entity-header { background-color: #D1E7B9 !important; mso-shading: #D1E7B9; }
-                .period-header { background-color: #E2D1F9 !important; mso-shading: #E2D1F9; }
-                
-                body { font-family: 'Times New Roman', serif; font-size: 11pt; }
+                /* Style pour simuler le Flexbox que Word ne comprend pas */
+                .header-table { width: 100%; border: none; margin-bottom: 20pt; }
+                .header-table td { border: none; vertical-align: middle; }
+                p { margin: 0; padding: 0; }
             </style>
         </head>
         <body>
@@ -92,23 +99,9 @@ export const exportToWord = (elementId: string, filename: string) => {
         </html>
     `;
 
-    // 3. Create a Blob and trigger download
-    // '\ufeff' (BOM) helps Word identify the UTF-8 encoding
-    const blob = new Blob(['\ufeff', fileContent], {
-        type: 'application/msword'
-    });
-
-    const url = URL.createObjectURL(blob);
+    const blob = new Blob(['\ufeff', fileContent], { type: 'application/msword' });
     const link = document.createElement('a');
-    link.href = url;
-
-    const finalFilename = filename.toLowerCase().endsWith('.doc') ? filename : `${filename}.doc`;
-    link.download = finalFilename;
-
-    document.body.appendChild(link);
+    link.href = URL.createObjectURL(blob);
+    link.download = filename + ".doc";
     link.click();
-
-    // Cleanup
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
 };

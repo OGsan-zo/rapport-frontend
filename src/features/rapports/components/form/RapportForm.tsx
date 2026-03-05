@@ -34,7 +34,7 @@ export const ConsolidationForm = () => {
   const calendrierResult = usePeriodes(true);
   const watchedValues = watch();
 
-  const user = useUser();
+  const {user} = useUser();
   const rapportPreview = useMemo<ApiRapport>(() => {
     const selectedCalendrier = calendrierResult.data?.find(
       (c) => c.id === Number(watchedValues.idCalendrier)
