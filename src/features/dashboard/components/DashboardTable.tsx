@@ -120,10 +120,21 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                                         </span>
                                     </td>
                                     <td className="px-6 py-4 text-right space-x-2">
-                                        <button onClick={() => setEditingRapport(rapport)} className="px-4 py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-lg hover:bg-slate-700">
-                                            Modifier
-                                        </button>
-                                        <button onClick={() => onPdfClick(rapport)} disabled={generatingId === rapport.id} className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-black uppercase rounded-lg">
+                                        {/* On affiche le bouton seulement si le statut n'est pas "VALIDE" */}
+                                        {rapport.statut !== "VALIDE" && (
+                                            <button 
+                                                onClick={() => setEditingRapport(rapport)} 
+                                                className="px-4 py-2 bg-slate-900 text-white text-[10px] font-black uppercase rounded-lg hover:bg-slate-700"
+                                            >
+                                                Modifier
+                                            </button>
+                                        )}
+
+                                        <button 
+                                            onClick={() => onPdfClick(rapport)} 
+                                            disabled={generatingId === rapport.id} 
+                                            className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-black uppercase rounded-lg"
+                                        >
                                             {generatingId === rapport.id ? "..." : "PDF"}
                                         </button>
                                     </td>

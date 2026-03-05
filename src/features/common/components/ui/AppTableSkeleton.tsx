@@ -36,21 +36,30 @@ export const AppTableSkeleton: React.FC<AppTableSkeletonProps> = ({
 
                 {/* Body Skeleton */}
                 <tbody>
-                    {Array.from({ length: rows }).map((_, rowIndex) => (
-                        <tr key={`row-${rowIndex}`} className="border-b border-slate-50/80 last:border-0 hover:bg-slate-50/20 transition-colors">
-                            {Array.from({ length: cols }).map((_, colIndex) => (
-                                <td key={`cell-${rowIndex}-${colIndex}`} className="px-6 py-4 whitespace-nowrap">
-                                    <div
-                                        className="h-2.5 bg-slate-100 rounded-full"
-                                        style={{
-                                            width: `${Math.floor(Math.random() * (90 - 40 + 1) + 40)}%`,
-                                            margin: "0 auto"
-                                        }}
-                                    />
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
+                {Array.from({ length: rows }).map((_, rowIndex) => (
+                    <tr 
+                    key={`row-${rowIndex}`} 
+                    className="border-b border-slate-50/80 last:border-0 hover:bg-slate-50/20 transition-colors"
+                    >
+                    {Array.from({ length: cols }).map((_, colIndex) => {
+                        // Logique déterministe : on crée une largeur entre 40% et 90% 
+                        // basée sur les index pour éviter le conflit serveur/client.
+                        const widthValue = 40 + ((rowIndex * 7 + colIndex * 13) % 51);
+                        
+                        return (
+                        <td key={`cell-${rowIndex}-${colIndex}`} className="px-6 py-4 whitespace-nowrap">
+                            <div
+                            className="h-2.5 bg-slate-100 rounded-full animate-pulse" // Ajout de animate-pulse pour l'effet skeleton
+                            style={{
+                                width: `${widthValue}%`,
+                                margin: "0 auto"
+                            }}
+                            />
+                        </td>
+                        );
+                    })}
+                    </tr>
+                ))}
                 </tbody>
             </table>
 
