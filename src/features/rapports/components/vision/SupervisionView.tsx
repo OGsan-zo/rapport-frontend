@@ -118,19 +118,27 @@ export const SupervisionView: React.FC = () => {
 
     // --- ACTIONS ---
     const handleConsulter = async (reports: ApiRapport[]) => {
-        if (reports.length === 0) return;
+        // 1. Filtrer pour ne garder que les rapports validés
+        const validReports = reports.filter(r => r.statut === "VALIDE");
 
-        // On s'assure que le mode PDF est activé (avec points)
+        // 2. Vérifier s'il reste des rapports après filtrage
+        if (validReports.length === 0) {
+            toast.error("Aucun rapport valide à exporter."); // Optionnel : prévenir l'utilisateur
+            return;
+        }
+
+        // On s'assure que le mode PDF est activé
         setIsPdfMode(true);
 
-        const id = reports.length === 1 ? (reports[0].id || "temp") : "consolidation";
+        // Utiliser 'validReports' au lieu de 'reports' pour la suite
+        const id = validReports.length === 1 ? (validReports[0].id || "temp") : "consolidation";
         setGeneratingId(id);
-        setSelectedForPdf(reports);
+        setSelectedForPdf(validReports);
 
         setTimeout(async () => {
-            const filename = reports.length > 1
-                ? "Consolidation_Rapports.pdf"
-                : `Rapport_${reports[0].user?.entite || "Inconnu"}.pdf`;
+            const filename = validReports.length > 1
+                ? "Consolidation_Rapports_Valides.pdf"
+                : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.pdf`;
 
             await exportToPdf("rapport-a4-container", filename);
 
@@ -140,25 +148,40 @@ export const SupervisionView: React.FC = () => {
     };
 
     const handleExportWord = async (reports: ApiRapport[]) => {
-        if (reports.length === 0) return;
+        // 1. Filtrer pour ne garder que les rapports dont le statut est "VALIDE"
+        const validReports = reports.filter(r => r.statut === "VALIDE");
 
-        // Désactivation des points pour l'export Word
+        // 2. Vérifier s'il y a des rapports valides avant de continuer
+        if (validReports.length === 0) {
+            toast.error("Aucun rapport valide trouvé pour l'export Word.");
+            return;
+        }
+
+        // Désactivation du mode PDF (points/styles spécifiques) pour l'export Word
         setIsPdfMode(false);
 
-        const id = reports.length === 1 ? (reports[0].id || "temp-word") : "consolidation-word";
+        // Utilisation de la liste filtrée 'validReports'
+        const id = validReports.length === 1 
+            ? (validReports[0].id || "temp-word") 
+            : "consolidation-word";
+            
         setGeneratingId(id);
-        setSelectedForPdf(reports);
+        setSelectedForPdf(validReports);
 
         setTimeout(() => {
-            const filename = reports.length > 1
-                ? "Consolidation_Rapports.doc"
-                : `Rapport_${reports[0].user?.entite || "Inconnu"}.doc`;
+            // Calcul du nom de fichier basé sur les rapports valides
+            const filename = validReports.length > 1
+                ? "Consolidation_Rapports_Valides.doc"
+                : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.doc`;
 
+            // Lancement de l'export
             exportToWord("rapport-a4-container", filename);
 
+            // Réinitialisation de l'état
             setGeneratingId(null);
             setSelectedForPdf(null);
-            // On peut remettre par défaut après l'export
+            
+            // On repasse en mode PDF par défaut (avec points)
             setIsPdfMode(true);
         }, 600);
     };
