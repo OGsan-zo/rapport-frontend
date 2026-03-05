@@ -97,7 +97,7 @@ export const rapportService = {
             }
 
             const responseData = await response.json();
-            const data: ApiRapport = responseData.data;
+            const data: ApiRapport = responseData.data.data;
 
             // Ici on peut trier ou traiter les données si nécessaire
             return data;

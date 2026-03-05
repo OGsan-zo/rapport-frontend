@@ -11,11 +11,10 @@ import { toast } from "react-hot-toast"; // Ou votre système de notification
 
 interface RapportTableEditorProps {
   rapport: ApiRapport; // Obligatoire pour avoir l'ID du calendrier
-  activePeriodId: string; // Ajout de la période active
-  onSuccess?: () => void;
+  onSuccess?: (idPrecedent: number,updatedRapport: ApiRapport) => void;
 }
 
-export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, activePeriodId, onSuccess }) => {
+export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Initialisation du formulaire
@@ -44,7 +43,6 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
 
   // LOGIQUE DE SOUMISSION
   const onSubmit = async (data: any) => {
-    const idCal = Number(activePeriodId);
 
     if (!rapport.id) {
       toast.error("ID rapport manquant");
@@ -63,12 +61,14 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
           impacts: l.impacts.filter((i: any) => i.value.trim() !== "").map((i: any) => ({ name: i.value }))
         }))
       };
-      console.log("Payload envoyé:", payload);
+      // console.log("Payload envoyé:", payload);
       // 2. Appel au service
-      await rapportService.updateRapport(rapport.id, payload);
-
+      const dataResponse = await rapportService.updateRapport(rapport.id, payload);
       toast.success("Rapport mis à jour avec succès");
-      if (onSuccess) onSuccess();
+      if (onSuccess) {
+        // Si votre API renvoie le rapport mis à jour, on l'utilise, sinon on passe le payload
+        onSuccess(rapport.id,dataResponse);
+      }
     } catch (error: any) {
       //   console.error(error);
       toast.error(error.message || "Erreur lors de la mise à jour");

@@ -79,7 +79,6 @@ export default function DashboardPage() {
                 isLoading={isLoading}
                 generatingId={generatingId}
                 onPdfClick={handlePdfClick}
-                activePeriodId={selectedPeriodId} // Passage de la période active
             />
 
             {/* Zone de rendu PDF masquée */}
