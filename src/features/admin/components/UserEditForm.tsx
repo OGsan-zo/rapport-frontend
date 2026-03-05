@@ -146,7 +146,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                     <input
                         {...register("email")}
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder="dsint@mesupres.mg"
                         className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.email ? "border-red-500" : "border-slate-300"}`}
                     />
                     {errors.email && <p className="text-[10px] text-red-600 font-bold">{errors.email.message}</p>}
@@ -158,7 +158,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                     <input
                         {...register("entite")}
                         type="text"
-                        placeholder="Ex: DSINT"
+                        placeholder="DSINT"
                         className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.entite ? "border-red-500" : "border-slate-300"}`}
                     />
                     {errors.entite && <p className="text-[10px] text-red-600 font-bold">{errors.entite.message}</p>}

@@ -168,6 +168,13 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                                                 </button>
                                                 
                                                 {/* ... boutons PDF et Historique */}
+                                                <button
+                                                    onClick={() => onHistoryClick(rapport)}
+                                                    className="p-2 bg-slate-100 text-slate-600 hover:bg-slate-200 rounded-lg transition-all"
+                                                    title="Voir l'historique"
+                                                >
+                                                    🕒
+                                                </button>
                                             </td>
                                         </tr>
                                     );
