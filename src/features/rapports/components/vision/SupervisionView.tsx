@@ -92,8 +92,9 @@ export const SupervisionView: React.FC = () => {
 
     // --- ACTIONS HISTORIQUE ---
     const handleOpenHistory = (rapport: ApiRapport) => {
-        if (rapport.user?.id && rapport.idCalendrier) {
-            fetchHistory(rapport.user.id, rapport.idCalendrier);
+        console.log("Rapport sélectionné:", rapport);
+        if (rapport.user?.id && rapport.calendrier.id) {
+            fetchHistory(rapport.user.id, rapport.calendrier.id);
             setViewMode("HISTORY_LIST");
         } else {
             toast.error("Informations insuffisantes pour charger l'historique.");
