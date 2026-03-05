@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useRef } from "react";
 import { useUser } from "@/features/auth/contexts/UserContext";
 import { APP_CONSTANTS, IMAGES } from "@/config/constants";
 import { SidebarItem } from "./SidebarItem";
+import Link from "next/link";
 
 interface MenuItem {
     label: string;
@@ -106,9 +107,9 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                         Rapport d&apos;Activités
                     </h1>
                     <div className="h-[1px] w-8 bg-slate-100 mx-auto" />
-                    <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
+                    {/* <p className="text-[9px] font-semibold text-slate-400 uppercase tracking-widest">
                         {APP_CONSTANTS.appName} / {APP_CONSTANTS.departmentName}
-                    </p>
+                    </p> */}
                 </div>
             </div>
 

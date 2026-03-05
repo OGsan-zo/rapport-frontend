@@ -137,7 +137,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                         ))}
                                     </ul>
                                 ) : (
-                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}>Aucun impact</span>
+                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}> </span>
                                 )}
                             </td>
                         </tr>

@@ -37,7 +37,7 @@ export default function LoginPage() {
                             Reporting Hebdomadaire
                         </h1>
                         <p className="text-gray-500 text-lg">
-                            Générez et centralisez vos rapports administratifs en quelques clics.
+                            Générez et centralisez vos rapports en quelques clics.
                         </p>
                     </div>
                 </div>
@@ -62,6 +62,7 @@ export default function LoginPage() {
                 </div>
 
                 <LoginForm />
+                <br />
 
                 <div className="text-center">
                     <p className="text-xs text-gray-400">

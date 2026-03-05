@@ -25,6 +25,18 @@ export const PeriodForm = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
 
+    /**
+ * Formate une date en : "DD Mois YYYY" (ex: 01 Janvier 2026)
+ */
+    const formatLongDate = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        }).replace(/^\w/, (c) => c.toUpperCase()); // Optionnel : met la première lettre du mois en majuscule
+    };
+
     const {
         register,
         handleSubmit,
@@ -160,38 +172,37 @@ export const PeriodForm = () => {
             <div className="lg:col-span-2 space-y-4">
                 <div className="flex items-center gap-3 mb-2">
                     <div className="h-0.5 w-4 bg-slate-900"></div>
-                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Semaines Institutionnelles</h3>
+                    <h3 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Semaines</h3>
                 </div>
                 <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm shadow-slate-100">
                     <div className="overflow-x-auto overflow-y-auto max-h-[400px]">
                         <table className="w-full border-collapse">
-                            <thead className="bg-slate-50 border-b border-slate-200 text-left sticky top-0 z-10">
+                            <thead className="bg-slate-50 border-b border-slate-200 sticky top-0 z-10">
                                 <tr>
-                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-400 w-16 text-center">ID</th>
-                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Période Institutionnelle</th>
-                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500">Type</th>
-                                    <th className="p-4 text-[10px] font-bold uppercase tracking-widest text-slate-500 text-center">Statut</th>
+                                    {/* text-center ajouté ici */}
+                                    <th className="p-4 text-[10px] font-bold uppercase border-r border-slate-200/50 tracking-widest text-slate-500 text-center">
+                                        Période
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-slate-100">
                                 {isLoading ? (
                                     <tr>
-                                        <td colSpan={4} className="p-0">
-                                            <AppTableSkeleton rows={8} cols={4} className="border-0 shadow-none rounded-none" />
+                                        <td colSpan={1} className="p-0">
+                                            <AppTableSkeleton rows={8} cols={1} className="border-0 shadow-none rounded-none" />
                                         </td>
                                     </tr>
                                 ) : (
                                     periods.map((p: CalendarPeriod) => (
                                         <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
-                                            <td className="p-4 text-[10px] font-bold text-slate-300 border-r border-slate-100 text-center">#{String(p.id).padStart(3, '0')}</td>
-                                            <td className="p-4 text-sm text-slate-700 font-bold border-r border-slate-100">
-                                                Semaine du {new Date(p.dateDebut).toLocaleDateString()} au {new Date(p.dateFin).toLocaleDateString()}
-                                            </td>
-                                            <td className="p-4 text-[10px] font-bold text-slate-500 border-r border-slate-100 uppercase tracking-wide">
-                                                {p.typeCalendrierName || "Standard"}
-                                            </td>
-                                            <td className="p-4 text-center">
-                                                <span className="px-2.5 py-1 bg-emerald-50 text-emerald-600 text-[9px] font-bold uppercase tracking-widest border border-emerald-100 rounded-md">Activée</span>
+                                            {/* text-center ajouté ici */}
+                                            <td className="p-4 text-sm text-slate-700 font-medium text-left border-r border-slate-100">
+                                                {/* justify-center pour centrer le contenu du flex */}
+                                                <div className="flex items-center justify-left gap-2">
+                                                    <span className="text-slate-600">
+                                                        Semaine du <span className="font-bold">{formatLongDate(p.dateDebut)}</span> au <span className="font-bold">{formatLongDate(p.dateFin)}</span>
+                                                    </span>
+                                                </div>
                                             </td>
                                         </tr>
                                     ))

@@ -44,7 +44,7 @@ export default function HomePage() {
                 <span className="text-slate-400">Rapports Hebdomadaires</span>
               </h1>
               <p className="text-lg text-slate-500 max-w-lg leading-relaxed font-medium">
-                Une solution moderne pour la collecte et le suivi des activités administratives du MESUPRES.
+                Une solution moderne pour la collecte et le suivi des activités du MESUPRES.
               </p>
             </div>
 
@@ -54,12 +54,6 @@ export default function HomePage() {
                 className="px-10 py-5 bg-slate-900 hover:bg-black text-white font-bold text-sm uppercase tracking-widest rounded-full transition-all shadow-xl shadow-slate-200 hover:scale-105 active:scale-95"
               >
                 Se connecter
-              </Link>
-              <Link
-                href="/signup"
-                className="text-sm font-bold text-slate-400 hover:text-slate-900 py-2 border-b-2 border-transparent hover:border-slate-900 transition-all uppercase tracking-widest"
-              >
-                Créer un compte
               </Link>
             </div>
           </div>
@@ -140,7 +134,7 @@ export default function HomePage() {
       {/* Footer Institutionnel */}
       <footer className="py-12 border-t border-slate-100 text-center">
         <p className="text-slate-400 text-[10px] uppercase tracking-[0.4em] font-medium font-sans">
-          © {currentYear} — Ministère de l&apos;Enseignement Supérieur (MESUPRES)
+          © {currentYear} — DSINT-MESUPRES
         </p>
       </footer>
 
