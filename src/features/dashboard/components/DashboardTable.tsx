@@ -63,7 +63,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                     activePeriodId={activePeriodId} // Passage à l'éditeur
                     onSuccess={() => {
                         setEditingRapport(null); // Ferme l'éditeur
-                        router.push("/dashboard");        // Rafraîchit les données serveur
+                        router.refresh();        // Rafraîchit les données serveur
                     }}
                 />
 
