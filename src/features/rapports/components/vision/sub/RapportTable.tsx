@@ -106,7 +106,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                     color: "#000000"
                                 }}
                             >
-                                {act.activite?.name || "N/A"}
+                                {act.activite?.name || " "}
                             </td>
                             {/* Effects */}
                             <td style={{ border: "1px solid black", padding: "12px", verticalAlign: "top" }}>
@@ -121,7 +121,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                         ))}
                                     </ul>
                                 ) : (
-                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}>Aucun effet</span>
+                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}> </span>
                                 )}
                             </td>
                             {/* Impacts */}
