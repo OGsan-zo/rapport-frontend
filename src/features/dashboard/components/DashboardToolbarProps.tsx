@@ -18,7 +18,7 @@ export const DashboardToolbar: React.FC<DashboardToolbarProps> = ({
         <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8 transition-all">
             <ToolbarTitle 
                 title="Mes Rapports" 
-                description="Archives et suivi des soumissions" 
+                description="Archives et suivi" 
             />
 
             <div className="flex flex-col sm:flex-row items-center gap-6 w-full md:w-auto">
