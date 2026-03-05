@@ -3,15 +3,17 @@
 import React, { useState } from "react";
 import { Sidebar } from "../ui/Sidebar";
 import { Navbar } from "../ui/Navbar";
+import { useUser } from "@/features/auth/contexts/UserContext";
 
 export const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const { user } = useUser();
 
     return (
         <div className="flex min-h-screen bg-white font-sans selection:bg-black selection:text-white">
             {/* Sidebar fixe — desktop only */}
             <div className="hidden lg:block w-[260px] flex-shrink-0">
-                <Sidebar />
+                <Sidebar key={user?.id || 'guest'} />
             </div>
 
             {/* === MOBILE OVERLAY SIDEBAR === */}
@@ -27,7 +29,7 @@ export const DashboardLayout = ({ children }: { children: React.ReactNode }) => 
                 className={`fixed inset-y-0 left-0 z-50 w-[240px] flex-shrink-0 transform transition-transform duration-300 ease-in-out lg:hidden ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
                     }`}
             >
-                <Sidebar onClose={() => setSidebarOpen(false)} />
+                <Sidebar key={user?.id || 'guest'} onClose={() => setSidebarOpen(false)} />
             </div>
 
             {/* Main Area */}

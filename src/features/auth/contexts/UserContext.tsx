@@ -3,14 +3,14 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { User, UserContextType } from "@/features/auth/types";
 import { authService } from "@/features/auth/services/authService";
+import { useRouter } from "next/navigation";
 
-// 1. Déclaration du contexte
-const UserContext = createContext<User | null>(null);
-// const UserContext = createContext<UserContextType | undefined>(undefined);
+// 1. Déclaration du contexte avec le bon type
+const UserContext = createContext<UserContextType | undefined>(undefined);
 
 export const useUser = () => {
     const context = useContext(UserContext);
-    if (context === undefined) {
+    if (!context) {
         throw new Error("useUser doit être utilisé à l'intérieur d'un UserProvider");
     }
     return context;
@@ -18,8 +18,8 @@ export const useUser = () => {
 
 // 2. Le Composant Provider qui gère l'affectation
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
-    // ÉTAPE A : Création de la variable qui va stocker la donnée
     const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
 
     const fetchUser = async () => {
         try {
@@ -30,21 +30,35 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
+    const logout = async () => {
+        try {
+            await authService.logout();
+            setUser(null);
+            router.push("/login"); // Force la redirection après le nettoyage de l'état
+        } catch (error) {
+            console.error("Erreur lors de la déconnexion:", error);
+            // On nettoie quand même l'état local au cas où
+            setUser(null);
+            router.push("/login");
+        }
+    };
+
     // On garde le useEffect pour le chargement initial
     useEffect(() => {
         fetchUser();
     }, []);
 
-    // ÉTAPE D (LA PLUS IMPORTANTE) : L'affectation au Context !
-    // On passe la variable "user" dans la propriété "value" du Provider.
+    // On passe l'objet complet au Provider
+    const value: UserContextType = {
+        user,
+        setUser,
+        logout,
+        refreshUser: fetchUser,
+    };
+
     return (
-        <UserContext.Provider value={user}>
+        <UserContext.Provider value={value}>
             {children}
         </UserContext.Provider>
     );
-    // return (
-    //     <UserContext.Provider value={{ user, refreshUser: fetchUser }}>
-    //         {children}
-    //     </UserContext.Provider>
-    // );
 };

@@ -30,6 +30,8 @@ export interface AuthResponse {
 
 export interface UserContextType {
   user: User | null;
-  refreshUser: () => Promise<void>; // Fonction pour forcer la mise à jour
+  setUser: (user: User | null) => void;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 

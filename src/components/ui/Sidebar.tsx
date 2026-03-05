@@ -1,19 +1,51 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useEffect } from "react";
 import Link from "next/link";
 import { IMAGES } from "@/features/common/constants";
 import { usePathname } from "next/navigation";
 import { useUser } from "@/features/auth/contexts/UserContext";
 
+interface MenuItem {
+    label: string;
+    href: string;
+    roles: string[];
+    section: "Navigation" | "Pilotage" | "Administration";
+    icon?: React.ReactNode;
+}
+
+const ALL_LINKS: MenuItem[] = [
+    { label: "Dashboard", href: "/dashboard", roles: ["Admin", "Utilisateur"], section: "Navigation" },
+    { label: "Nouveau", href: "/dashboard/nouveau", roles: ["Admin", "Utilisateur"], section: "Navigation" },
+    { label: "Supervision", href: "/admin/supervision", roles: ["Admin"], section: "Pilotage" },
+    { label: "Stats", href: "/admin/dashboard", roles: ["Admin"], section: "Administration" },
+    { label: "Périodes", href: "/admin/periodes", roles: ["Admin"], section: "Administration" },
+    {
+        label: "Utilisateurs",
+        href: "/admin/utilisateurs",
+        roles: ["Admin"],
+        section: "Administration",
+        icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+        )
+    },
+];
 
 export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
-    const user = useUser();
-    // console.log(user);
-
+    const { user } = useUser();
     const pathname = usePathname();
 
-    const isSuperior = user && (user.role === "Admin");
+    // Surveillance du changement d'utilisateur (pour log ou triggers spécifiques)
+    useEffect(() => {
+        // console.log("Sidebar: User/Role changed", user?.role);
+    }, [user]);
+
+    // Filtrage dynamique des liens via useMemo
+    const menuItems = useMemo(() => {
+        if (!user) return [];
+        return ALL_LINKS.filter(link => link.roles.includes(user.role));
+    }, [user]);
+
     const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
 
     const linkClass = (href: string) =>
@@ -22,7 +54,24 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
             : "text-slate-500 hover:text-slate-900 border-r-2 border-transparent hover:bg-slate-50"
         }`;
 
-    const isAdminOrDirector = user && (user.role === "Admin");
+    const renderSection = (section: MenuItem["section"], title: string) => {
+        const items = menuItems.filter(item => item.section === section);
+        if (items.length === 0) return null;
+
+        return (
+            <div className={section !== "Navigation" ? "mt-8" : "mb-6"}>
+                <div className="px-8 mb-3">
+                    <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">{title}</span>
+                </div>
+                {items.map(item => (
+                    <Link key={item.href} href={item.href} className={linkClass(item.href)}>
+                        {item.icon}
+                        {item.label}
+                    </Link>
+                ))}
+            </div>
+        );
+    };
 
     return (
         <aside className="w-[240px] h-screen bg-white border-r border-slate-100 flex flex-col sticky top-0 z-50 transition-all">
@@ -40,7 +89,7 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                     </button>
                 </div>
             )}
-            {/* Header avec Logos Institutionnels */}
+
             <div className="px-8 py-8 flex flex-col gap-6">
                 <div className="flex items-center gap-4">
                     <img src={IMAGES.LOGO_REPOBLIKA} alt="Logo" className="h-8 w-auto mix-blend-multiply" />
@@ -57,51 +106,10 @@ export const Sidebar: React.FC<{ onClose?: () => void }> = ({ onClose }) => {
                 </div>
             </div>
 
-            <nav className="flex-1 space-y-1">
-                <div className="mb-6">
-                    <div className="px-8 mb-3">
-                        <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Navigation</span>
-                    </div>
-                    <Link href="/dashboard" className={linkClass("/dashboard")}>
-                        Dashboard
-                    </Link>
-                    <Link href="/dashboard/nouveau" className={linkClass("/dashboard/nouveau")}>
-                        Nouveau
-                    </Link>
-                </div>
-
-                {isSuperior && (
-                    <div className="mt-8">
-                        <div className="px-8 mb-3">
-                            <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Pilotage</span>
-                        </div>
-                        <Link href="/admin/supervision" className={linkClass("/admin/supervision")}>
-                            Supervision
-                        </Link>
-                    </div>
-                )}
-
-                {isAdminOrDirector && (
-                    <div className="mt-8">
-                        <div className="px-8 mb-3">
-                            <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.2em]">Administration</span>
-                        </div>
-                        <Link href="/admin/dashboard" className={linkClass("/admin/dashboard")}>
-                            Stats
-                        </Link>
-                        <Link href="/admin/periodes" className={linkClass("/admin/periodes")}>
-                            Périodes
-                        </Link>
-                        {user.role === "Admin" && (
-                            <Link href="/admin/utilisateurs" className={linkClass("/admin/utilisateurs")}>
-                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                                </svg>
-                                Utilisateurs
-                            </Link>
-                        )}
-                    </div>
-                )}
+            <nav className="flex-1 overflow-y-auto">
+                {renderSection("Navigation", "Navigation")}
+                {renderSection("Pilotage", "Pilotage")}
+                {renderSection("Administration", "Administration")}
             </nav>
         </aside>
     );
