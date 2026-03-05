@@ -162,6 +162,12 @@ export const SupervisionView: React.FC = () => {
             setIsPdfMode(true);
         }, 600);
     };
+    const handleRapportUpdated = (idPrecedent: number, updatedRapport: ApiRapport) => {
+        // On met à jour la liste du parent
+        setRapports(prev => 
+            prev.map(r => r.id === idPrecedent ? updatedRapport : r)
+        );
+    };
 
     return (
         <div className="space-y-10 pb-20">
@@ -197,6 +203,7 @@ export const SupervisionView: React.FC = () => {
                         generatingId={generatingId}
                         onPdfClick={(r) => handleConsulter([r])}
                         onHistoryClick={handleOpenHistory}
+                        onUpdate={handleRapportUpdated}
                     />
                 </>
             )}
