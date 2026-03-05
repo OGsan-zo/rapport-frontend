@@ -46,11 +46,6 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   const onSubmit = async (data: any) => {
     const idCal = Number(activePeriodId);
 
-    if (!idCal || idCal <= 0) {
-      toast.error("Erreur : Période de calendrier non définie. Impossible d'enregistrer.");
-      return;
-    }
-
     if (!rapport.id) {
       toast.error("ID rapport manquant");
       return;
@@ -61,7 +56,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       // 1. Re-formater les données pour l'API
       const payload: ApiRapport = {
         ...rapport,
-        idCalendrier: idCal, // Utilisation de l'ID passé depuis le dashboard
+        idCalendrier: rapport.calendrier.id, // Utilisation de l'ID passé depuis le dashboard
         activites: data.lignes.map((l: any) => ({
           activite: { name: l.titre },
           effects: l.effects.filter((e: any) => e.value.trim() !== "").map((e: any) => ({ name: e.value })),
