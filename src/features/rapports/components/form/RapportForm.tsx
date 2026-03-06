@@ -16,6 +16,7 @@ import { usePeriodes } from "@/features/config/hooks/usePeriodes";
 import { useUser } from "@/features/auth/contexts/UserContext";
 import { rapportService } from "@/features/rapports/services/rapportService";
 import { toast } from "react-hot-toast";
+import { audioService } from "@/hooks/audioService";
 export const ConsolidationForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -75,16 +76,27 @@ export const ConsolidationForm = () => {
       toast.success("Rapport enregistré avec succès !");
       router.push("/dashboard");
     } catch (err: any) {
-      console.error("Erreur :", err);
+      // console.error("Erreur :", err);
       toast.error(err.message || "Erreur lors de l'enregistrement du rapport.");
     } finally {
       setIsSubmitting(false);
     }
   };
+  const onInvalid = (errors: any) => {
+
+    const champsManquants = Object.keys(errors).join(", ");
+    audioService.playErrorValidation();
+
+    toast.error(`Le formulaire est incomplet. Champs manquants : ${champsManquants}`, {
+      duration: 4000,
+      position: "top-center",
+    });
+
+  };
 
   return (
     // L'ajout du <form> permet au bouton "Enregistrer" du composant enfant de déclencher le onSubmit
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10 max-w-6xl mx-auto pb-20">
+    <form onSubmit={handleSubmit(onSubmit,onInvalid)} className="space-y-10 max-w-6xl mx-auto pb-20">
 
       <RapportToolbar
         selectedTypeId={selectedTypeId}

@@ -9,6 +9,8 @@ import { usePdfExport } from "@/features/rapports/hooks/usePdfExport";
 import { RapportView } from "@/features/rapports/components/vision/RapportView";
 import { APP_CONSTANTS } from "@/config/constants";
 import { DashboardTable } from "@/features/dashboard/components/DashboardTable";
+import toast from "react-hot-toast";
+import { audioService } from "@/hooks/audioService";
 
 export default function RecherchePage() {
     const [selectedDate, setSelectedDate] = useState("");
@@ -44,10 +46,13 @@ export default function RecherchePage() {
         setError(null);
         try {
             const results = await rechercheService.searchRapportsByDate(selectedDate);
+            audioService.playSuccessRecherche();
             setRapports(results);
         } catch (err: any) {
             // console.error("Erreur lors de la recherche:", err);
-            setError(err.message||err.error || "Une erreur est survenue lors de la recherche.");
+            const message = err.message || err.error || "Une erreur est survenue lors de la recherche.";
+            toast.error(message);
+            setError(message);
             setRapports([]);
         } finally {
             setIsLoading(false);
@@ -58,19 +63,6 @@ export default function RecherchePage() {
                 setRapports(prev => 
                     prev.map(r => r.id === idPrecedent ? updatedRapport : r)
                 );
-    };
-
-    // Même map de statuts que DashboardTable
-    const statusClasses: Record<string, string> = {
-        VALIDE: "text-green-800 bg-green-50 border-green-300",
-        TRANSMIS: "text-blue-800 bg-blue-50 border-blue-300",
-        "EN COURS": "text-amber-800 bg-amber-50 border-amber-300",
-    };
-
-    const formatDate = (dateStr: string) => {
-        if (!dateStr) return "N/A";
-        const d = new Date(dateStr);
-        return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
     };
 
     return (
