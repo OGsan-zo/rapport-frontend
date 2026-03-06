@@ -58,28 +58,32 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* Colonne Droite - Illustration */}
-          <div className="relative animate-fade-in delay-200">
-            <div className="absolute -inset-4 bg-blue-50 rounded-[40px] -rotate-2 -z-10 opacity-50"></div>
-            <div className="bg-white border border-slate-100 rounded-[32px] p-8 shadow-2xl shadow-slate-100 overflow-hidden relative group">
-              {/* Simulation Interface */}
-              <div className="aspect-[4/3] bg-slate-50 rounded-2xl flex flex-col p-6 gap-4 overflow-hidden border border-slate-100">
-                <div className="h-8 w-1/3 bg-white border border-slate-200 rounded-lg shadow-sm" />
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="h-16 bg-white border border-slate-200 rounded-xl shadow-sm" />
-                  <div className="h-16 bg-white border border-slate-200 rounded-xl shadow-sm" />
-                  <div className="h-16 bg-white border border-slate-200 rounded-xl shadow-sm" />
-                </div>
-                <div className="h-32 bg-white border border-slate-200 rounded-xl shadow-sm mt-2" />
-                <div className="flex justify-end gap-2 mt-auto">
-                  <div className="h-8 w-20 bg-slate-100 rounded-lg" />
-                  <div className="h-8 w-24 bg-slate-900 rounded-lg" />
-                </div>
-              </div>
-              {/* Effet vitré interactif */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-blue-400/10 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-          </div>
+  {/* Colonne Droite - Illustration */}
+  <div className="relative animate-fade-in delay-200 flex justify-center lg:justify-end">
+
+    <div className="bg-white border border-slate-100 rounded-[32px] 
+                    p-8 md:p-10 lg:p-12 
+                    shadow-2xl shadow-slate-100 
+                    flex items-center justify-center 
+                    w-full max-w-md md:max-w-lg lg:max-w-xl">
+
+      <img
+        src={IMAGES.LOGO_MESUPRES}
+        alt="Logo MESUPRES"
+        className="
+          w-full 
+          max-w-[260px] 
+          md:max-w-[360px] 
+          lg:max-w-[440px] 
+          h-auto 
+          object-contain
+        "
+      />
+
+    </div>
+
+  </div>
+
         </div>
       </section>
 

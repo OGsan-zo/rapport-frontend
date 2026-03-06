@@ -53,11 +53,11 @@ export default function LoginPage() {
                     </div>
                     <div className="text-center space-y-1">
                         <h2 className="text-[10px] font-bold uppercase text-slate-400 tracking-[0.2em]">
-                            Ministère de l&apos;Enseignement Supérieur
+                            Ministère de l&apos;Enseignement Supérieur et de la Recherche Scientifique
                         </h2>
-                        <p className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">
+                        {/* <p className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">
                             Direction des Systèmes d&apos;Information (DSINT)
-                        </p>
+                        </p> */}
                     </div>
                 </div>
 
