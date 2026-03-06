@@ -20,7 +20,7 @@ export const useRapportHistorique = () => {
             setHistory(data);
         } catch (err: any) {
             // console.error("Erreur lors de la récupération de l'historique:", err);
-            const msg = err.message||err.error || "Impossible de charger l'historique.";
+            const msg = err.message||err.error||"Impossible de charger l'historique.";
             setError(msg);
             toast.error(msg);
         } finally {

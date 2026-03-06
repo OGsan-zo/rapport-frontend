@@ -155,12 +155,7 @@ export default function RecherchePage() {
                             </div>
                         )}
 
-            {/* ── 5. Footer centré, text-slate-900 ── */}
-            <footer className="pt-4 pb-10 text-center border-t border-slate-100">
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-900" suppressHydrationWarning>
-                    © {APP_CONSTANTS.copyright.startYear} – {new Date().getFullYear()} {APP_CONSTANTS.copyright.owner}
-                </p>
-            </footer>
+
         </div>
     );
 }
