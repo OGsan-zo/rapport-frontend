@@ -8,6 +8,7 @@ import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkelet
 import { usePdfExport } from "@/features/rapports/hooks/usePdfExport";
 import { RapportView } from "@/features/rapports/components/vision/RapportView";
 import { APP_CONSTANTS } from "@/config/constants";
+import { DashboardTable } from "@/features/dashboard/components/DashboardTable";
 
 export default function RecherchePage() {
     const [selectedDate, setSelectedDate] = useState("");
@@ -22,6 +23,7 @@ export default function RecherchePage() {
     const [generatingId, setGeneratingId] = useState<number | null>(null);
 
     const handlePdfClick = async (rapport: ApiRapport) => {
+        // console.log(rapport)
         const idRp = rapport.id !== undefined ? rapport.id : 0;
         setGeneratingId(idRp);
         setSelectedForPdf(rapport);
@@ -34,7 +36,6 @@ export default function RecherchePage() {
                 });
         }, 500);
     };
-
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!selectedDate) return;
@@ -51,6 +52,12 @@ export default function RecherchePage() {
         } finally {
             setIsLoading(false);
         }
+    };
+    const handleRapportUpdated = (idPrecedent: number, updatedRapport: ApiRapport) => {
+                // On met à jour la liste du parent
+                setRapports(prev => 
+                    prev.map(r => r.id === idPrecedent ? updatedRapport : r)
+                );
     };
 
     // Même map de statuts que DashboardTable
@@ -133,92 +140,20 @@ export default function RecherchePage() {
             )}
 
             {/* ── 4. Tableau des résultats — copie exacte du DashboardTable ── */}
-            <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-                {isLoading ? (
-                    <AppTableSkeleton rows={5} cols={4} />
-                ) : (
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse min-w-[700px]">
-                            <thead>
-                                <tr className="bg-slate-50/50 border-b border-slate-200">
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Période</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Entité</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
-                                    <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-slate-100">
-                                {rapports.length > 0 ? (
-                                    rapports.map((rapport) => (
-                                        <tr key={rapport.id} className="hover:bg-slate-50/40 transition-colors">
-                                            {/* Période */}
-                                            <td className="px-6 py-5 border-r border-slate-100 text-center">
-                                                <div className="text-sm font-black text-slate-900">
-                                                    Du {formatDate(rapport.calendrier.dateDebut)}
-                                                </div>
-                                                <div className="text-[10px] font-medium text-slate-400 uppercase">
-                                                    au {formatDate(rapport.calendrier.dateFin)}
-                                                </div>
-                                            </td>
-                                            {/* Entité */}
-                                            <td className="px-6 py-4 border-r border-slate-100 text-center">
-                                                <span className="text-[11px] font-bold text-slate-600 uppercase">
-                                                    {rapport.user.entite || "N/A"}
-                                                </span>
-                                            </td>
-                                            {/* Statut */}
-                                            <td className="px-6 py-4 border-r border-slate-100 text-center">
-                                                <span className={`px-3 py-1 text-[9px] font-black uppercase rounded-md border ${statusClasses[rapport.statut || "EN COURS"]}`}>
-                                                    {rapport.statut || "EN COURS"}
-                                                </span>
-                                            </td>
-                                            {/* Actions */}
-                                            <td className="px-6 py-4 text-center">
-                                                <button
-                                                    onClick={() => handlePdfClick(rapport)}
-                                                    disabled={generatingId === rapport.id}
-                                                    className="px-4 py-2 bg-white border border-slate-200 text-slate-600 text-[10px] font-black uppercase rounded-lg hover:bg-slate-50 disabled:opacity-50 transition-colors"
-                                                >
-                                                    {generatingId === rapport.id ? "..." : "PDF"}
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    ))
-                                ) : (
-                                    <tr>
-                                        <td colSpan={4} className="p-20 text-center">
-                                            <div className="flex flex-col items-center gap-4">
-                                                <div className="h-16 w-16 bg-slate-50 rounded-full flex items-center justify-center">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-slate-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                                    </svg>
-                                                </div>
-                                                <div className="space-y-1">
-                                                    <p className="text-slate-900 font-bold text-sm tracking-tight">
-                                                        {hasSearched ? "Aucun rapport trouvé pour cette date" : "Lancez une recherche ci-dessus"}
-                                                    </p>
-                                                    <p className="text-slate-400 text-[10px] uppercase font-medium tracking-widest">
-                                                        {hasSearched ? "Essayez une autre date" : "Entrez une date pour commencer"}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                )}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-            </div>
-
-            {/* Zone de rendu PDF masquée — identique au Dashboard */}
+            <DashboardTable
+                rapports={rapports}
+                isLoading={isLoading}
+                generatingId={generatingId}
+                onPdfClick={handlePdfClick}
+                onUpdate={handleRapportUpdated}
+            />
             {selectedForPdf && (
-                <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        <RapportView data={[selectedForPdf]} isPrintMode={true} />
-                    </div>
-                </div>
-            )}
+                            <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
+                                <div id="rapport-a4-container" style={{ width: "210mm" }}>
+                                    <RapportView data={[selectedForPdf]} isPrintMode={true} />
+                                </div>
+                            </div>
+                        )}
 
             {/* ── 5. Footer centré, text-slate-900 ── */}
             <footer className="pt-4 pb-10 text-center border-t border-slate-100">

@@ -14,7 +14,7 @@ import toast from "react-hot-toast";
 
 export default function DashboardPage() {
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
-    const [filtered, setFiltered] = useState<ApiRapport[]>([]);
+    // const [filtered, setFiltered] = useState<ApiRapport[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
 
@@ -39,13 +39,20 @@ export default function DashboardPage() {
                 });
         }, 500);
     };
+    const handleRapportUpdated = (idPrecedent: number, updatedRapport: ApiRapport) => {
+            // On met à jour la liste du parent
+            setRapports(prev => 
+                prev.map(r => r.id === idPrecedent ? updatedRapport : r)
+            );
+    };
+    
 
     useEffect(() => {
         const fetchRapports = async () => {
             try {
                 const data = await rapportService.getRapports();
                 setRapports(data);
-                setFiltered(data);
+                // setFiltered(data);
             } catch (err) {
                 toast.error("Erreur lors de la récupération des rapports");
                 // console.error("Erreur lors de la récupération des rapports:", err);
@@ -77,10 +84,11 @@ export default function DashboardPage() {
 
             {/* 2. Tableau des rapports */}
             <DashboardTable
-                rapports={filtered}
+                rapports={rapports}
                 isLoading={isLoading}
                 generatingId={generatingId}
                 onPdfClick={handlePdfClick}
+                onUpdate={handleRapportUpdated}
             />
 
             {/* Zone de rendu PDF masquée */}

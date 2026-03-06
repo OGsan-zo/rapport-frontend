@@ -11,13 +11,15 @@ interface DashboardTableProps {
     isLoading: boolean;
     generatingId: number | null;
     onPdfClick: (rapport: ApiRapport) => void;
+    onUpdate?: (idPrecedent: number, updatedRapport: ApiRapport) => void;
 }
 
 export const DashboardTable: React.FC<DashboardTableProps> = ({
     rapports: initialRapports,
     isLoading,
     generatingId,
-    onPdfClick
+    onPdfClick,
+    onUpdate
 }) => {
     // 1. État local pour la liste (permet la mise à jour sans rechargement)
     const [listRapports, setListRapports] = useState<ApiRapport[]>(initialRapports);
@@ -48,7 +50,9 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
         setListRapports(prev =>
             prev.map(r => r.id === idPrecedent ? updatedData : r)
         );
-
+        if (onUpdate) {
+            onUpdate(idPrecedent, updatedData);
+        }
         // Quitter le mode édition
         setEditingRapport(null);
 
