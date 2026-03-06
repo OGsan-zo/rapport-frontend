@@ -44,11 +44,11 @@ export const useLogin = () => {
                 // }
 
                 const role = response.user.role;
-                if (role === "Admin") {
-                    router.push("/admin/supervision");
-                } else {
+                // if (role === "Admin") {
+                //     router.push("/admin/supervision");
+                // } else {
                     router.push("/dashboard/nouveau");
-                }
+                // }
             }, 1200);
 
             return response.user;
