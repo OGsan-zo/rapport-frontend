@@ -7,6 +7,7 @@ import * as z from "zod";
 import { adminService } from "@/features/admin/services/adminService";
 import { RoleSelect } from "../../config/components/RoleSelect";
 import { User } from "@/features/auth/types";
+import toast from "react-hot-toast";
 
 const userEditSchema = z.object({
     email: z.string().email("Adresse email invalide"),
@@ -87,7 +88,8 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                     conf_mdp: "",
                 });
             } catch (err) {
-                console.error("Erreur chargement utilisateur", err);
+                // console.error("Erreur chargement utilisateur", err);
+                toast.error("Impossible de charger les informations de l'utilisateur.");
                 setError("Impossible de charger les informations de l'utilisateur.");
             } finally {
                 setIsFetching(false);

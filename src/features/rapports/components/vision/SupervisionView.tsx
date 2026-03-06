@@ -68,7 +68,8 @@ export const SupervisionView: React.FC = () => {
                 const data = await rapportService.getAllRapports(idCal);
                 setRapports(data);
             } catch (err) {
-                console.log("Erreur lors du chargement des rapports:", err);
+                // console.log("Erreur lors du chargement des rapports:", err);
+                toast.error("Erreur lors du chargement des rapports");
             } finally {
                 setIsLoading(false);
             }
@@ -92,7 +93,7 @@ export const SupervisionView: React.FC = () => {
 
     // --- ACTIONS HISTORIQUE ---
     const handleOpenHistory = (rapport: ApiRapport) => {
-        console.log("Rapport sélectionné:", rapport);
+        // console.log("Rapport sélectionné:", rapport);
         if (rapport.user?.id && rapport.calendrier.id) {
             fetchHistory(rapport.user.id, rapport.calendrier.id);
             setViewMode("HISTORY_LIST");

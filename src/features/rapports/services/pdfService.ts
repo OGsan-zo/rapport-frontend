@@ -18,7 +18,7 @@ export const pdfService = {
 
         // --- VALIDATION SIGNATURE (Anti-Crash) ---
         if (!imgData.startsWith("data:image/png")) {
-            console.error("Signature d'image PNG invalide détectée");
+            // console.error("Signature d'image PNG invalide détectée");
             throw new Error("Format d'image non supporté (PNG attendu)");
         }
 

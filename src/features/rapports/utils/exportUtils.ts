@@ -9,8 +9,8 @@ import jsPDF from "jspdf";
 export const exportToPdf = async (elementId: string, filename: string) => {
     const element = document.getElementById(elementId);
     if (!element) {
-        console.error(`Element with ID ${elementId} not found.`);
-        return;
+        // console.error(`Element with ID ${elementId} not found.`);
+        throw new Error(`Element with ID ${elementId} not found.`);
     }
 
     try {
@@ -47,7 +47,8 @@ export const exportToPdf = async (elementId: string, filename: string) => {
 
         pdf.save(filename);
     } catch (error) {
-        console.error("Error generating PDF:", error);
+        // console.error("Error generating PDF:", error);
+        throw error;
     }
 };
 /**
@@ -57,7 +58,10 @@ export const exportToPdf = async (elementId: string, filename: string) => {
  */
 export const exportToWord = async (elementId: string, filename: string) => {
     const element = document.getElementById(elementId);
-    if (!element) return;
+    if (!element) {
+        // console.error(`Element with ID ${elementId} not found.`);
+        throw new Error(`Element with ID ${elementId} not found.`);
+    }
 
     // 1. Conversion de toutes les images en Base64 pour qu'elles soient "embarquées"
     const convertImagesToBase64 = async (parent: HTMLElement) => {

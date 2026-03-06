@@ -45,8 +45,8 @@ export default function RecherchePage() {
             const results = await rechercheService.searchRapportsByDate(selectedDate);
             setRapports(results);
         } catch (err: any) {
-            console.error("Erreur lors de la recherche:", err);
-            setError(err.message || "Une erreur est survenue lors de la recherche.");
+            // console.error("Erreur lors de la recherche:", err);
+            setError(err.message||err.error || "Une erreur est survenue lors de la recherche.");
             setRapports([]);
         } finally {
             setIsLoading(false);

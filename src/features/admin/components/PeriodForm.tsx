@@ -9,7 +9,7 @@ import { periodeService } from "@/features/config/services/periodeService";
 import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 import { TypeCalendrierSelect } from "@/features/config/components/TypeCalendrierSelect";
 import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkeleton";
-
+import toast from "react-hot-toast";
 const periodSchema = z.object({
     debut: z.string().min(1, "La date de début est requise"),
     fin: z.string().min(1, "La date de fin est requise"),
@@ -52,7 +52,8 @@ export const PeriodForm = () => {
             const data = await periodeService.getPeriods();
             setPeriods(data);
         } catch (err) {
-            console.error(err);
+            // console.error(err);
+            toast.error("Erreur lors du chargement des périodes");
         } finally {
             setIsLoading(false);
         }

@@ -1,4 +1,6 @@
-import { ApiRapport, RapportConsolide } from "../types";
+import { useFetchAuth } from "@/hooks/useFetchAuth";
+import { ApiRapport } from "../types";
+const fetchAuth = useFetchAuth();
 
 export const rapportService = {
     /**
@@ -7,7 +9,7 @@ export const rapportService = {
     getRapports: async (): Promise<ApiRapport[]> => {
         try {
             // L'appel se fait sur la route interne de Next.js
-            const response = await fetch("/api/rapports", {
+            const response = await fetchAuth("/api/rapports", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -56,7 +58,7 @@ export const rapportService = {
     saveRapport: async (rapport: ApiRapport): Promise<ApiRapport> => {
         try {
             // L'appel se fait sur la route interne de Next.js
-            const response = await fetch("/api/rapports", {
+            const response = await fetchAuth("/api/rapports", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -82,7 +84,7 @@ export const rapportService = {
     updateRapport: async (id: number, rapport: ApiRapport): Promise<ApiRapport> => {
         try {
             // L'appel se fait sur la route interne de Next.js
-            const response = await fetch(`/api/rapports/${id}`, {
+            const response = await fetchAuth(`/api/rapports/${id}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -111,7 +113,7 @@ export const rapportService = {
             const body = {
                 id: idCalendrierUtilisateur
             }
-            const response = await fetch("/api/rapports/changerValidation", {
+            const response = await fetchAuth("/api/rapports/changerValidation", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -141,7 +143,7 @@ export const rapportService = {
     getHistorique: async (idUtilisateur: number, idCalendrier: number): Promise<ApiRapport[]> => {
         if (!idCalendrier || idCalendrier <= 0) throw new Error("ID Calendrier invalide");
         try {
-            const response = await fetch(`/api/rapports/historique?idUtilisateur=${idUtilisateur}&idCalendrier=${idCalendrier}`, {
+            const response = await fetchAuth(`/api/rapports/historique?idUtilisateur=${idUtilisateur}&idCalendrier=${idCalendrier}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

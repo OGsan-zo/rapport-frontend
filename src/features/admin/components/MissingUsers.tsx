@@ -3,6 +3,7 @@ import { User } from "../../auth/types";
 import { periodeService as configPeriodeService } from "@/features/config/services/periodeService";
 import { useAdminPilotage } from "../context/AdminPilotageContext";
 import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import toast from "react-hot-toast";
 
 // Sous-composants
 import { MissingUsersToolbar } from "./manquants/MissingUsersToolbar";
@@ -36,7 +37,8 @@ export const MissingUsers = () => {
                 
                 setUsers(data);
             } catch (err) {
-                console.error("Erreur MissingUsers:", err);
+                // console.error("Erreur MissingUsers:", err);
+                toast.error("Erreur lors du chargement des retardataires");
             } finally {
                 setIsLoading(false);
             }

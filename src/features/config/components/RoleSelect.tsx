@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { roleService, Role } from "../services/roleService";
+import toast from "react-hot-toast";
 
 interface RoleSelectProps {
     value?: string | number;
@@ -19,7 +20,8 @@ export const RoleSelect: React.FC<RoleSelectProps> = ({ value, onChange, error }
                 const data = await roleService.getAllRoles();
                 setRoles(data);
             } catch (err) {
-                console.error("Erreur chargement rôles", err);
+                toast.error("Erreur chargement rôles");
+                // console.error("Erreur chargement rôles", err);
             } finally {
                 setIsLoading(false);
             }

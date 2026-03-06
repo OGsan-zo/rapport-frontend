@@ -31,10 +31,11 @@ export const profileService = {
                 message: "Le mot de passe a été mis à jour avec succès."
             };
         } catch (error) {
-            console.error("Erreur profileService.updatePassword:", error);
+            // console.error("Erreur profileService.updatePassword:", error);
+            const message = (error as any).error|| (error as any).message || "Impossible de contacter le serveur. Veuillez réessayer plus tard.";
             return {
                 success: false,
-                message: "Impossible de contacter le serveur. Veuillez réessayer plus tard."
+                message: message
             };
         }
     }

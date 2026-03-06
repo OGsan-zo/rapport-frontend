@@ -13,7 +13,8 @@ export const usePdfExport = () => {
     const exportToPdf = async (elementId: string, filename: string = "Rapport_MESUPRES.pdf") => {
         const element = document.getElementById(elementId);
         if (!element) {
-            console.error(`Élément avec l'ID "${elementId}" non trouvé.`);
+            // console.error(`Élément avec l'ID "${elementId}" non trouvé.`);
+            toast.error("Élément avec l'ID \"" + elementId + "\" non trouvé.");
             return;
         }
 
@@ -34,7 +35,7 @@ export const usePdfExport = () => {
             setTimeout(() => URL.revokeObjectURL(url), 10000);
 
         } catch (error: any) {
-            console.error("Erreur lors de la génération du PDF:", error);
+            // console.error("Erreur lors de la génération du PDF:", error);
             toast.error(error.message || "Erreur lors de la génération du PDF.");
         } finally {
             setIsGenerating(false);

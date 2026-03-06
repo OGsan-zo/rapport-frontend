@@ -44,7 +44,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
     // 2. Fonction de succès appelée par l'éditeur
     const handleUpdateSuccess = (idPrecedent: number, updatedData: ApiRapport) => {
         // Mise à jour de la liste locale (on remplace le vieux rapport par le nouveau)
-        console.log("Updated Data:", updatedData);
+        // console.log("Updated Data:", updatedData);
         setListRapports(prev =>
             prev.map(r => r.id === idPrecedent ? updatedData : r)
         );

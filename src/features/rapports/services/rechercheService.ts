@@ -32,39 +32,16 @@ export const rechercheService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                console.warn(`API non disponible (${response.status}). Simulation Mock :`, errorData.message || "");
-
-                // Données mock avec les bons champs pour visualisation immédiate sur l'EliteBook
-                return [
-                    {
-                        id: 101,
-                        statut: "VALIDE",
-                        user: { email: "jean.dupont@entite.mg", entite: "S.I." } as any,
-                        calendrier: { dateDebut: date, dateFin: date, typeCalendrierName: "Hebdomadaire" },
-                        activites: []
-                    },
-                    {
-                        id: 102,
-                        statut: "EN COURS",
-                        user: { email: "marie.laza@entite.mg", entite: "RH" } as any,
-                        calendrier: { dateDebut: date, dateFin: date, typeCalendrierName: "Mensuel" },
-                        activites: []
-                    },
-                    {
-                        id: 103,
-                        statut: "TRANSMIS",
-                        user: { email: "admin@entite.mg", entite: "DIRECTION" } as any,
-                        calendrier: { dateDebut: date, dateFin: date, typeCalendrierName: "Hebdomadaire" },
-                        activites: []
-                    }
-                ];
+                // console.warn(`API non disponible (${response.status}). Simulation Mock :`, errorData.message || "");
+                throw new Error(errorData.message|| errorData.error || "Impossible de charger les rapports");
+                
             }
 
             const responseData = await response.json();
             // Extrait le champ "data" de la réponse { status: "success", data: [...] }
             return responseData.data || [];
         } catch (error) {
-            console.error("Erreur lors de la recherche de rapports:", error);
+            // console.error("Erreur lors de la recherche de rapports:", error);
             throw error;
         }
     }

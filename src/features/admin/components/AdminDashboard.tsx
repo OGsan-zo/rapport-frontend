@@ -14,6 +14,7 @@ import { User } from "../../auth/types";
 import { StatCard } from "./dashboard/StatCard";
 import { AdminActionBanner } from "./dashboard/AdminActionBanner";
 import { AdminDashboardToolbar } from "./dashboard/AdminDashboardToolbar";
+import toast from "react-hot-toast";
 
 export const AdminDashboard = () => {
     const router = useRouter();
@@ -39,7 +40,9 @@ export const AdminDashboard = () => {
                 const data = await adminService.getAllUtilisateurs();
                 setAllUsers(data);
             } catch (err) {
-                console.error("Erreur getAllUtilisateurs:", err);
+                toast.error("Erreur lors du chargement des utilisateurs");
+                // console.error("Erreur getAllUtilisateurs:", err);
+
             } finally {
                 if (!selectedPeriodId) setIsLoading(false);
             }
@@ -60,7 +63,8 @@ export const AdminDashboard = () => {
                 const missing = await configPeriodeService.getLateUsers(selectedPeriodId);
                 setLateUsers(missing);
             } catch (err) {
-                console.error("Erreur getLateUsers:", err);
+                // console.error("Erreur getLateUsers:", err);
+                toast.error("Erreur lors du chargement des retardataires");
             } finally {
                 setIsRefreshing(false);
                 setIsLoading(false);

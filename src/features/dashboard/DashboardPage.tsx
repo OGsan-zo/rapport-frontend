@@ -10,6 +10,7 @@ import { RapportView } from "@/features/rapports/components/vision/RapportView";
 import { DashboardToolbar } from "./components/DashboardToolbarProps";
 import { DashboardTable } from "./components/DashboardTable";
 import { usePeriodes } from "../config/hooks/usePeriodes";
+import toast from "react-hot-toast";
 
 export default function DashboardPage() {
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
@@ -46,7 +47,8 @@ export default function DashboardPage() {
                 setRapports(data);
                 setFiltered(data);
             } catch (err) {
-                console.error("Erreur lors de la récupération des rapports:", err);
+                toast.error("Erreur lors de la récupération des rapports");
+                // console.error("Erreur lors de la récupération des rapports:", err);
             } finally {
                 setIsLoading(false);
             }
