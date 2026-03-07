@@ -42,7 +42,7 @@ export const pdfService = {
         let position = 0;
         const footerHeight = 10; // Espace pour le copyright
         const year = new Date().getFullYear();
-        const footerText = `© ${year} - DSINT - MESUPRES`;
+        const footerText = ``;
 
         // Ajout de la première page
         pdf.addImage(
