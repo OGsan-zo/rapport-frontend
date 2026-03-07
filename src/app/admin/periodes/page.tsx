@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { PeriodForm } from "@/features/admin/components/PeriodForm";
+import { PeriodForm } from "@/features/admin/components/period/PeriodForm";
 
 
 export default function PeriodsPage() {

@@ -8,9 +8,18 @@ export const periodeService = {
     /**
      * Liste les périodes du calendrier depuis le backend Symfony via le proxy Next.js.
      */
-    getPeriods: async (): Promise<CalendarPeriod[]> => {
+    getPeriods: async (dateDebut?: string | null, dateFin?: string | null): Promise<CalendarPeriod[]> => {
         try {
-            const response = await fetchAuth("/api/calendriers", {
+            // 1. Construction dynamique de l'URL avec les paramètres
+            const params = new URLSearchParams();
+            if (dateDebut) params.append("dateDebut", dateDebut);
+            if (dateFin) params.append("dateFin", dateFin);
+
+            // Si des paramètres existent, on ajoute '?' à l'URL
+            const queryString = params.toString() ? `?${params.toString()}` : "";
+            const url = `/api/calendriers${queryString}`;
+
+            const response = await fetchAuth(url, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -26,7 +35,6 @@ export const periodeService = {
             const responseData = await response.json();
             return responseData.data || responseData;
         } catch (error) {
-            // console.error("Erreur getPeriods:", error);
             throw error;
         }
     },
