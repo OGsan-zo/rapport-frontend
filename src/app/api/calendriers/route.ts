@@ -9,5 +9,7 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-    return callApiGet(request, "calendriers");
+    const allowed = ["dateDebut", "dateFin"];
+
+  return await callApiGet(request, "/calendriers", allowed);
 }

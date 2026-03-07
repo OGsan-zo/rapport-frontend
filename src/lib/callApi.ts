@@ -202,3 +202,38 @@ export async function callApiPut(
     );
   }
 }
+export async function callApiDelete(
+  request: NextRequest,
+  url: string // Ici, tu passeras l'url complète, ex: "/rapports/1"
+) {
+  try {
+    const api = getServerAxios(request);
+
+    // Appel direct sans params ni body
+    const response = await api.delete(url);
+
+    // Retourne les données ou un message de succès par défaut
+    return NextResponse.json(
+      response.data || { message: "Supprimé avec succès" },
+      { status: response.status || 200 }
+    );
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      const msg =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        err.message ||
+        "Erreur lors de la suppression";
+
+      return NextResponse.json(
+        { error: msg },
+        { status: err.response?.status || 500 }
+      );
+    }
+
+    return NextResponse.json(
+      { error: "Erreur interne inconnue du serveur" },
+      { status: 500 }
+    );
+  }
+}
