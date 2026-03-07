@@ -58,32 +58,28 @@ export default function HomePage() {
             </div>
           </div>
 
-  {/* Colonne Droite - Illustration */}
-  <div className="relative animate-fade-in delay-200 flex justify-center lg:justify-end">
+          {/* Colonne Droite - Illustration */}
+          <div className="relative animate-fade-in delay-200 flex justify-center lg:justify-end">
 
-    <div className="bg-white border border-slate-100 rounded-[32px] 
-                    p-8 md:p-10 lg:p-12 
-                    shadow-2xl shadow-slate-100 
-                    flex items-center justify-center 
-                    w-full max-w-md md:max-w-lg lg:max-w-xl">
-
-      <img
-        src={IMAGES.LOGO_MESUPRES}
-        alt="Logo MESUPRES"
-        className="
-          w-full 
-          max-w-[260px] 
-          md:max-w-[360px] 
-          lg:max-w-[440px] 
-          h-auto 
-          object-contain
-        "
-      />
-
-    </div>
-
-  </div>
-
+            <div className="bg-white border border-slate-100 rounded-[32px] 
+                            p-8 md:p-10 lg:p-12 
+                            shadow-2xl shadow-slate-100 
+                            flex items-center justify-center 
+                            w-full max-w-md md:max-w-lg lg:max-w-xl">
+              <img
+                src={IMAGES.LOGO_MESUPRES}
+                alt="Logo MESUPRES"
+                className="
+                  w-full 
+                  max-w-[260px] 
+                  md:max-w-[360px] 
+                  lg:max-w-[440px] 
+                  h-auto 
+                  object-contain
+                "
+              />
+            </div>
+          </div>
         </div>
       </section>
 

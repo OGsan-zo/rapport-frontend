@@ -3,45 +3,63 @@
 import React from "react";
 import { APP_CONSTANTS, IMAGES } from "@/config/constants";
 
-interface RapportHeaderProps {
-}
+interface RapportHeaderProps { }
 
 export const RapportHeader: React.FC<RapportHeaderProps> = () => {
     return (
-        <div className="w-full flex justify-between items-start mb-10">
-            {/* Republic of Madagascar Logo & Text */}
-            <div className="flex items-center gap-3">
+        <div className="w-full flex items-center mb-14" style={{ gap: "0" }}>
+
+            {/* GAUCHE : Logo Repoblika */}
+            <div className="flex-1 flex justify-start items-center">
                 <img
                     src={IMAGES.LOGO_REPOBLIKA}
-                    alt="Logo Madagascar"
-                    className="w-14 h-auto object-contain"
+                    alt="Logo Repoblikan'i Madagasikara"
+                    crossOrigin="anonymous"
+                    className="w-24 h-auto object-contain"
                 />
-                <div className="flex flex-col">
-                    <p className="text-[10px] font-black uppercase leading-tight" style={{ color: "#0f172a" }}>
-                        Repoblikan'i Madagasikara
-                    </p>
-                    <p className="text-[9px] font-medium italic" style={{ color: "#64748b" }}>
-                        Fitiavana — Tanindrazana — Fandrosoana
-                    </p>
-                </div>
             </div>
 
-            {/* MESUPRES Logo & Text */}
-            <div className="flex items-center gap-3">
-                <div className="flex flex-col items-end">
-                    <p className="text-[14px] font-black uppercase tracking-tighter leading-none" style={{ color: "#0f172a" }}>
-                        {APP_CONSTANTS.ministryName}
-                    </p>
-                    <p className="text-[8px] font-bold uppercase tracking-widest mt-0.5" style={{ color: "#94a3b8" }}>
-                        Ministère
-                    </p>
-                </div>
+            {/* CENTRE : Bloc texte institutionnel centré */}
+            <div className="flex-1 flex flex-col items-center text-center gap-1">
+                <p
+                    className="text-[10px] font-black uppercase leading-tight tracking-wide"
+                    style={{ color: "#0f172a" }}
+                >
+                    Repoblikan&apos;i Madagasikara
+                </p>
+                <p
+                    className="text-[8px] font-medium italic"
+                    style={{ color: "#64748b" }}
+                >
+                    Fitiavana — Tanindrazana — Fandrosoana
+                </p>
+
+                <div style={{ height: "6px" }} />
+
+                <p
+                    className="text-[9px] font-black uppercase leading-snug tracking-wide"
+                    style={{ color: "#0f172a" }}
+                >
+                    Ministère de l&apos;Enseignement Supérieur
+                </p>
+                <p
+                    className="text-[9px] font-black uppercase leading-snug tracking-wide"
+                    style={{ color: "#0f172a" }}
+                >
+                    et de la Recherche Scientifique
+                </p>
+            </div>
+
+            {/* DROITE : Logo MESUPRES */}
+            <div className="flex-1 flex justify-end items-center">
                 <img
                     src={IMAGES.LOGO_MESUPRES}
                     alt={`Logo ${APP_CONSTANTS.ministryName}`}
-                    className="w-14 h-auto object-contain"
+                    crossOrigin="anonymous"
+                    className="w-24 h-auto object-contain"
                 />
             </div>
+
         </div>
     );
 };
