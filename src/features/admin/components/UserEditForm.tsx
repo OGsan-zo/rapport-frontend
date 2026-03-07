@@ -13,6 +13,7 @@ const userEditSchema = z.object({
     email: z.string().email("Adresse email invalide"),
     entite: z.string().min(2, "L'entité doit faire au moins 2 caractères"),
     idRole: z.string().min(1, "Veuillez choisir un rôle"),
+    rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
     mdp: z.string().optional(),
     conf_mdp: z.string().optional(),
 }).superRefine((data, ctx) => {
@@ -67,6 +68,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
             email: user.email,
             entite: user.entite,
             idRole: "",
+            rang: user.rang?.toString() ?? "0",
             mdp: "",
             conf_mdp: "",
         }
@@ -84,6 +86,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                     email: fullUser.email,
                     entite: fullUser.entite,
                     idRole: fullUser.idRole ? fullUser.idRole.toString() : "",
+                    rang: fullUser.rang?.toString() ?? "0",
                     mdp: "",
                     conf_mdp: "",
                 });
@@ -110,7 +113,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                 email: data.email,
                 entite: data.entite,
                 idRole: Number(data.idRole),
-                // N'envoie mdp que si renseigné
+                rang: Number(data.rang),
                 mdp: mdpFilled ? data.mdp : undefined,
             });
             onSuccess();
@@ -164,6 +167,19 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                         className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.entite ? "border-red-500" : "border-slate-300"}`}
                     />
                     {errors.entite && <p className="text-[10px] text-red-600 font-bold">{errors.entite.message}</p>}
+                </div>
+
+                {/* Rang */}
+                <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Rang</label>
+                    <input
+                        {...register("rang")}
+                        type="number"
+                        min={0}
+                        placeholder="0"
+                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.rang ? "border-red-500" : "border-slate-300"}`}
+                    />
+                    {errors.rang && <p className="text-[10px] text-red-600 font-bold">{errors.rang.message}</p>}
                 </div>
 
                 {/* Rôle */}

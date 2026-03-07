@@ -77,8 +77,8 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                                         </td>
                                         <td className="px-6 py-4">
                                             <span className={`px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${user.role === 'Utilisateur' ? 'bg-purple-50 text-purple-700' :
-                                                user.role === 'Admin' ? 'bg-blue-50 text-blue-700' :
-                                                    'bg-slate-100 text-slate-600'
+                                                    user.role === 'Admin' ? 'bg-blue-50 text-blue-700' :
+                                                        'bg-slate-100 text-slate-600'
                                                 }`}>
                                                 {user.role}
                                             </span>

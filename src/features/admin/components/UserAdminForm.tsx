@@ -12,6 +12,7 @@ const userAdminSchema = z.object({
     email: z.string().email("Adresse email invalide"),
     mdp: z.string().min(6, "6 caractères minimum"),
     idRole: z.string().min(1, "Veuillez choisir un rôle"),
+    rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
 });
 
 type UserAdminFormValues = z.infer<typeof userAdminSchema>;
@@ -45,7 +46,8 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
         // Payload final avec les clés exactes
         const payload = {
             ...data,
-            idRole: Number(data.idRole)
+            idRole: Number(data.idRole),
+            rang: Number(data.rang),
         };
 
         // console.log("Payload envoyé:", payload);
@@ -101,12 +103,24 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
                         />
                     </div>
                     <div className="space-y-1">
-                        <RoleSelect
-                            value={watch("idRole")}
-                            onChange={(val) => setValue("idRole", val, { shouldValidate: true })}
-                            error={errors.idRole?.message}
+                        <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Rang</label>
+                        <input
+                            {...register("rang")}
+                            type="number"
+                            min={0}
+                            placeholder="0"
+                            className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.rang ? "border-red-500" : "border-slate-300"}`}
                         />
+                        {errors.rang && <p className="text-[10px] text-red-600 font-bold">{errors.rang.message}</p>}
                     </div>
+                </div>
+
+                <div className="space-y-1">
+                    <RoleSelect
+                        value={watch("idRole")}
+                        onChange={(val) => setValue("idRole", val, { shouldValidate: true })}
+                        error={errors.idRole?.message}
+                    />
                 </div>
 
                 {error && (

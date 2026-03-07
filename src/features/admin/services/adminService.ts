@@ -115,13 +115,17 @@ export const adminService = {
     /**
      * Met à jour les informations d'un utilisateur.
      */
-    updateUser: async (id: number, data: { email: string; entite: string; idRole: number; mdp?: string }): Promise<User> => {
+    updateUser: async (id: number, data: { email: string; entite: string; idRole: number; rang?: number; mdp?: string }): Promise<User> => {
         try {
             const payload: any = {
                 email: data.email,
                 entite: data.entite,
                 idRole: Number(data.idRole),
             };
+
+            if (data.rang !== undefined) {
+                payload.rang = Number(data.rang);
+            }
 
             if (data.mdp && data.mdp.trim() !== "") {
                 payload.mdp = data.mdp;
