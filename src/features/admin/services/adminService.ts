@@ -115,7 +115,7 @@ export const adminService = {
     /**
      * Met à jour les informations d'un utilisateur.
      */
-    updateUser: async (id: number, data: { email: string; entite: string; idRole: number; rang?: number; mdp?: string }): Promise<User> => {
+    updateUser: async (id: number, data: { email: string; entite: string; idRole: number; rang?: number; mdp?: string; sigle?: string }): Promise<User> => {
         try {
             const payload: any = {
                 email: data.email,
@@ -129,6 +129,10 @@ export const adminService = {
 
             if (data.mdp && data.mdp.trim() !== "") {
                 payload.mdp = data.mdp;
+            }
+
+            if (data.sigle && data.sigle.trim() !== "") {
+                payload.sigle = data.sigle;
             }
 
             const response = await fetchAuth(`/api/utilisateurs?id=${id}`, {

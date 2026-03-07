@@ -103,7 +103,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                         <thead>
                             <tr className="bg-slate-50/50 border-b border-slate-200">
                                 <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
-                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
+                                <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest">Sigle</th>
                                 <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
                                 <th className="px-6 py-5 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
                             </tr>
@@ -116,7 +116,7 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                                         <div className="text-[10px] font-medium text-slate-400 uppercase">au {formatDate(rapport.calendrier.dateFin)}</div>
                                     </td>
                                     <td className="px-6 py-4 border-r border-slate-100">
-                                        <span className="text-[11px] font-bold text-slate-600 uppercase">{rapport.user.entite || "N/A"}</span>
+                                        <span className="text-[11px] font-bold text-slate-600 uppercase">{rapport.user.sigle || "N/A"}</span>
                                     </td>
                                     <td className="px-6 py-4 border-r border-slate-100 text-center">
                                         <span className={`px-3 py-1 text-[9px] font-black uppercase rounded-md border ${statusClasses[rapport.statut || "EN COURS"]}`}>

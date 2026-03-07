@@ -53,7 +53,7 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                     <table className="w-full text-left text-sm">
                         <thead className="sticky top-0 z-10 bg-slate-50 border-b border-slate-200">
                             <tr>
-                                <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Entité</th>
+                                <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Sigle</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Email</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Rôle</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px] text-right">Actions</th>
@@ -70,7 +70,7 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                                 users.map((user) => (
                                     <tr key={user.id} className="hover:bg-slate-50 transition-colors">
                                         <td className="px-6 py-4">
-                                            <span className="font-semibold text-slate-900">{user.entite}</span>
+                                            <span className="font-semibold text-slate-900">{user.sigle}</span>
                                         </td>
                                         <td className="px-6 py-4 text-slate-600 font-medium">
                                             {user.email}

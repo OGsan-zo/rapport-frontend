@@ -13,6 +13,7 @@ const userAdminSchema = z.object({
     mdp: z.string().min(6, "6 caractères minimum"),
     idRole: z.string().min(1, "Veuillez choisir un rôle"),
     rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
+    sigle: z.string().min(2, "Le sigle doit faire au moins 2 caractères"),
 });
 
 type UserAdminFormValues = z.infer<typeof userAdminSchema>;
@@ -48,6 +49,7 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
             ...data,
             idRole: Number(data.idRole),
             rang: Number(data.rang),
+            sigle: data.sigle || "",
         };
 
         // console.log("Payload envoyé:", payload);
@@ -112,6 +114,16 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
                             className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.rang ? "border-red-500" : "border-slate-300"}`}
                         />
                         {errors.rang && <p className="text-[10px] text-red-600 font-bold">{errors.rang.message}</p>}
+                    </div>
+                    <div className="space-y-1">
+                        <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Sigle</label>
+                        <input
+                            {...register("sigle")}
+                            type="text"
+                            placeholder="SIG"
+                            className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.sigle ? "border-red-500" : "border-slate-300"}`}
+                        />
+                        {errors.sigle && <p className="text-[10px] text-red-600 font-bold">{errors.sigle.message}</p>}
                     </div>
                 </div>
 

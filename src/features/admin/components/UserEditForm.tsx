@@ -16,6 +16,7 @@ const userEditSchema = z.object({
     rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
     mdp: z.string().optional(),
     conf_mdp: z.string().optional(),
+    sigle: z.string().min(2, "Le sigle doit faire au moins 2 caractères"),
 }).superRefine((data, ctx) => {
     const mdpFilled = data.mdp && data.mdp.trim() !== "";
     const confFilled = data.conf_mdp && data.conf_mdp.trim() !== "";
@@ -54,7 +55,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
     const [isLoading, setIsLoading] = useState(false);
     const [isFetching, setIsFetching] = useState(true);
     const [error, setError] = useState<string | null>(null);
-
+    console.log(user);
     const {
         register,
         handleSubmit,
@@ -67,10 +68,11 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
         defaultValues: {
             email: user.email,
             entite: user.entite,
-            idRole: "",
+            idRole: user.idRole?.toString() ?? "",
             rang: user.rang?.toString() ?? "0",
             mdp: "",
             conf_mdp: "",
+            sigle: user.sigle ?? "",
         }
     });
 
@@ -89,6 +91,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                     rang: fullUser.rang?.toString() ?? "0",
                     mdp: "",
                     conf_mdp: "",
+                    sigle: fullUser.sigle ?? "",
                 });
             } catch (err) {
                 // console.error("Erreur chargement utilisateur", err);
@@ -115,6 +118,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                 idRole: Number(data.idRole),
                 rang: Number(data.rang),
                 mdp: mdpFilled ? data.mdp : undefined,
+                sigle: data.sigle,
             });
             onSuccess();
         } catch (err: any) {
@@ -180,6 +184,16 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                         className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.rang ? "border-red-500" : "border-slate-300"}`}
                     />
                     {errors.rang && <p className="text-[10px] text-red-600 font-bold">{errors.rang.message}</p>}
+                </div>
+                <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Sigle</label>
+                    <input
+                        {...register("sigle")}
+                        type="text"
+                        placeholder="DSINT"
+                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.sigle ? "border-red-500" : "border-slate-300"}`}
+                    />
+                    {errors.sigle && <p className="text-[10px] text-red-600 font-bold">{errors.sigle.message}</p>}
                 </div>
 
                 {/* Rôle */}
