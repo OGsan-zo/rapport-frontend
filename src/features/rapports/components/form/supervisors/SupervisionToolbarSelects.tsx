@@ -37,18 +37,21 @@ export const SupervisionToolbarSelects: React.FC<SupervisionToolbarSelectsProps>
             />
 
             {/* 2. Select Entité (Spécifique à la vue Supervision) */}
-            <div className="flex flex-col gap-1 w-full lg:w-auto">
+            <div className="flex flex-col gap-1 w-full lg:w-[260px]">
                 <span className="text-[9px] font-bold uppercase text-slate-400 tracking-widest">
                     Service
                 </span>
+
                 <select
                     value={entiteFilter}
                     onChange={(e) => setEntiteFilter(e.target.value)}
-                    className="w-full lg:w-auto bg-white border border-slate-200 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg outline-none cursor-pointer text-slate-600 min-h-[40px]"
+                    className="w-full bg-white border border-slate-200 px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg outline-none cursor-pointer text-slate-600 min-h-[40px]"
                 >
                     <option value="">Tous les services</option>
                     {entites.map((entite) => (
-                        <option key={entite} value={entite}>{entite}</option>
+                        <option key={entite} value={entite} title={entite}>
+                            {entite}
+                        </option>
                     ))}
                 </select>
             </div>

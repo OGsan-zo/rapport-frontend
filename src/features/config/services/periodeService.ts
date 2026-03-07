@@ -92,6 +92,52 @@ export const periodeService = {
     },
 
     /**
+     * Met à jour une période existante.
+     */
+    updateCalendrier: async (id: number, data: { dateDebut: string; dateFin: string; typeCalendrierId: number }): Promise<CalendarPeriod> => {
+        try {
+            const response = await fetchAuth(`/api/calendriers/${id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return responseData.data || responseData;
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
+     * Supprime une période par son ID.
+     */
+    deleteCalendrier: async (id: number): Promise<void> => {
+        try {
+            const response = await fetchAuth(`/api/calendriers/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
      * Récupère la liste des utilisateurs en retard pour un calendrier donné.
      */
     getLateUsers: async (idCalendrier: number | string): Promise<User[]> => {

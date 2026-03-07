@@ -59,9 +59,9 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 </div>
 
                 {/* 3. Footer (Affiché une seule fois à la fin) */}
-                <div style={{ marginTop: "auto", paddingTop: "40px" }}>
+                {/* <div style={{ marginTop: "auto", paddingTop: "40px" }}>
                     <RapportFooter rapport={data[data.length - 1]} />
-                </div>
+                </div> */}
 
                 {/* Print Styles for stability */}
                 <style jsx global>{`

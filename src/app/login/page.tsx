@@ -56,7 +56,7 @@ export default function LoginPage() {
                             Ministère de l&apos;Enseignement Supérieur et de la Recherche Scientifique
                         </h2>
                         {/* <p className="text-[9px] font-medium text-slate-300 uppercase tracking-widest">
-                            Direction des Systèmes d&apos;Information (DSINT)
+                            Direction des Systèmes d&apos;Information  (DSINT)
                         </p> */}
                     </div>
                 </div>

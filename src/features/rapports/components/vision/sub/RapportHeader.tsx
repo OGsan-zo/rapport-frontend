@@ -15,7 +15,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
                     src={IMAGES.LOGO_REPOBLIKA}
                     alt="Logo Repoblikan'i Madagasikara"
                     crossOrigin="anonymous"
-                    className="w-24 h-auto object-contain"
+                    className="w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-auto object-contain"
                 />
             </div>
 
@@ -56,7 +56,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
                     src={IMAGES.LOGO_MESUPRES}
                     alt={`Logo ${APP_CONSTANTS.ministryName}`}
                     crossOrigin="anonymous"
-                    className="w-24 h-auto object-contain"
+                    className="w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 h-auto object-contain"
                 />
             </div>
 
