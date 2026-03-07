@@ -5,6 +5,7 @@ export interface User {
   idRole?: number;
   role: "Admin" | "Utilisateur" | string;
   dateValidation?: string | null;
+  rang : number;
 }
 
 export interface Entite {

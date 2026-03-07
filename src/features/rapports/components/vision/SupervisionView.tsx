@@ -41,6 +41,8 @@ export const SupervisionView: React.FC = () => {
     const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport[] | null>(null);
 
     const calendrierResult = usePeriodes(false);
+    // --- ÉTATS ---
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
     // --- AUTO-SELECTION DE LA PÉRIODE ---
     useEffect(() => {
@@ -87,9 +89,22 @@ export const SupervisionView: React.FC = () => {
     }, [rapports]);
 
     const filtered = useMemo(() => {
-        if (!entiteFilter) return rapports;
-        return rapports.filter(r => r.user?.entite === entiteFilter);
-    }, [rapports, entiteFilter]);
+        // 1. Filtrage
+        let result = [...rapports];
+        if (entiteFilter) {
+            result = result.filter(r => r.user?.entite === entiteFilter);
+        }
+
+        // 2. Tri par user.rang
+        return result.sort((a, b) => {
+            const rangA = a.user?.rang ?? 0;
+            const rangB = b.user?.rang ?? 0;
+            
+            return sortOrder === "asc" 
+                ? rangA - rangB 
+                : rangB - rangA;
+        });
+    }, [rapports, entiteFilter, sortOrder]); // Ajoutez sortOrder ici
 
     // --- ACTIONS HISTORIQUE ---
     const handleOpenHistory = (rapport: ApiRapport) => {
@@ -219,6 +234,14 @@ export const SupervisionView: React.FC = () => {
                         <p className="text-[10px] font-bold text-slate-500 uppercase tracking-[0.2em]">
                             Documents reçus : <span className="text-slate-900 font-extrabold text-xs">{filtered.length}</span>
                         </p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+                            className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-medium transition-colors"
+                        >
+                            {sortOrder === "asc" ? "↑" : "↓"} Rang
+                        </button>
                     </div>
 
                     <SupervisionTable

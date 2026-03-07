@@ -68,6 +68,21 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
             setListRapports(prev =>
                 prev.map(r => r.id === id ? { ...r, statut: nextStatut } : r)
             );
+            const rapportToUpdate = listRapports.find(r => r.id === id);
+            
+            if (rapportToUpdate) {
+                const updatedRapport = { ...rapportToUpdate, statut: nextStatut };
+
+                // 1. Mise à jour locale
+                setListRapports(prev =>
+                    prev.map(r => r.id === id ? updatedRapport : r)
+                );
+
+                // 2. Notification du parent (Crucial pour que le parent change aussi)
+                if (onUpdate) {
+                    onUpdate(id, updatedRapport);
+                }
+            }
             // toast.success(`Statut mis à jour : ${nextStatut}`);
         } catch (error: any) {
             toast.error(error.message || "Une erreur est survenue lors de la validation.");
