@@ -15,8 +15,7 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchUsers = async () => {
+    const fetchUsers = async () => {
             setIsLoading(true);
             try {
                 const data = await adminService.getAllUtilisateurs();
@@ -27,6 +26,8 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                 setIsLoading(false);
             }
         };
+    useEffect(() => {
+        
         fetchUsers();
     }, [refreshKey]);
 
