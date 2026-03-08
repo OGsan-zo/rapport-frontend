@@ -27,7 +27,6 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
             }
         };
     useEffect(() => {
-        
         fetchUsers();
     }, [refreshKey]);
 
