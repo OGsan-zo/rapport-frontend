@@ -40,13 +40,13 @@ export default function SupervisionPage() {
             }
         };
     
-        if (loading) {
-            return (
-                <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
-                    <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
-                </header>
-            );
-        }
+        // if (loading) {
+        //     return (
+        //         <header className="h-16 border-b border-border bg-card flex items-center justify-end px-6">
+        //             <div className="h-10 w-10 rounded-full bg-muted animate-pulse" />
+        //         </header>
+        //     );
+        // }
     return (
         <div className="space-y-6">
             <SupervisionView />
