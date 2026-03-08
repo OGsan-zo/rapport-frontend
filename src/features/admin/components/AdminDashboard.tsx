@@ -89,7 +89,7 @@ export const AdminDashboard = () => {
 
     const handleRedirect = () => {
         if (selectedPeriodId) {
-            router.push(`/admin/manquants`);
+            router.push(`/supervision/manquants`);
         }
     };
 

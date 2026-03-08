@@ -17,7 +17,7 @@ interface MenuItem {
 const ALL_LINKS: MenuItem[] = [
     { label: "Dashboard", href: "/dashboard", roles: ["Admin", "Utilisateur", "Supervisor"], section: "Navigation" },
     { label: "Nouveau", href: "/dashboard/nouveau", roles: ["Admin", "Utilisateur", "Supervisor"], section: "Navigation" },
-    { label: "Supervision", href: "/dashboard/supervision", roles: ["Admin", "Supervisor"], section: "Pilotage" },
+    { label: "Supervision", href: "/supervision", roles: ["Admin", "Supervisor"], section: "Pilotage" },
     { label: "Recherche", href: "/dashboard/rapports/recherche", roles: ["Admin", "Utilisateur", "Supervisor"], section: "Navigation",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -25,8 +25,8 @@ const ALL_LINKS: MenuItem[] = [
             </svg>
         )
     },
-    { label: "Stats", href: "/admin/dashboard", roles: ["Admin"], section: "Administration" },
-    { label: "Périodes", href: "/admin/periodes", roles: ["Admin"], section: "Administration" },
+    { label: "Stats", href: "/supervision/dashboard", roles: ["Admin","Supervisor"], section: "Pilotage" },
+    { label: "Périodes", href: "/supervision/periodes", roles: ["Admin", "Supervisor"], section: "Pilotage" },
     {
         label: "Utilisateurs",
         href: "/admin/utilisateurs",
