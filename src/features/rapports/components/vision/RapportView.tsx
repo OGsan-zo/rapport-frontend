@@ -47,7 +47,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 }}
             >
                 {/* 1. Header (Affiché une seule fois au début) */}
-                <RapportHeader />
+                {isPdf && <RapportHeader />}
 
                 {/* 2. Flux de Tableaux (Enchaînement sans saut de page forcé) */}
                 <div className="flex flex-col gap-10">

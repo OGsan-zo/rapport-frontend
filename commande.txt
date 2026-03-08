@@ -22,3 +22,6 @@ npm install --legacy-peer-deps
 
 #Pour installer toast
 npm install react-hot-toast
+
+#Pour installer framer motion
+npm install framer-motion
