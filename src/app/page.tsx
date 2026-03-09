@@ -97,10 +97,41 @@ export default function HomePage() {
           className="max-w-7xl mx-auto px-6"
         >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {[
+            {/* {[
               { title: "Centralisation", color: "blue", desc: "Regroupez tous vos rapports d'activités sur une interface unique." },
               { title: "Rapidité", color: "green", desc: "Saisie optimisée et exportation automatique en PDF." },
-              { title: "Conformité", color: "orange", desc: "Respect des standards administratifs et archivage pérenne." }
+              { title: "Conformité", color: "orange", desc: "Respect des standards administratifs et archivage pérenne." } */}
+              {[{
+                  title: "Centralisation",
+                  color: "blue",
+                  desc: "Regroupez tous vos rapports d'activités sur une interface unique.",
+                  icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 002-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    </svg>
+                  )
+                },
+                {
+                  title: "Rapidité",
+                  color: "green",
+                  desc: "Saisie optimisée et exportation automatique en PDF.",
+                  icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  )
+                },
+                {
+                  title: "Conformité",
+                  color: "orange",
+                  desc: "Respect des standards administratifs et archivage pérenne.",
+                  icon: (
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.040L3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622l-1.382-3.016z" />
+                    </svg>
+                  )
+                }
+
             ].map((item, i) => (
               <motion.div 
                 key={i}
@@ -110,6 +141,7 @@ export default function HomePage() {
               >
                 <div className={`w-12 h-12 bg-${item.color}-50 text-${item.color}-600 rounded-xl flex items-center justify-center`}>
                   {/* Icônes ici */}
+                  {item.icon}
                 </div>
                 <h3 className="text-xl font-bold text-slate-900">{item.title}</h3>
                 <p className="text-slate-500 text-sm font-medium">{item.desc}</p>
