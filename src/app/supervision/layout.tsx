@@ -24,14 +24,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const checkAuth = async () => {
         try {
             const user = await authService.checkAuth();
+            console.log(user);
             setUser(user);
-            if (user.role !== "Admin" && user.role !== "Supervisor") {
-                authService.logout();
-                router.push(login);
-            }
-            } catch (err) {
-            authService.logout();
-            router.push(login);
+            // if (user.role !== "Admin" && user.role !== "Supervisor") {
+            //     authService.logout();
+            //     router.push(login);
+            // }
+            // } catch (err) {
+            // authService.logout();
+            // router.push(login);
         } finally {
             setAuthChecked(true);
             setLoading(false);
