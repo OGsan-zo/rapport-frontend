@@ -74,14 +74,21 @@ export default function HomePage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
+            // "justify-center" centre la carte elle-même sur mobile
             className="relative flex justify-center lg:justify-end"
           >
             <motion.div 
-              animate={{ y: [0, -15, 0] }} // Flottement
+              animate={{ y: [0, -15, 0] }} 
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="bg-white border border-slate-100 rounded-[32px] p-8 md:p-10 lg:p-12 shadow-2xl shadow-slate-100 w-full max-w-md md:max-w-lg lg:max-w-xl"
+              // On ajoute "flex justify-center" ici pour centrer le contenu de la carte
+              className="bg-white border border-slate-100 rounded-[32px] p-8 md:p-10 lg:p-12 shadow-2xl shadow-slate-100 w-full max-w-md md:max-w-lg lg:max-w-xl flex justify-center items-center"
             >
-              <img src={IMAGES.LOGO_MESUPRES} alt="Logo MESUPRES" className="w-full max-w-[260px] md:max-w-[360px] lg:max-w-[440px] h-auto object-contain" />
+              <img 
+                src={IMAGES.LOGO_MESUPRES} 
+                alt="Logo MESUPRES" 
+                // "mx-auto" est la clé pour centrer une image horizontalement
+                className="w-full max-w-[260px] md:max-w-[360px] lg:max-w-[440px] h-auto object-contain mx-auto" 
+              />
             </motion.div>
           </motion.div>
         </div>
