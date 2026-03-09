@@ -11,16 +11,21 @@ export const authService = {
      * Récupère la liste des entités disponibles (simulé).
      */
     checkAuth: async (): Promise<User> => {
+        const response = await fetch(`/api/auth/me`, {
+            method: "GET",
+            credentials: "include", // <--- C'est cette ligne qui manque !
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
 
-        const response = await fetch(`/api/auth/me`);
         const data = await response.json();
-        const user = data.user;
+        
         if (!response.ok) {
-            // On extrait le message d'erreur du backend s'il existe
-            throw new Error(data.message || data.error || 'Erreur lors de la connexion');
+            throw new Error(data.message || 'Erreur lors de la connexion');
         }
-        return user as User;
-      
+        
+        return data.user as User;
     },
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
         const response = await fetch(`${API_URL}/login`, {
