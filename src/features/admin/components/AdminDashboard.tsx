@@ -131,9 +131,9 @@ export const AdminDashboard = () => {
             ) : (
                 <div className="space-y-12">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <StatCard title="Total Agents" value={counters.total} sub="Inscrits" color="from-blue-500 to-indigo-500" isRefreshing={isRefreshing} />
+                        <StatCard title="Total" value={counters.total} sub="Inscrits" color="from-blue-500 to-indigo-500" isRefreshing={isRefreshing} />
                         <StatCard title="Rapports Reçus" value={counters.ok} sub="Transmis" color="from-emerald-500 to-teal-500" isRefreshing={isRefreshing} />
-                        <StatCard title="Manquants" value={counters.late} sub="Retard" color="from-red-500 to-rose-600" isLate={true} isRefreshing={isRefreshing} />
+                        <StatCard title="Manquants" value={counters.late} sub="Restant" color="from-red-500 to-rose-600" isLate={true} isRefreshing={isRefreshing} />
                     </div>
 
                     {/* 3. Bannière d'Action refactorisée */}

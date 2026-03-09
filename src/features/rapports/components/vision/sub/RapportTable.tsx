@@ -80,7 +80,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                 color: "#4A148C"
                             }}
                         >
-                            SEMAINE {periodeStr}
+                            PERIODE {periodeStr}
                         </th>
                     </tr>
 
