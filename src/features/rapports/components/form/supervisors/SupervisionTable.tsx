@@ -129,7 +129,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                     <table className="w-full text-left border-collapse">
                         <thead className="bg-slate-50/50 border-b border-slate-200">
                             <tr>
-                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Sigle</th>
+                                <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Entité</th>
                                 <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest">Période</th>
                                 <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-center">Statut</th>
                                 <th className="px-6 py-4 text-[10px] font-black uppercase text-slate-500 tracking-widest text-right">Actions</th>
@@ -145,7 +145,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                                     return (
                                         <tr key={rapport.id} className="hover:bg-slate-50/50 transition-colors">
                                             <td className="px-6 py-5">
-                                                <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user?.sigle}</div>
+                                                <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user?.entite}</div>
                                                 <div className="text-[10px] text-slate-400">{rapport.user?.email}</div>
                                             </td>
                                             <td className="px-6 py-5 text-xs text-slate-500 italic">

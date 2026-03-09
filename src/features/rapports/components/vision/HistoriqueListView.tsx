@@ -69,7 +69,7 @@ export const HistoriqueListView: React.FC<HistoriqueListViewProps> = ({
                                         <td className="px-6 py-5">
                                             <div className="text-sm font-medium text-slate-900">
                                                 {/* On suppose que la date de modification est stockée ou qu'on utilise l'ID pour l'ordre */}
-                                                Version du {formatDate(rapport.calendrier?.dateFin)} {/* À ajuster selon les données réelles de l'API */}
+                                                Version du {formatDate(rapport.deletedAt)} {/* À ajuster selon les données réelles de l'API */}
                                             </div>
                                         </td>
                                         <td className="px-6 py-5">

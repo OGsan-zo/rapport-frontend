@@ -27,6 +27,8 @@ export interface ApiRapport {
     calendrier: CalendarPeriod;
     activites: ApiActivite[];
     statut?: string;
+    createdAt?: string;
+    deletedAt?: string;
 }
 
 /**

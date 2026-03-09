@@ -57,9 +57,9 @@ export const HistoriqueDetailView: React.FC<HistoriqueDetailViewProps> = ({
                     </div>
 
                     {/* Footer */}
-                    <div style={{ marginTop: "auto", paddingTop: "40px" }}>
+                    {/* <div style={{ marginTop: "auto", paddingTop: "40px" }}>
                         <RapportFooter rapport={rapport} />
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

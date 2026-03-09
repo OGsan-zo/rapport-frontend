@@ -14,7 +14,7 @@ export const MissingUsersToolbar: React.FC<MissingUsersToolbarProps> = ({
     return (
         <div className="sticky top-0 bg-white/80 backdrop-blur-md z-30 py-8 mb-4 border-b border-slate-100 flex flex-col md:flex-row items-center justify-between gap-8">
             <ToolbarTitle
-                title="Agents Manquants"
+                title="Entites Manquants"
                 description="Surveillance des transmissions de rapports"
             />
 
