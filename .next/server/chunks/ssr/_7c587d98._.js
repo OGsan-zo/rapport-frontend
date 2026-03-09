@@ -1,0 +1,3 @@
+module.exports=[38783,(a,b,c)=>{"use strict";b.exports=a.r(42602).vendored["react-ssr"].ReactServerDOMTurbopackClient},5428,a=>{"use strict";a.s(["APP_CONSTANTS",0,{appName:"MESUPRES",ministryName:"MESUPRES",departmentName:"DSINT",departmentFullName:"Direction des Systèmes d'Information et du Numérique Technologique",copyright:{owner:"MESUPRES",startYear:"2024"},apiPrefix:"/api",colors:{mesupres:"#003366",mesupresLight:"#e6f0ff",mesupresHover:"#004080"}},"IMAGES",0,{LOGO_MESUPRES:"/img/logo_mesupres.png",LOGO_REPOBLIKA:"/img/flag-mada-1.jpg",LOGO_ESPA:"/img/espa.png",LOGO_DSINT:"/img/dsint.png",ILLUSTRATION_LOGIN:"/img/login_illustration.svg"}])}];
+
+//# sourceMappingURL=_7c587d98._.js.map
