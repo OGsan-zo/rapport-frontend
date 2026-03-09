@@ -1,0 +1,3 @@
+{
+  "/api/utilisateurs/changerMdp/route": "app/api/utilisateurs/changerMdp/route.js"
+}
