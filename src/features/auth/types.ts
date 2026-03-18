@@ -5,8 +5,8 @@ export interface User {
   idRole?: number;
   role: "Admin" | "Utilisateur" | string;
   dateValidation?: string | null;
-  rang : number;
-  sigle: string;
+  rang?: number;
+  sigle?: string;
 }
 
 export interface Entite {

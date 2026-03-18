@@ -152,7 +152,9 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                                                 Du {formatDate(rapport.calendrier?.dateDebut)} au {formatDate(rapport.calendrier?.dateFin)}
                                             </td>
                                             <td className="px-6 py-5 text-center">
-                                                <span className={`px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full ${statusClasses[statut] || statusClasses.TRANSMIS}`}>
+                                                <span 
+                                                    className={`whitespace-nowrap inline-block px-3 py-1 text-[9px] font-bold uppercase tracking-widest rounded-full ${statusClasses[statut] || statusClasses.TRANSMIS}`}
+                                                >
                                                     {statut}
                                                 </span>
                                             </td>

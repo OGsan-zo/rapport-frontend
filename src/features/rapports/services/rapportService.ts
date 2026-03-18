@@ -20,7 +20,8 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
             const responseData = await response.json();
             const data: ApiRapport[] = responseData.data;
@@ -36,11 +37,12 @@ export const rapportService = {
         if (!idCalendrier || idCalendrier <= 0) throw new Error("ID Calendrier invalide");
         try {
             // L'appel se fait sur la route interne de Next.js
-            const response = await fetch(`/api/rapports/calendrier?idCalendrier=${encodeURIComponent(idCalendrier)}`);
+            const response = await fetchAuth(`/api/rapports/calendrier?idCalendrier=${encodeURIComponent(idCalendrier)}`);
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
             const responseData = await response.json();
             const data: ApiRapport[] = responseData.data;
@@ -70,7 +72,8 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
             const responseData = await response.json();
             const data: ApiRapport = responseData.data;
@@ -95,7 +98,8 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message|| errorData.error || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
 
             const responseData = await response.json();
@@ -125,7 +129,8 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
             const responseData = await response.json();
             const data: ApiRapport = responseData.data;
@@ -153,7 +158,8 @@ export const rapportService = {
 
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.message || `Erreur serveur: ${response.status}`);
+                const message = errorData.message || errorData.error || `Erreur serveur: ${response.status}`;
+                throw new Error(message);
             }
             const responseData = await response.json();
             return responseData.data || [];
