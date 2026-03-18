@@ -2,7 +2,7 @@ import { type NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 import { User } from "@/features/auth/types";
 
-const JWT_SECRET = process.env.JWT_SECRET || "ma_cle_secrete";
+const JWT_SECRET = process.env.JWT_SECRET || "be522869fe20e840db508c9f139d423c";
 
 
 
