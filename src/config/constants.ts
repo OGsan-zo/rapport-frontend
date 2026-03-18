@@ -17,7 +17,7 @@ export const APP_CONSTANTS = {
 
 export const IMAGES = {
     LOGO_MESUPRES: "/img/logo_mesupres.png",
-    LOGO_REPOBLIKA: "/img/flag-mada-1.jpg",
+    LOGO_REPOBLIKA: "/img/repoblika.png",
     LOGO_ESPA: "/img/espa.png",
     LOGO_DSINT: "/img/dsint.png",
     ILLUSTRATION_LOGIN: "/img/login_illustration.svg",
