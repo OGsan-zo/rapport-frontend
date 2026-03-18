@@ -7,7 +7,7 @@ interface RapportHeaderProps { }
 
 export const RapportHeader: React.FC<RapportHeaderProps> = () => {
     return (
-        <div className="w-full flex flex-col items-center text-center mb-6">
+        <div className="w-full flex flex-col items-center text-center mt-0 pt-0 mb-1">
 
             {/* Emblème de la République */}
             <img
@@ -18,7 +18,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
             />
 
             {/* Séparateur */}
-            <div className="w-16 border-t border-black my-2" />
+            <div className="w-16 border-t border-black my-1" />
 
             {/* Nom du ministère */}
             <p
@@ -35,7 +35,7 @@ export const RapportHeader: React.FC<RapportHeaderProps> = () => {
             </p>
 
             {/* Séparateur bas */}
-            <div className="w-16 border-t border-black mt-4 mb-8" />
+            <div className="w-16 border-t border-black mt-2 mb-0" />
 
         </div>
     );
