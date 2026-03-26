@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 // Imports séparés
 import { rapportSchema, RapportFormValues } from "../../types/rapport";
 import { RapportToolbar } from "./rapports/RapportToolbar";
-import { LigneActivite } from "./LigneActivite";
 import { RapportView } from "../vision/RapportView";
 import { ApiRapport } from "../../types";
 import { usePdfExport } from "../../hooks/usePdfExport";
@@ -17,11 +16,18 @@ import { useUser } from "@/features/auth/contexts/UserContext";
 import { rapportService } from "@/features/rapports/services/rapportService";
 import { toast } from "react-hot-toast";
 import { audioService } from "@/hooks/audioService";
+
+// 👇 Import du nouveau composant
+import TableauActivites from "./TableauActivite";
+
 export const ConsolidationForm = () => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedTypeId, setSelectedTypeId] = useState<string>("");
   const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
+
+  // 👇 MODIFICATION ICI : On vérifie si l'ID sélectionné est "3"
+  const isTrimestriel = selectedTypeId === "3"; 
 
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<RapportFormValues>({
     resolver: zodResolver(rapportSchema),
@@ -62,28 +68,41 @@ export const ConsolidationForm = () => {
 
         impacts: l.impacts
           ?.filter(i => i.value && i.value.trim() !== "")
-          .map(i => ({ name: i.value })) || []
+          .map(i => ({ name: i.value })) || [],
+        produits: l.produits
+          ?.filter(p => p.value && p.value.trim() !== "")
+          .map(p => ({ name: p.value })) || [],
+        cibles: l.cibles
+          ?.filter(c => c.value && c.value.trim() !== "")
+          .map(c => ({ name: c.value })) || [],
+        previsions: l.previsions
+          ?.filter(p => p.value && p.value.trim() !== "")
+          .map(p => ({ name: p.value })) || [],
+        tauxRealisations: l.tauxRealisations
+          ?.filter(t => t.value && t.value.trim() !== "")
+          .map(t => ({ name: t.value })) || [],
+        observations: l.observations
+          ?.filter(o => o.value && o.value.trim() !== "")
+          .map(o => ({ name: o.value })) || [],
       })),
       statut: "BROUILLON"
     };
-  }, [watchedValues, calendrierResult.data]); // Ajout de calendrierResult.data ici
+  }, [watchedValues, calendrierResult.data, user]); 
+
   const onSubmit = async (data: RapportFormValues) => {
     setIsSubmitting(true);
     try {
-
-      // console.log("Payload :", rapportPreview);
       await rapportService.saveRapport(rapportPreview);
       toast.success("Rapport enregistré avec succès !");
       router.push("/dashboard");
     } catch (err: any) {
-      // console.error("Erreur :", err);
       toast.error(err.message || "Erreur lors de l'enregistrement du rapport.");
     } finally {
       setIsSubmitting(false);
     }
   };
-  const onInvalid = (errors: any) => {
 
+  const onInvalid = (errors: any) => {
     const champsManquants = Object.keys(errors).join(", ");
     audioService.playErrorValidation();
 
@@ -91,12 +110,10 @@ export const ConsolidationForm = () => {
       duration: 4000,
       position: "top-center",
     });
-
   };
 
   return (
-    // L'ajout du <form> permet au bouton "Enregistrer" du composant enfant de déclencher le onSubmit
-    <form onSubmit={handleSubmit(onSubmit,onInvalid)} className="space-y-10 max-w-6xl mx-auto pb-20">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-10 max-w-6xl mx-auto pb-20">
 
       <RapportToolbar
         selectedTypeId={selectedTypeId}
@@ -112,36 +129,27 @@ export const ConsolidationForm = () => {
         calendrierResult={calendrierResult}
       />
 
-      <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
-          <div className="min-w-[1000px]">
-            <div className="grid grid-cols-[70px_1fr_1.5fr_1.5fr_70px] bg-slate-50/80 border-b border-slate-200">
-              <div className="p-4 text-[10px] font-black text-slate-400 text-center tracking-widest uppercase">#</div>
-              <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Titre de l'activité</div>
-              <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Effects</div>
-              <div className="p-4 text-[10px] font-black text-slate-600 tracking-widest uppercase border-l border-slate-200/50">Impacts</div>
-              <div className="p-4 border-l border-slate-200/50" />
-            </div>
-
-            <div className="divide-y divide-slate-100">
-              {fields.map((field, index) => (
-                <LigneActivite
-                  key={field.id}
-                  control={control}
-                  register={register}
-                  index={index}
-                  remove={remove}
-                  canRemove={fields.length > 1}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* 👇 Le tableau s'adaptera automatiquement si selectedTypeId vaut "3" */}
+      <TableauActivites 
+        fields={fields}
+        control={control}
+        register={register}
+        remove={remove}
+        isTrimestriel={isTrimestriel}
+      />
 
       <button
         type="button"
-        onClick={() => append({ titre: "", effects: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" })}
+        onClick={() => append({
+          titre: "",
+          effects: [{ value: "" }],
+          impacts: [{ value: "" }],
+          produits: [{ value: "" }],
+          cibles: [{ value: "" }],
+          previsions: [{ value: "" }],
+          taux: [{ value: "" }],
+          observations: [{ value: "" }]
+        })}
         className="w-full py-10 border-2 border-dashed border-slate-200 rounded-2xl text-slate-400 hover:text-slate-900 hover:border-slate-900 hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
       >
         <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
