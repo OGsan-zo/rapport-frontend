@@ -78,7 +78,10 @@ export const ConsolidationForm = () => {
         previsions: l.previsions
           ?.filter(p => p.value && p.value.trim() !== "")
           .map(p => ({ name: p.value })) || [],
-        tauxRealisations: l.tauxRealisations
+        realisations: l.realisations
+          ?.filter(r => r.value && r.value.trim() !== "")
+          .map(r => ({ name: r.value })) || [],
+        taux: l.taux
           ?.filter(t => t.value && t.value.trim() !== "")
           .map(t => ({ name: t.value })) || [],
         observations: l.observations

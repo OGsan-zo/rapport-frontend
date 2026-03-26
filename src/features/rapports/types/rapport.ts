@@ -12,7 +12,8 @@ export const rapportSchema = z.object({
       produits: z.array(z.object({ value: z.string() })).optional(),
       cibles: z.array(z.object({ value: z.string() })).optional(),
       previsions: z.array(z.object({ value: z.string() })).optional(),
-      tauxRealisations: z.array(z.object({ value: z.string() })).optional(),
+      realisations: z.array(z.object({ value: z.string() })).optional(),
+      taux: z.array(z.object({ value: z.string() })).optional(),
       observations: z.array(z.object({ value: z.string() })).optional(),
     })
   ),

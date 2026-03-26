@@ -16,6 +16,12 @@ export interface ApiActivite {
     activite: BaseNom;
     impacts: BaseNom[];
     effects: BaseNom[];
+    produits?: BaseNom[];
+    cibles?: BaseNom[];
+    previsions?: BaseNom[];
+    realisations?: BaseNom[];
+    taux?: BaseNom[];
+    observations?: BaseNom[];
 }
 /**
  * Structure du rapport renvoyé par l'API (GET data[0]).

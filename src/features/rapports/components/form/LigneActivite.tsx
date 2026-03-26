@@ -17,6 +17,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   const { fields: produitsFields, append: appendProduit, remove: removeProduit } = useFieldArray({ control, name: `lignes.${index}.produits` as any });
   const { fields: ciblesFields, append: appendCible, remove: removeCible } = useFieldArray({ control, name: `lignes.${index}.cibles` as any });
   const { fields: previsionsFields, append: appendPrevision, remove: removePrevision } = useFieldArray({ control, name: `lignes.${index}.previsions` as any });
+  const { fields: realisationsFields, append: appendRealisation, remove: removeRealisation } = useFieldArray({ control, name: `lignes.${index}.realisations` as any });
   const { fields: tauxFields, append: appendTaux, remove: removeTaux } = useFieldArray({ control, name: `lignes.${index}.taux` as any });
   const { fields: observationsFields, append: appendObservation, remove: removeObservation } = useFieldArray({ control, name: `lignes.${index}.observations` as any });
 
@@ -28,19 +29,21 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       if (produitsFields.length === 0) appendProduit({ value: "" });
       if (ciblesFields.length === 0) appendCible({ value: "" });
       if (previsionsFields.length === 0) appendPrevision({ value: "" });
+      if (realisationsFields.length === 0) appendRealisation({ value: "" });
       if (tauxFields.length === 0) appendTaux({ value: "" });
       if (observationsFields.length === 0) appendObservation({ value: "" });
     }
   }, [
     effectsFields.length, impactsFields.length, produitsFields.length, 
-    ciblesFields.length, previsionsFields.length, tauxFields.length, 
+    ciblesFields.length, previsionsFields.length, realisationsFields.length, tauxFields.length, 
     observationsFields.length, isTrimestriel, 
     appendEffect, appendImpact, appendProduit, appendCible, 
     appendPrevision, appendTaux, appendObservation
   ]);
 
+// AJOUTE UN "1fr" supplémentaire pour la colonne "Réalisations"
   const gridLayout = isTrimestriel
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
+    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" // 9 fois "1fr" au lieu de 8
     : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   const colContainerClass = "border-l border-slate-100 p-3 space-y-2 w-full h-full flex flex-col";
@@ -52,7 +55,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
 
   return (
-    <div className={`grid ${gridLayout} group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
+    <div className={`grid ${gridLayout} min-w-[1500px] group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
       
       {/* 1. Index */}
       <div className="flex items-center justify-center text-xs font-black text-slate-300 bg-slate-50/50">
@@ -147,6 +150,21 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
               </div>
             ))}
             <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button>
+          </div>
+          
+          {/* 7.5. Réalisations */}
+          <div className={colContainerClass}>
+            {realisationsFields.map((field, i) => (
+              <div key={field.id} className={itemBoxClass}>
+                <textarea {...register(`lignes.${index}.realisations.${i}.value` as any)} className={textAreaClass} placeholder={`Réalisation ${i + 1}...`} />
+                {realisationsFields.length > 1 && (
+                  <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                  </button>
+                )}
+              </div>
+            ))}
+            <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button>
           </div>
 
           {/* 8. Taux */}
