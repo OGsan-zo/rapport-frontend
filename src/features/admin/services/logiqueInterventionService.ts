@@ -17,7 +17,6 @@ export const logiqueInterventionService = {
         }
         const data = await response.json();
         const items = data.data || data;
-        // L'API retourne { name, id }, on mappe vers { nom, id }
         return items.map((item: { id: number; name: string }) => ({ id: item.id, nom: item.name }));
     },
 
