@@ -18,7 +18,6 @@ export const RapportView: React.FC<RapportViewProps> = ({
     isPdf = true
 }) => {
     if (!data || data.length === 0) return null;
-
     return (
         <div
             className="w-full flex justify-center"

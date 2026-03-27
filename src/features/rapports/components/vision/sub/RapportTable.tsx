@@ -5,7 +5,16 @@ import { ApiRapport, ApiActivite, BaseNom } from "../../../types";
 
 interface RapportTableProps {
     rapport: ApiRapport;
-    isPdf?: boolean; // Nouvel argument optionnel
+    isPdf?: boolean;
+}
+
+interface ExtendedApiActivite extends ApiActivite {
+    produits?: BaseNom[];
+    cibles?: BaseNom[];
+    previsions?: BaseNom[];
+    realisations?: BaseNom[];
+    taux?: BaseNom[];
+    observations?: BaseNom[];
 }
 
 const formatDateStr = (dateStr?: string) => {
@@ -34,28 +43,71 @@ const formatPeriode = (rapport: ApiRapport) => {
 
 export const RapportTable: React.FC<RapportTableProps> = ({ 
     rapport, 
-    isPdf = true // Valeur par défaut à true
+    isPdf = true 
 }) => {
     const entityName = rapport.user?.entite || "DIRECTION DES SYSTÈMES D'INFORMATION ET DES NOUVELLES TECHNOLOGIES (DSINT)";
     const periodeStr = formatPeriode(rapport);
+    
+    const isTrimestriel = 
+        rapport?.calendrier?.typeCalendrier?.id === 3;
+
+    const headers = isTrimestriel 
+        ? ["Action", "Activité", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation", "Taux de réalisation", "Observation"]
+        : ["Activités", "Effets", "Impacts"];
+
+    const colSpanCount = headers.length;
+
+    // Réduction de la taille pour forcer l'ajustement sur PDF
+    const tableFontSize = isTrimestriel ? "8px" : "11px"; 
+    const cellPadding = isTrimestriel ? "4px 6px" : "12px"; 
+
+    // Fonction utilitaire pour le rendu des cellules contenant des listes
+    const renderListCell = (items?: BaseNom[]) => (
+        <td style={{ 
+            border: "1px solid black", 
+            padding: cellPadding, 
+            verticalAlign: "top",
+            wordBreak: "break-word", // Force le texte à aller à la ligne au lieu de pousser la colonne
+            overflowWrap: "break-word"
+        }}>
+            {items && items.length > 0 ? (
+                <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
+                    {items.map((item: BaseNom, i: number) => (
+                        <li key={i} style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
+                            {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
+                            <span style={{ textAlign: "justify", color: "#000000" }}>{item.name}</span>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <span style={{ color: "#666666", fontStyle: "italic", fontSize: tableFontSize }}> </span>
+            )}
+        </td>
+    );
 
     return (
         <div className="w-full">
             <table
-                className="w-full"
-                style={{ borderCollapse: "collapse", tableLayout: "fixed", fontSize: "11px", border: "1px solid black" }}
+                className="w-full bg-white"
+                style={{ 
+                    borderCollapse: "collapse", 
+                    tableLayout: "fixed", // IMPORTANT: Oblige le tableau à respecter la largeur à 100%
+                    fontSize: tableFontSize, 
+                    border: "1px solid black",
+                    width: "100%", // Reste dans les limites de la page
+                    maxWidth: "100%"
+                }}
             >
                 <thead>
-                    {/* Primary Header: Entity Name */}
                     <tr>
                         <th
-                            colSpan={3}
+                            colSpan={colSpanCount}
                             style={{
                                 backgroundColor: "#D1E7B9",
                                 border: "1px solid black",
-                                padding: "16px",
+                                padding: "12px",
                                 textAlign: "center",
-                                fontSize: "13px",
+                                fontSize: isTrimestriel ? "11px" : "13px",
                                 fontWeight: "bold",
                                 textTransform: "uppercase",
                                 color: "#000000"
@@ -65,16 +117,15 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                         </th>
                     </tr>
 
-                    {/* Secondary Header: Period */}
                     <tr>
                         <th
-                            colSpan={3}
+                            colSpan={colSpanCount}
                             style={{
                                 backgroundColor: "#E2D1F9",
                                 border: "1px solid black",
-                                padding: "10px",
+                                padding: "8px",
                                 textAlign: "center",
-                                fontSize: "12px",
+                                fontSize: isTrimestriel ? "10px" : "12px",
                                 fontWeight: "bold",
                                 textTransform: "uppercase",
                                 color: "#4A148C"
@@ -84,64 +135,70 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                         </th>
                     </tr>
 
-                    {/* Column Header Titles */}
                     <tr style={{ backgroundColor: "#BFDBFE", textAlign: "center", fontWeight: "bold", textTransform: "uppercase" }}>
-                        <th style={{ border: "1px solid black", padding: "12px", width: "33.33%", color: "#000000" }}>Activités</th>
-                        <th style={{ border: "1px solid black", padding: "12px", width: "33.33%", color: "#000000" }}>Effets</th>
-                        <th style={{ border: "1px solid black", padding: "12px", width: "33.33%", color: "#000000" }}>Impacts</th>
+                        {headers.map((header, idx) => {
+                            // Distribution des largeurs de colonnes
+                            let colWidth = `${100 / colSpanCount}%`;
+                            if (isTrimestriel) {
+                                // On donne 16% à la première, et les 8 autres se partagent les 84% restants (10.5% chacune)
+                                colWidth = idx === 0 ? "16%" : "10.5%";
+                            }
+
+                            return (
+                                <th 
+                                    key={idx} 
+                                    style={{ 
+                                        border: "1px solid black", 
+                                        padding: cellPadding, 
+                                        width: colWidth,
+                                        color: "#000000",
+                                        wordBreak: "break-word"
+                                    }}
+                                >
+                                    {header}
+                                </th>
+                            )
+                        })}
                     </tr>
                 </thead>
+                
                 <tbody>
-                    {rapport.activites?.map((act: ApiActivite, idx: number) => (
-                        <tr key={idx}>
-                            {/* Activities */}
-                            <td
-                                style={{
-                                    border: "1px solid black",
-                                    padding: "12px",
-                                    verticalAlign: "top",
-                                    textAlign: "justify",
-                                    lineHeight: "1.6",
-                                    fontWeight: "bold",
-                                    color: "#000000"
-                                }}
-                            >
-                                {act.activite?.name || " "}
-                            </td>
-                            {/* Effects */}
-                            <td style={{ border: "1px solid black", padding: "12px", verticalAlign: "top" }}>
-                                {act.effects && act.effects.length > 0 ? (
-                                    <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
-                                        {act.effects.map((e: BaseNom, i: number) => (
-                                            <li key={i} style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
-                                                {/* On affiche le point seulement si isPdf est true */}
-                                                {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
-                                                <span style={{ textAlign: "justify", color: "#000000" }}>{e.name}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}> </span>
+                    {rapport.activites?.map((actData: ApiActivite, idx: number) => {
+                        const act = actData as ExtendedApiActivite;
+                        return (
+                            <tr key={idx}>
+                                <td
+                                    style={{
+                                        border: "1px solid black",
+                                        padding: cellPadding,
+                                        verticalAlign: "top",
+                                        textAlign: "justify",
+                                        lineHeight: "1.4",
+                                        fontWeight: "bold",
+                                        color: "#000000",
+                                        wordBreak: "break-word",
+                                        overflowWrap: "break-word"
+                                    }}
+                                >
+                                    {act.activite?.name || " "}
+                                </td>
+                                
+                                {renderListCell(act.effects)}
+                                {renderListCell(act.impacts)}
+
+                                {isTrimestriel && (
+                                    <>
+                                        {renderListCell(act.produits)}
+                                        {renderListCell(act.cibles)}
+                                        {renderListCell(act.previsions)}
+                                        {renderListCell(act.realisations)}
+                                        {renderListCell(act.taux)}
+                                        {renderListCell(act.observations)}
+                                    </>
                                 )}
-                            </td>
-                            {/* Impacts */}
-                            <td style={{ border: "1px solid black", padding: "12px", verticalAlign: "top" }}>
-                                {act.impacts && act.impacts.length > 0 ? (
-                                    <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
-                                        {act.impacts.map((imp: BaseNom, i: number) => (
-                                            <li key={i} style={{ display: "flex", gap: "8px", marginBottom: "6px" }}>
-                                                {/* On affiche le point seulement si isPdf est true */}
-                                                {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
-                                                <span style={{ textAlign: "justify", color: "#000000" }}>{imp.name}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <span style={{ color: "#666666", fontStyle: "italic", fontSize: "10px" }}> </span>
-                                )}
-                            </td>
-                        </tr>
-                    ))}
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
         </div>
