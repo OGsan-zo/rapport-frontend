@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 import { LogiqueIntervention, LogiqueInterventionFormValues } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 import { LogiqueInterventionCreateForm } from "./form/LogiqueInterventionCreateForm";
@@ -74,11 +74,7 @@ export const LogiqueInterventionForm = () => {
     return (
         <>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-1 space-y-8">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Logique d'Intervention</h1>
-                        <p className="text-slate-400 text-[11px] font-medium uppercase tracking-widest mt-2 px-1 border-l-2 border-slate-900">Configuration</p>
-                    </div>
+                <div className="lg:col-span-1">
                     <LogiqueInterventionCreateForm onSubmit={handleCreate} feedback={feedback} />
                 </div>
 

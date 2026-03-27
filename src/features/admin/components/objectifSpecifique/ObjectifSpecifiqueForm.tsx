@@ -74,11 +74,7 @@ export const ObjectifSpecifiqueForm = () => {
     return (
         <>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-                <div className="lg:col-span-1 space-y-8">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900 tracking-tight uppercase">Objectifs Spécifiques</h1>
-                        <p className="text-slate-400 text-[11px] font-medium uppercase tracking-widest mt-2 px-1 border-l-2 border-slate-900">Configuration</p>
-                    </div>
+                <div className="lg:col-span-1">
                     <ObjectifSpecifiqueCreateForm onSubmit={handleCreate} feedback={feedback} />
                 </div>
 
