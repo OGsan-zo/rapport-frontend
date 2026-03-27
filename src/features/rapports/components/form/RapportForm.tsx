@@ -52,10 +52,10 @@ export const ConsolidationForm = () => {
       idCalendrier: Number(watchedValues.idCalendrier),
       // Si selectedCalendrier est undefined, on fournit un objet vide ou par défaut
       calendrier: selectedCalendrier || {
-        id: Number(watchedValues.idCalendrier) || 1,
+        id: Number(watchedValues.idCalendrier) || 0,
         dateDebut: "Non définie",
         dateFin: "Non définie",
-        typeCalendrier: { name: "Rapport" }
+        typeCalendrier: { id: Number(selectedTypeId) || undefined, name: "" }
       },
       user: user || { id: 0, email: "utilisateur@system.mg", entite: "VOTRE DIRECTION", role: "Admin" } as any,
       activites: watchedValues.lignes.map(l => ({
@@ -90,7 +90,7 @@ export const ConsolidationForm = () => {
       })),
       statut: "BROUILLON"
     };
-  }, [watchedValues, calendrierResult.data, user]); 
+  }, [watchedValues, calendrierResult.data, user, selectedTypeId]);
 
   const onSubmit = async (data: RapportFormValues) => {
     setIsSubmitting(true);
