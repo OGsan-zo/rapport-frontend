@@ -36,9 +36,19 @@ export const objectifSpecifiqueService = {
         return { id: item.id, nom: item.name };
     },
 
-    // Pas d'endpoint PUT dans l'API pour l'instant
     update: async (id: number, nom: string): Promise<ObjectifSpecifique> => {
-        return { id, nom };
+        const response = await fetchAuth(`/api/rapports/OS/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ name: nom }),
+        });
+        if (!response.ok) {
+            const err = await response.json().catch(() => ({}));
+            throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
+        }
+        const data = await response.json();
+        const item = data.data || data;
+        return { id: item.id, nom: item.name };
     },
 
     // Pas d'endpoint DELETE dans l'API pour l'instant
