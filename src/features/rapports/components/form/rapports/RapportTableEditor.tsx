@@ -69,23 +69,25 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   });
 
   // 3. REMPLISSAGE AUTOMATIQUE ADAPTÉ AU TRIMESTRIEL
+  // Pour le trimestriel, on attend que les listes OS/LI soient chargées avant de reset,
+  // sinon les selects n'ont pas encore leurs options et la valeur par défaut ne s'applique pas.
   useEffect(() => {
-    if (rapport && rapport.activites) {
-      const formattedData = rapport.activites.map((act) => ({
-        titre: act.activite.name,
-        effects: act.effects?.length ? act.effects.map(e => ({ value: e.name })) : [{ value: "" }],
-        impacts: act.impacts?.length ? act.impacts.map(i => ({ value: i.name })) : [{ value: "" }],
-        // Remplissage des champs trimestriels (avec fallback s'ils sont vides)
-        produits: act.produits?.length ? act.produits.map(p => ({ value: p.name })) : [{ value: "" }],
-        cibles: act.cibles?.length ? act.cibles.map(c => ({ value: c.name })) : [{ value: "" }],
-        previsions: act.previsions?.length ? act.previsions.map(p => ({ value: p.name })) : [{ value: "" }],
-        realisations: act.realisations?.length ? act.realisations.map(r => ({ value: r.name })) : [{ value: "" }],
-        taux: act.taux?.length ? act.taux.map(t => ({ value: t.name })) : [{ value: "" }],
-        observations: act.observations?.length ? act.observations.map(o => ({ value: o.name })) : [{ value: "" }]
-      }));
-      reset({ lignes: formattedData });
-    }
-  }, [rapport, reset, isTrimestriel]);
+    if (!rapport?.activites) return;
+    if (isTrimestriel && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
+
+    const formattedData = rapport.activites.map((act) => ({
+      titre: act.activite.name,
+      effects: act.effects?.length ? act.effects.map(e => ({ value: e.name })) : [{ value: "" }],
+      impacts: act.impacts?.length ? act.impacts.map(i => ({ value: i.name })) : [{ value: "" }],
+      produits: act.produits?.length ? act.produits.map(p => ({ value: p.name })) : [{ value: "" }],
+      cibles: act.cibles?.length ? act.cibles.map(c => ({ value: c.name })) : [{ value: "" }],
+      previsions: act.previsions?.length ? act.previsions.map(p => ({ value: p.name })) : [{ value: "" }],
+      realisations: act.realisations?.length ? act.realisations.map(r => ({ value: r.name })) : [{ value: "" }],
+      taux: act.taux?.length ? act.taux.map(t => ({ value: t.name })) : [{ value: "" }],
+      observations: act.observations?.length ? act.observations.map(o => ({ value: o.name })) : [{ value: "" }]
+    }));
+    reset({ lignes: formattedData });
+  }, [rapport, reset, isTrimestriel, objectifSpecifiques, logiqueInterventions]);
 
   // LOGIQUE DE SOUMISSION
   const onSubmit = async (data: any) => {
