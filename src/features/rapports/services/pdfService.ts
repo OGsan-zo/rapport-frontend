@@ -5,7 +5,7 @@ export const pdfService = {
     /**
      * Génère un PDF à partir d'un élément HTML avec support multi-pages.
      */
-    async generatePdfBlob(element: HTMLElement, filename: string): Promise<Blob> {
+    async generatePdfBlob(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
         // Configuration de la capture pour une netteté maximale
         const canvas = await html2canvas(element, {
             scale: 2.5, // Équilibre entre netteté et poids du fichier
@@ -18,13 +18,12 @@ export const pdfService = {
 
         // --- VALIDATION SIGNATURE (Anti-Crash) ---
         if (!imgData.startsWith("data:image/png")) {
-            // console.error("Signature d'image PNG invalide détectée");
             throw new Error("Format d'image non supporté (PNG attendu)");
         }
 
-        // Dimensions A4 en mm
-        const pdfWidth = 210;
-        const pdfHeight = 297;
+        // Dimensions A4 : portrait = 210×297, paysage = 297×210
+        const pdfWidth = isLandscape ? 297 : 210;
+        const pdfHeight = isLandscape ? 210 : 297;
 
         // Calcul du ratio pour l'image
         const canvasWidth = canvas.width;
@@ -32,7 +31,7 @@ export const pdfService = {
         const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
 
         const pdf = new jsPDF({
-            orientation: "portrait",
+            orientation: isLandscape ? "landscape" : "portrait",
             unit: "mm",
             format: "a4",
             putOnlyUsedFonts: true,

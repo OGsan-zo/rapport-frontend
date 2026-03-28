@@ -25,14 +25,13 @@ export default function DashboardPage() {
 
     const handlePdfClick = async (rapport: ApiRapport) => {
         const idRp = rapport.id !== undefined ? rapport.id : 0;
-        // console.log("rapport", rapport);
-        // console.log("idRp", idRp);
+        const isLandscape = rapport.calendrier?.typeCalendrier?.id === 3;
         setGeneratingId(idRp);
         setSelectedForPdf(rapport);
 
         setTimeout(() => {
             const year = new Date(rapport.calendrier.dateDebut).getFullYear();
-            exportToPdf("rapport-a4-container", `Rapport_H${year}_ID${rapport.id}.pdf`)
+            exportToPdf("rapport-a4-container", `Rapport_H${year}_ID${rapport.id}.pdf`, isLandscape)
                 .finally(() => {
                     setGeneratingId(null);
                     setSelectedForPdf(null);
@@ -94,8 +93,12 @@ export default function DashboardPage() {
             {/* Zone de rendu PDF masquée */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        <RapportView data={[selectedForPdf]} isPrintMode={true} />
+                    <div id="rapport-a4-container" style={{ width: selectedForPdf.calendrier?.typeCalendrier?.id === 3 ? "297mm" : "210mm" }}>
+                        <RapportView
+                            data={[selectedForPdf]}
+                            isPrintMode={true}
+                            isLandscape={selectedForPdf.calendrier?.typeCalendrier?.id === 3}
+                        />
                     </div>
                 </div>
             )}

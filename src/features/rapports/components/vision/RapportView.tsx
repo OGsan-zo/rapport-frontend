@@ -10,30 +10,36 @@ interface RapportViewProps {
     data: ApiRapport[];
     isPrintMode?: boolean;
     isPdf?: boolean;
+    isLandscape?: boolean;
 }
 
 export const RapportView: React.FC<RapportViewProps> = ({
     data,
     isPrintMode = false,
-    isPdf = true
+    isPdf = true,
+    isLandscape = false,
 }) => {
     if (!data || data.length === 0) return null;
+
+    const pageWidth = isLandscape ? "297mm" : "210mm";
+    const pageHeight = isLandscape ? "210mm" : "297mm";
+
     return (
         <div
             className="w-full flex justify-center"
             style={{
                 paddingTop: isPrintMode ? "0" : "64px",
                 paddingBottom: isPrintMode ? "0" : "64px",
-                backgroundColor: isPrintMode ? "#ffffff" : "#f8fafc" // bg-slate-50
+                backgroundColor: isPrintMode ? "#ffffff" : "#f8fafc"
             }}
         >
             <div
                 id="unified-report-content"
                 className="bg-white font-sans text-[12px]"
                 style={{
-                    width: "210mm",
-                    minHeight: "297mm",
-                    padding: "25mm 20mm",
+                    width: pageWidth,
+                    minHeight: pageHeight,
+                    padding: "15mm 12mm",
                     boxSizing: "border-box",
                     color: "#000000",
                     position: "relative",

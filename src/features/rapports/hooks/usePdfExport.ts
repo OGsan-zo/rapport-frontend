@@ -10,17 +10,16 @@ export const usePdfExport = () => {
     /**
      * Capture un élément HTML et l'ouvre dans un nouvel onglet en tant que PDF.
      */
-    const exportToPdf = async (elementId: string, filename: string = "Rapport_MESUPRES.pdf") => {
+    const exportToPdf = async (elementId: string, filename: string = "Rapport_MESUPRES.pdf", isLandscape: boolean = false) => {
         const element = document.getElementById(elementId);
         if (!element) {
-            // console.error(`Élément avec l'ID "${elementId}" non trouvé.`);
             toast.error("Élément avec l'ID \"" + elementId + "\" non trouvé.");
             return;
         }
 
         setIsGenerating(true);
         try {
-            const blob = await pdfService.generatePdfBlob(element, filename);
+            const blob = await pdfService.generatePdfBlob(element, filename, isLandscape);
             const url = URL.createObjectURL(blob);
 
             // Ouvrir dans un nouvel onglet
