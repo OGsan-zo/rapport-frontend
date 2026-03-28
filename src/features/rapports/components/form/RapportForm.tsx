@@ -191,7 +191,7 @@ export const ConsolidationForm = () => {
         <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-slate-900 group-hover:text-white transition-colors">
           <span className="text-xl font-light">+</span>
         </div>
-        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ajouter une activité</span>
+        <span className="text-[10px] font-black uppercase tracking-[0.3em]">Ajouter une autre</span>
       </button>
 
       {/* Rendu PDF caché */}
