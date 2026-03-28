@@ -13,9 +13,10 @@ interface LigneActiviteProps {
   objectifSpecifiques?: ObjectifSpecifique[];
   logiqueInterventions?: LogiqueIntervention[];
   setValue: UseFormSetValue<any>;  
+  gridLayout: string;
 }
 
-export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue }: LigneActiviteProps) => {
+export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue, gridLayout }: LigneActiviteProps) => {
   // --- Hooks ---
   const { fields: effectsFields, append: appendEffect, remove: removeEffect } = useFieldArray({ control, name: `lignes.${index}.effects` as any });
   const { fields: impactsFields, append: appendImpact, remove: removeImpact } = useFieldArray({ control, name: `lignes.${index}.impacts` as any });
@@ -65,7 +66,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
     if (real === 0) {
       return "0.00";
     }
-    return ((prev/real  ) * 100).toFixed(2);
+    return ((real/prev) * 100).toFixed(2);
   };
   useEffect(() => {
     tauxFields.forEach((_, i) => {
@@ -78,9 +79,9 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   }, [previsionsWatch, realisationsWatch, setValue]);
 
 
-  const gridLayout = isTrimestriel
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
-    : "grid-cols-[70px_1fr_1fr_1fr_70px]";
+  // const gridLayout = isTrimestriel
+  //   ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
+  //   : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   const colContainerClass = "border-l border-slate-100 p-3 space-y-2 w-full h-full flex flex-col";
   const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm w-full relative group/item"; 
@@ -91,7 +92,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
 
   return (
-    <div className={`grid ${gridLayout} min-w-[1500px] group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
+    <div className={`grid ${gridLayout} ${isTrimestriel ? 'min-w-[1500px]' : 'w-full'} group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
       
       {/* 1. Index */}
       <div className="flex items-center justify-center text-xs font-black text-slate-300 bg-slate-50/50">
@@ -175,7 +176,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
             )}
           </div>
         ))}
-        <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>+ {isTrimestriel ? "activité PTA" : "impact"}</button>
+        {/* <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>+ {isTrimestriel ? "activité PTA" : "impact"}</button> */}
       </div>
 
       {/* Champs Trimestriels */}
@@ -185,7 +186,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.produits.${i}.value` as any)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} required />
                 {produitsFields.length > 1 && (
                   <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -193,14 +194,14 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => appendProduit({ value: "" })} className={addBtnClass}>+ produit</button>
+            {/* <button type="button" onClick={() => appendProduit({ value: "" })} className={addBtnClass}>+ produit</button> */}
           </div>
 
           {/* 6. Cibles */}
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.cibles.${i}.value` as any)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} />
+                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} min="1" />
                 {ciblesFields.length > 1 && (
                   <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -208,7 +209,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                 )}
               </div>
             ))}
-            <button type="button" onClick={() => appendCible({ value: "" })} className={addBtnClass}>+ cible</button>
+            {/* <button type="button" onClick={() => appendCible({ value: "" })} className={addBtnClass}>+ cible</button> */}
           </div>
 
           {/* 7. Prévisions */}

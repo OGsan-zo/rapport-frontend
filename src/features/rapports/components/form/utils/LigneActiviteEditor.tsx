@@ -1,18 +1,19 @@
 import React, { useEffect } from "react";
-import { useFieldArray, useWatch } from "react-hook-form";
+import { useFieldArray, UseFormSetValue, useWatch } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
   control: any;
   register: any;
-  setValue: (name: string, value: any) => void;
+   setValue: UseFormSetValue<any>;    
   index: number;
   remove: (index: number) => void;
   canRemove: boolean;
   isTrimestriel?: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
   logiqueInterventions?: LogiqueIntervention[];
+
 }
 
 export const LigneActiviteEditor = ({
@@ -65,7 +66,7 @@ export const LigneActiviteEditor = ({
     const real = parseFloat(realisationsWatch?.[i]?.value) || 0;
     if (prev <= 0) return "0.00";
     if (real === 0) return "0.00";
-    return ((prev / real) * 100).toFixed(2);
+    return ((real / prev) * 100).toFixed(2);
   };
 
   useEffect(() => {
@@ -165,9 +166,9 @@ export const LigneActiviteEditor = ({
             )}
           </div>
         ))}
-        <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>
+        {/* <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>
           + {isTrimestriel ? "activité PTA" : "impact"}
-        </button>
+        </button> */}
       </div>
 
       {/* COLONNES TRIMESTRIELLES */}
@@ -177,22 +178,22 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.produits.${i}.value`)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value`)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} required />
                 {produitsFields.length > 1 && <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendProduit({ value: "" })} className={addBtnClass}>+ produit</button>
+            {/* <button type="button" onClick={() => appendProduit({ value: "" })} className={addBtnClass}>+ produit</button> */}
           </div>
 
           {/* 6. Cibles */}
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.cibles.${i}.value`)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} />
+                <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} min="1" />
                 {ciblesFields.length > 1 && <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendCible({ value: "" })} className={addBtnClass}>+ cible</button>
+            {/* <button type="button" onClick={() => appendCible({ value: "" })} className={addBtnClass}>+ cible</button> */}
           </div>
 
           {/* 7. Prévisions */}

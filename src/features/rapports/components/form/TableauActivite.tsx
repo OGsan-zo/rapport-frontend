@@ -27,7 +27,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
 }) => {
   
   const headers = isTrimestriel 
-    ? ["#", "Action", "Activité", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation","Taux de réalisation", "Observation", ""]
+    ? ["#", "Object spécifique", "Logique intervention", "Activité PTA", "Produit", "Cible", "Prévision Trimestriel", "Réalisation Trimestriel","Taux de réalisation", "Observation", ""]
     : ["#", "Titre de l'activité", "Effets", "Impacts", ""];
 
   // 1. CORRECTION DES COLONNES : Toutes les colonnes de texte sont maintenant à "1fr" (taille égale)
@@ -72,6 +72,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
                 objectifSpecifiques={objectifSpecifiques}
                 logiqueInterventions={logiqueInterventions}
                 setValue={setValue}
+                gridLayout={gridLayout}
               />
             ))}
           </div>
