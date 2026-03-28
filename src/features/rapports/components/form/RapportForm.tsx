@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import React, { useState, useMemo, useEffect, useCallback } from "react";
+import { useForm, useFieldArray, set } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
@@ -19,6 +19,10 @@ import { audioService } from "@/hooks/audioService";
 
 // 👇 Import du nouveau composant
 import TableauActivites from "./TableauActivite";
+import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
+import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
+import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 
 export const ConsolidationForm = () => {
   const router = useRouter();
@@ -36,7 +40,9 @@ export const ConsolidationForm = () => {
       lignes: [{ titre: "", effects: [{ value: "" }], impacts: [{ value: "" }], statut: "TERMINE" }],
     },
   });
-
+  const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
+  const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
   const calendrierResult = usePeriodes(true);
   const watchedValues = watch();
@@ -104,6 +110,23 @@ export const ConsolidationForm = () => {
       setIsSubmitting(false);
     }
   };
+      const fetchItems = useCallback(async () => {
+          setIsLoading(true);
+          try {
+              const OS = await objectifSpecifiqueService.getAll();
+              setObjectifSpecifiques(OS);
+              const LI = await logiqueInterventionService.getAll();
+              setLogiqueInterventions(LI);
+          } catch {
+              toast.error("Erreur lors du chargement des objectifs spécifiques");
+          } finally {
+              setIsLoading(false);
+          }
+      }, []);
+  
+      useEffect(() => {
+          fetchItems();
+      }, [fetchItems]);
 
   const onInvalid = (errors: any) => {
     const champsManquants = Object.keys(errors).join(", ");
@@ -114,6 +137,13 @@ export const ConsolidationForm = () => {
       position: "top-center",
     });
   };
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-10 max-w-6xl mx-auto pb-20">
@@ -139,6 +169,9 @@ export const ConsolidationForm = () => {
         register={register}
         remove={remove}
         isTrimestriel={isTrimestriel}
+        objectifSpecifiques={objectifSpecifiques}
+        logiqueInterventions={logiqueInterventions}
+        setValue={setValue}
       />
 
       <button
