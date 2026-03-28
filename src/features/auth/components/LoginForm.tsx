@@ -78,7 +78,10 @@ export const LoginForm = () => {
                                 Connexion réussie
                             </p>
                             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 tracking-tight leading-tight animate-in slide-in-from-bottom-3 duration-700 delay-300">
-                                Bienvenue, <span className="text-blue-600 inline-block">{user.email.split('@')[0]}</span>
+                                Bienvenue,  
+                                <span className="text-blue-600 inline-block uppercase">
+                                    {user.email.split('@')[0]}
+                                </span>
                             </h2>
                         </div>
 
