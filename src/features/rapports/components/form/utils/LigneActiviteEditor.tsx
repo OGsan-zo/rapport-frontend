@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { useFieldArray, Control, UseFormRegister } from "react-hook-form";
+import { useFieldArray, useWatch } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
   control: any;
   register: any;
+  setValue: (name: string, value: any) => void;
   index: number;
   remove: (index: number) => void;
   canRemove: boolean;
@@ -17,6 +18,7 @@ interface LigneActiviteProps {
 export const LigneActiviteEditor = ({
   control,
   register,
+  setValue,
   index,
   remove,
   canRemove,
@@ -32,7 +34,7 @@ export const LigneActiviteEditor = ({
   const { fields: ciblesFields, append: appendCible, remove: removeCible } = useFieldArray({ control, name: `lignes.${index}.cibles` });
   const { fields: previsionsFields, append: appendPrevision, remove: removePrevision } = useFieldArray({ control, name: `lignes.${index}.previsions` });
   const { fields: realisationsFields, append: appendRealisation, remove: removeRealisation } = useFieldArray({ control, name: `lignes.${index}.realisations` });
-  const { fields: tauxFields, append: appendTaux, remove: removeTaux } = useFieldArray({ control, name: `lignes.${index}.taux` });
+  const { fields: tauxFields, append: appendTaux } = useFieldArray({ control, name: `lignes.${index}.taux` });
   const { fields: observationsFields, append: appendObservation, remove: removeObservation } = useFieldArray({ control, name: `lignes.${index}.observations` });
 
   // Sécurité pour s'assurer qu'il y a toujours au moins un champ vide par colonne
@@ -53,6 +55,24 @@ export const LigneActiviteEditor = ({
     isTrimestriel, appendEffect, appendImpact, appendProduit, appendCible, appendPrevision, 
     appendRealisation, appendTaux, appendObservation
   ]);
+
+  // --- Calcul automatique du taux (comme dans LigneActivite) ---
+  const previsionsWatch = useWatch({ control, name: `lignes.${index}.previsions` });
+  const realisationsWatch = useWatch({ control, name: `lignes.${index}.realisations` });
+
+  const calculerTaux = (i: number) => {
+    const prev = parseFloat(previsionsWatch?.[i]?.value) || 0;
+    const real = parseFloat(realisationsWatch?.[i]?.value) || 0;
+    if (prev <= 0) return "0.00";
+    if (real === 0) return "0.00";
+    return ((prev / real) * 100).toFixed(2);
+  };
+
+  useEffect(() => {
+    tauxFields.forEach((_, i) => {
+      setValue(`lignes.${index}.taux.${i}.value`, calculerTaux(i));
+    });
+  }, [previsionsWatch, realisationsWatch]);
 
   // --- Grille dynamique synchronisée avec le parent ---
   const gridLayout = isTrimestriel
@@ -197,15 +217,20 @@ export const LigneActiviteEditor = ({
             <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button>
           </div>
 
-          {/* 9. Taux */}
+          {/* 9. Taux (calculé automatiquement, non modifiable) */}
           <div className={colContainerClass}>
             {tauxFields.map((field, i) => (
-              <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.taux.${i}.value`)} className={textAreaClass} placeholder={`Taux ${i + 1}...`} />
-                {tauxFields.length > 1 && <button type="button" onClick={() => removeTaux(i)} className={closeBtnClass}>✕</button>}
+              <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100 relative`}>
+                <input
+                  type="text"
+                  {...register(`lignes.${index}.taux.${i}.value`)}
+                  value={calculerTaux(i)}
+                  readOnly
+                  className="w-full text-sm font-bold text-blue-600 bg-transparent border-none focus:ring-0 p-0 pointer-events-none"
+                />
+                <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-2">%</span>
               </div>
             ))}
-            <button type="button" onClick={() => appendTaux({ value: "" })} className={addBtnClass}>+ taux</button>
           </div>
 
           {/* 10. Observations */}

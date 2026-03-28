@@ -57,7 +57,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
     : { titre: "", effects: [{ value: "" }], impacts: [{ value: "" }] };
 
   // Initialisation du formulaire
-  const { register, control, handleSubmit, reset } = useForm({
+  const { register, control, handleSubmit, reset, setValue } = useForm({
     defaultValues: {
       lignes: [defaultLine]
     }
@@ -185,6 +185,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
                   isTrimestriel={isTrimestriel}
                   objectifSpecifiques={objectifSpecifiques}
                   logiqueInterventions={logiqueInterventions}
+                  setValue={setValue}
                 />
               ))}
             </div>
