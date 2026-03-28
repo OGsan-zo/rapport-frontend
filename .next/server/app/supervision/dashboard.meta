@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/supervision/layout,_N_T_/supervision/dashboard/layout,_N_T_/supervision/dashboard/page,_N_T_/supervision/dashboard"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/supervision/dashboard/__PAGE__",
+    "/supervision/dashboard",
+    "/supervision",
+    "/_index",
+    "/_head"
+  ]
+}

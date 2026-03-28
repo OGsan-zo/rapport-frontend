@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/supervision/layout,_N_T_/supervision/manquants/layout,_N_T_/supervision/manquants/page,_N_T_/supervision/manquants"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/supervision/manquants/__PAGE__",
+    "/supervision/manquants",
+    "/supervision",
+    "/_index",
+    "/_head"
+  ]
+}
