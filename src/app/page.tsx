@@ -59,7 +59,7 @@ export default function HomePage() {
                 <span className="text-slate-400">Rapports d'activités</span>
               </h1>
               <p className="text-lg text-slate-500 max-w-lg leading-relaxed font-medium">
-                Une solution moderne pour la collecte et le suivi des activités du MESUPRES.
+                Une solution moderne pour la collecte, le suivi, et  l'archivage numérique des activités du MESUPRES.
               </p>
             </div>
             <div className="flex items-center gap-6 pt-4">

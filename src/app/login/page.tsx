@@ -34,7 +34,7 @@ export default function LoginPage() {
                     </div>
                     <div className="space-y-3">
                         <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
-                            Reporting Hebdomadaire
+                            Rapports d'activités
                         </h1>
                         <p className="text-gray-500 text-lg">
                             Générez et centralisez vos rapports en quelques clics.
