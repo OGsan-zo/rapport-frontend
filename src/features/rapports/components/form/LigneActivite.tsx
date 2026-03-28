@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import { useFieldArray, Control, UseFormRegister } from "react-hook-form";
+import { useFieldArray, Control, UseFormRegister, useWatch, useFormContext, UseFormSetValue } from "react-hook-form";
+import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
   control: Control<any>; // Remplace "any" par ton interface si besoin
@@ -8,9 +10,13 @@ interface LigneActiviteProps {
   remove: (index: number) => void;
   canRemove: boolean;
   isTrimestriel: boolean;
+  objectifSpecifiques?: ObjectifSpecifique[];
+  logiqueInterventions?: LogiqueIntervention[];
+  setValue: UseFormSetValue<any>;
+  
 }
 
-export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false }: LigneActiviteProps) => {
+export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue }: LigneActiviteProps) => {
   // --- Hooks ---
   const { fields: effectsFields, append: appendEffect, remove: removeEffect } = useFieldArray({ control, name: `lignes.${index}.effects` as any });
   const { fields: impactsFields, append: appendImpact, remove: removeImpact } = useFieldArray({ control, name: `lignes.${index}.impacts` as any });
@@ -40,18 +46,49 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
     appendEffect, appendImpact, appendProduit, appendCible, 
     appendPrevision, appendTaux, appendObservation
   ]);
+  
+ 
+  // ... à l'intérieur de votre composant LigneActivite ...
 
-// AJOUTE UN "1fr" supplémentaire pour la colonne "Réalisations"
+  // On surveille les valeurs des prévisions et réalisations pour cet index précis
+// ... à l'intérieur de votre composant LigneActivite ...
+
+// On surveille les valeurs des prévisions et réalisations
+  const previsionsWatch = useWatch({ control, name: `lignes.${index}.previsions` });
+  const realisationsWatch = useWatch({ control, name: `lignes.${index}.realisations` });
+
+  // Fonction pour calculer le taux pour une ligne i donnée
+  const calculerTaux = (i: number) => {
+    const prev = parseFloat(previsionsWatch?.[i]?.value) || 0;
+    const real = parseFloat(realisationsWatch?.[i]?.value) || 0;
+    
+    if (prev <= 0) return "0.00";
+    if (real === 0) {
+      return "0.00";
+    }
+    return ((prev/real  ) * 100).toFixed(2);
+  };
+  useEffect(() => {
+    tauxFields.forEach((_, i) => {
+      const resultatCalcul = calculerTaux(i);
+      
+      // On force la mise à jour INTERNE du formulaire
+      // C'est ce qui permet de récupérer la valeur au submit !
+      setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
+    });
+  }, [previsionsWatch, realisationsWatch, setValue]);
+
+
   const gridLayout = isTrimestriel
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" // 9 fois "1fr" au lieu de 8
+    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
     : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   const colContainerClass = "border-l border-slate-100 p-3 space-y-2 w-full h-full flex flex-col";
   const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm w-full relative group/item"; 
   const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[80px] p-0 placeholder:text-slate-300";
+  // Classe ajustée pour le select afin d'éviter le min-h-[80px] qui ferait un select trop grand
+  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-1 cursor-pointer";
   const addBtnClass = "w-full py-2 mt-auto border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all";
-  
-  // Classe pour le bouton X (discret mais visible au survol)
   const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
 
   return (
@@ -62,23 +99,57 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
         {String(index + 1).padStart(2, '0')}
       </div>
 
-      {/* 2. Action (Titre principal, pas de bouton X ici) */}
+      {/* 2. Action (Titre principal) - MODIFIÉ */}
       <div className={colContainerClass}>
         <div className={itemBoxClass}>
-          <textarea
-            {...register(`lignes.${index}.titre` as any)}
-            className={`${textAreaClass} font-bold text-slate-800`}
-            placeholder={isTrimestriel ? "Nom de l'action..." : "Nom de l'activité..."}
-          />
+          {isTrimestriel ? (
+            <select
+              {...register(`lignes.${index}.titre` as any)}
+              className={`${selectClass} font-bold text-slate-800`}
+            >
+              <option value="">Sélectionner un objectif...</option>
+              {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
+                // ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
+                <option key={obj.id} value={obj.nom}>
+                  {obj.nom} 
+                </option>
+              ))}
+            </select>
+          ) : (
+            <textarea
+              {...register(`lignes.${index}.titre` as any)}
+              className={`${textAreaClass} font-bold text-slate-800`}
+              placeholder="Nom de l'activité..."
+            />
+          )}
         </div>
       </div>
 
-      {/* 3. Activité (Effets) */}
+      {/* 3. Activité (Effets) - MODIFIÉ */}
       <div className={colContainerClass}>
         {effectsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            <textarea {...register(`lignes.${index}.effects.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité ${i + 1}...` : `Effet ${i + 1}...`} />
-            {/* Condition: on n'affiche le bouton que s'il y a plus d'1 élément */}
+            {isTrimestriel ? (
+              <select
+                {...register(`lignes.${index}.effects.${i}.value` as any)}
+                className={selectClass}
+              >
+                <option value="">Sélectionner une logique d'intervention...</option>
+                {logiqueInterventions.map((logique: LogiqueIntervention) => (
+                  // ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
+                  <option key={logique.id} value={logique.nom}>
+                    {logique.nom}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <textarea 
+                {...register(`lignes.${index}.effects.${i}.value` as any)} 
+                className={textAreaClass} 
+                placeholder={`Effet ${i + 1}...`} 
+              />
+            )}
+            
             {effectsFields.length > 1 && (
               <button type="button" onClick={() => removeEffect(i)} className={closeBtnClass}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -86,7 +157,11 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
             )}
           </div>
         ))}
-        <button type="button" onClick={() => appendEffect({ value: "" })} className={addBtnClass}>+ {isTrimestriel ? "activité" : "effet"}</button>
+        {!isTrimestriel && (
+          <button type="button" onClick={() => appendEffect({ value: "" })} className={addBtnClass}>
+            + effet
+          </button>
+        )}
       </div>
 
       {/* 4. Activité PTA (Impacts) */}
@@ -141,34 +216,49 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.previsions.${i}.value` as any)} className={textAreaClass} placeholder={`Prévision ${i + 1}...`} />
-                {previsionsFields.length > 1 && (
-                  <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                )}
+                <input 
+                  type="number"
+                  {...register(`lignes.${index}.previsions.${i}.value` as any)} 
+                  className={textAreaClass} 
+                  placeholder="0" 
+                />
               </div>
             ))}
-            <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button>
           </div>
-          
+
           {/* 7.5. Réalisations */}
           <div className={colContainerClass}>
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.realisations.${i}.value` as any)} className={textAreaClass} placeholder={`Réalisation ${i + 1}...`} />
-                {realisationsFields.length > 1 && (
-                  <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                )}
+                <input 
+                  type="number"
+                  {...register(`lignes.${index}.realisations.${i}.value` as any)} 
+                  className={textAreaClass} 
+                  placeholder="0" 
+                />
               </div>
             ))}
-            <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button>
           </div>
 
-          {/* 8. Taux */}
+          {/* 8. Taux (Calculé automatiquement à l'affichage) */}
           <div className={colContainerClass}>
+            {tauxFields.map((field, i) => {
+              const valeurTaux = calculerTaux(i);
+              return (
+                <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100`}>
+                  <input 
+                    type="text" // On utilise text car c'est une valeur calculée affichée
+                    {...register(`lignes.${index}.taux.${i}.value` as any)}
+                    value={valeurTaux}
+                    // readOnly
+                    className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`} 
+                  />
+                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-2">%</span>
+                </div>
+              );
+            })}
+          </div>
+          {/* <div className={colContainerClass}>
             {tauxFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
                 <textarea {...register(`lignes.${index}.taux.${i}.value` as any)} className={textAreaClass} placeholder={`Taux ${i + 1}...`} />
@@ -178,9 +268,10 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                   </button>
                 )}
               </div>
-            ))}
-            <button type="button" onClick={() => appendTaux({ value: "" })} className={addBtnClass}>+ taux</button>
-          </div>
+            ))} */}
+            {/* <button type="button" onClick={() => appendTaux({ value: "" })} className={addBtnClass}>+ taux</button> */}
+          {/* </div> */}
+
 
           {/* 9. Observations */}
           <div className={colContainerClass}>

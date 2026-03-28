@@ -1,6 +1,8 @@
 import React from "react";
-import { Control, UseFormRegister, UseFieldArrayRemove } from "react-hook-form";
+import { Control, UseFormRegister, UseFieldArrayRemove, UseFormSetValue } from "react-hook-form";
 import { LigneActivite } from "./LigneActivite"; // Ajustez le chemin
+import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface TableauActivitesProps {
   fields: Record<"id", string>[];
@@ -8,6 +10,9 @@ interface TableauActivitesProps {
   register: UseFormRegister<any>;
   remove: UseFieldArrayRemove;
   isTrimestriel?: boolean;
+  objectifSpecifiques?: ObjectifSpecifique[];
+  logiqueInterventions?: LogiqueIntervention[];
+  setValue: UseFormSetValue<any>;
 }
 
 const TableauActivites: React.FC<TableauActivitesProps> = ({ 
@@ -15,7 +20,10 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
   control, 
   register, 
   remove, 
-  isTrimestriel = false 
+  isTrimestriel = false,
+  objectifSpecifiques = [],
+  logiqueInterventions = [],
+  setValue
 }) => {
   
   const headers = isTrimestriel 
@@ -61,6 +69,9 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
                 remove={remove}
                 isTrimestriel={isTrimestriel}
                 canRemove={fields.length > 1}
+                objectifSpecifiques={objectifSpecifiques}
+                logiqueInterventions={logiqueInterventions}
+                setValue={setValue}
               />
             ))}
           </div>
