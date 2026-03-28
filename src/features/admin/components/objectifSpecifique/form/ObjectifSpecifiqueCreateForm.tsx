@@ -31,7 +31,7 @@ export const ObjectifSpecifiqueCreateForm = ({ onSubmit, feedback }: ObjectifSpe
             )}
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nom</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Objectif spécifiquegit</label>
                 <input
                     type="text"
                     placeholder="Nom de l'objectif spécifique"

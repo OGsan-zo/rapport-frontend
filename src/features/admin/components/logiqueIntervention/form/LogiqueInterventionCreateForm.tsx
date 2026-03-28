@@ -31,7 +31,7 @@ export const LogiqueInterventionCreateForm = ({ onSubmit, feedback }: LogiqueInt
             )}
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Nom</label>
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Logique d'intervention</label>
                 <input
                     type="text"
                     placeholder="Nom de la logique d'intervention"
