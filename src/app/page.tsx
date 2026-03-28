@@ -53,18 +53,14 @@ export default function HomePage() {
             className="space-y-8"
           >
           <div className="space-y-4">
-              {/* AJUSTEMENT ICI : Ajout de 'flex flex-col' */}
               <span className="flex flex-col text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">
                 Plateforme
-                {/* RETRAIT DE <br /> */}
-                
-                {/* AJUSTEMENT ICI : Utilisation d'une marge négative (mt-[-2px]) */}
+              
                 <span className="text-red-600 font-bold text-lg mt-[-2px] tracking-normal">
                   TATITRA SY TOMBANA
                 </span>
-                
-                {/* RETRAIT DE <br /> */}
               </span>
+              
               <br />
 
               <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1]">
