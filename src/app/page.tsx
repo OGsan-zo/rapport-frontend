@@ -42,7 +42,7 @@ export default function HomePage() {
         </div>
       </motion.header>
 
-      <section className="pt-40 pb-20 px-6 max-w-7xl mx-auto">
+      <section className="pt-30 pb-20 px-6 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           
           {/* Texte : Arrivée par la gauche */}
@@ -52,16 +52,30 @@ export default function HomePage() {
             transition={{ duration: 0.6, ease: "easeOut" }}
             className="space-y-8"
           >
-            <div className="space-y-4">
-              <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">Plateforme Officielle</span>
+          <div className="space-y-4">
+              {/* AJUSTEMENT ICI : Ajout de 'flex flex-col' */}
+              <span className="flex flex-col text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">
+                Plateforme
+                {/* RETRAIT DE <br /> */}
+                
+                {/* AJUSTEMENT ICI : Utilisation d'une marge négative (mt-[-2px]) */}
+                <span className="text-red-600 font-bold text-lg mt-[-2px] tracking-normal">
+                  TATITRA SY TOMBANA
+                </span>
+                
+                {/* RETRAIT DE <br /> */}
+              </span>
+              <br />
+
               <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1]">
                 Centralisez vos <br />
                 <span className="text-slate-400">Rapports d'activités</span>
               </h1>
               <p className="text-lg text-slate-500 max-w-lg leading-relaxed font-medium">
-                Une solution moderne pour la collecte, le suivi, et  l'archivage numérique des activités du MESUPRES.
+                Une solution moderne pour la collecte, le suivi, et l'archivage numérique des activités du MESUPRES.
               </p>
-            </div>
+          </div>
+                          
             <div className="flex items-center gap-6 pt-4">
               <Link href="/login" className="px-10 py-5 bg-slate-900 hover:bg-black text-white font-bold text-sm uppercase tracking-widest rounded-full transition-all shadow-xl shadow-slate-200 hover:scale-105 active:scale-95 inline-block">
                 Se connecter
