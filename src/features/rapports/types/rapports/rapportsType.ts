@@ -4,6 +4,7 @@ export interface RapportToolbarActionsProps {
   isPdfGenerating: boolean;
   onPreviewPdf: () => void;
   isSubmitting: boolean;
+  periodeValue: string;
 }
 
 export interface RapportToolbarProps {

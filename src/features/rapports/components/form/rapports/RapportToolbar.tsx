@@ -39,10 +39,11 @@ export const RapportToolbar = ({
         />
         
         {/* 3. Les Actions */}
-        <RapportToolbarActions 
+        <RapportToolbarActions
           isPdfGenerating={isPdfGenerating}
           onPreviewPdf={onPreviewPdf}
           isSubmitting={isSubmitting}
+          periodeValue={periodeValue}
         />
         
       </div>

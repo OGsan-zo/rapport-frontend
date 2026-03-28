@@ -56,7 +56,7 @@ export default function HomePage() {
               <span className="text-blue-600 font-bold text-xs uppercase tracking-[0.3em]">Plateforme Officielle</span>
               <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.1]">
                 Centralisez vos <br />
-                <span className="text-slate-400">Rapports Hebdomadaires</span>
+                <span className="text-slate-400">Rapports d'activités</span>
               </h1>
               <p className="text-lg text-slate-500 max-w-lg leading-relaxed font-medium">
                 Une solution moderne pour la collecte et le suivi des activités du MESUPRES.

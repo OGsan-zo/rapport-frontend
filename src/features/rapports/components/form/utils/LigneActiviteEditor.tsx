@@ -1,22 +1,28 @@
 import React, { useEffect } from "react";
 import { useFieldArray, Control, UseFormRegister } from "react-hook-form";
+import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
-  control: any; // Idéalement définir le type du formulaire
+  control: any;
   register: any;
   index: number;
   remove: (index: number) => void;
   canRemove: boolean;
-  isTrimestriel?: boolean; // <-- Ajout de la prop
+  isTrimestriel?: boolean;
+  objectifSpecifiques?: ObjectifSpecifique[];
+  logiqueInterventions?: LogiqueIntervention[];
 }
 
-export const LigneActiviteEditor = ({ 
-  control, 
-  register, 
-  index, 
-  remove, 
-  canRemove, 
-  isTrimestriel = false 
+export const LigneActiviteEditor = ({
+  control,
+  register,
+  index,
+  remove,
+  canRemove,
+  isTrimestriel = false,
+  objectifSpecifiques = [],
+  logiqueInterventions = [],
 }: LigneActiviteProps) => {
   
   // --- Hooks pour tous les champs ---
@@ -55,8 +61,9 @@ export const LigneActiviteEditor = ({
 
   // --- Classes CSS communes pour éviter la répétition ---
   const colContainerClass = "border-l border-slate-100 p-3 space-y-2 flex flex-col h-full";
-  const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm relative"; 
+  const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm relative";
   const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[80px] p-0 placeholder:text-slate-300";
+  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-1 cursor-pointer";
   const addBtnClass = "w-full py-2 mt-auto border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all";
   const closeBtnClass = "mt-1 text-slate-300 hover:text-red-500 transition-colors";
 
@@ -70,32 +77,58 @@ export const LigneActiviteEditor = ({
 
       {/* 2. Titre Activité */}
       <div className={colContainerClass}>
-        <div className="bg-white p-2 border border-slate-200 rounded-lg shadow-sm h-full">
-          <textarea
-            {...register(`lignes.${index}.titre`)}
-            className={`${textAreaClass} font-bold text-slate-800 h-full`}
-            placeholder={isTrimestriel ? "Nom de l'action..." : "Nom de l'activité..."}
-          />
+        <div className={itemBoxClass}>
+          {isTrimestriel ? (
+            <select
+              {...register(`lignes.${index}.titre`)}
+              className={`${selectClass} font-bold text-slate-800`}
+            >
+              <option value="">Sélectionner un objectif...</option>
+              {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
+                <option key={obj.id} value={obj.nom}>{obj.nom}</option>
+              ))}
+            </select>
+          ) : (
+            <textarea
+              {...register(`lignes.${index}.titre`)}
+              className={`${textAreaClass} font-bold text-slate-800 h-full`}
+              placeholder="Nom de l'activité..."
+            />
+          )}
         </div>
       </div>
 
-      {/* 3. Effets (Activité) */}
+      {/* 3. Effets (Activité / Logique d'intervention) */}
       <div className={colContainerClass}>
         {effectsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            <textarea
-              {...register(`lignes.${index}.effects.${i}.value`)}
-              className={textAreaClass}
-              placeholder={isTrimestriel ? `Activité ${i + 1}...` : `Effet ${i + 1}...`}
-            />
+            {isTrimestriel ? (
+              <select
+                {...register(`lignes.${index}.effects.${i}.value`)}
+                className={selectClass}
+              >
+                <option value="">Sélectionner une logique d'intervention...</option>
+                {logiqueInterventions.map((logique: LogiqueIntervention) => (
+                  <option key={logique.id} value={logique.nom}>{logique.nom}</option>
+                ))}
+              </select>
+            ) : (
+              <textarea
+                {...register(`lignes.${index}.effects.${i}.value`)}
+                className={textAreaClass}
+                placeholder={`Effet ${i + 1}...`}
+              />
+            )}
             {effectsFields.length > 1 && (
               <button type="button" onClick={() => removeEffect(i)} className={closeBtnClass}>✕</button>
             )}
           </div>
         ))}
-        <button type="button" onClick={() => appendEffect({ value: "" })} className={addBtnClass}>
-          + {isTrimestriel ? "activité" : "effet"}
-        </button>
+        {!isTrimestriel && (
+          <button type="button" onClick={() => appendEffect({ value: "" })} className={addBtnClass}>
+            + effet
+          </button>
+        )}
       </div>
 
       {/* 4. Impacts (Activité PTA) */}

@@ -5,13 +5,16 @@ export const RapportToolbarActions = ({
   isPdfGenerating,
   onPreviewPdf,
   isSubmitting,
+  periodeValue,
 }: RapportToolbarActionsProps) => {
+  const isPreviewDisabled = isPdfGenerating || !periodeValue;
   return (
     <div className="flex items-center gap-2">
       <button
         type="button"
-        disabled={isPdfGenerating}
+        disabled={isPreviewDisabled}
         onClick={onPreviewPdf}
+        title={!periodeValue ? "Veuillez sélectionner une période" : undefined}
         className="px-6 py-2.5 bg-white border border-slate-200 text-slate-700 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-slate-50 transition-all disabled:opacity-50"
       >
         {isPdfGenerating ? "Génération..." : "Aperçu PDF"}

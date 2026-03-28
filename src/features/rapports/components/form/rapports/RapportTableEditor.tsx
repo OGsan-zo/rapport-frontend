@@ -1,11 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
-import { ApiRapport } from "@/features/rapports/types"; // Ajustez l'import
+import { ApiRapport } from "@/features/rapports/types";
 import { LigneActiviteEditor } from "../utils/LigneActiviteEditor";
 import { rapportService } from "@/features/rapports/services/rapportService";
-import { toast } from "react-hot-toast"; // Ou votre système de notification
+import { toast } from "react-hot-toast";
+import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
+import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
+import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 
 interface RapportTableEditorProps {
   rapport: ApiRapport;
@@ -14,6 +18,25 @@ interface RapportTableEditorProps {
 
 export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
+  const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
+
+  const fetchItems = useCallback(async () => {
+    try {
+      const [OS, LI] = await Promise.all([
+        objectifSpecifiqueService.getAll(),
+        logiqueInterventionService.getAll(),
+      ]);
+      setObjectifSpecifiques(OS);
+      setLogiqueInterventions(LI);
+    } catch {
+      toast.error("Erreur lors du chargement des objectifs spécifiques");
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchItems();
+  }, [fetchItems]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
   const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id === 3;
@@ -157,7 +180,9 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
                   index={index}
                   remove={remove}
                   canRemove={fields.length > 1}
-                  isTrimestriel={isTrimestriel} // <-- Ne pas oublier de le passer au composant enfant !
+                  isTrimestriel={isTrimestriel}
+                  objectifSpecifiques={objectifSpecifiques}
+                  logiqueInterventions={logiqueInterventions}
                 />
               ))}
             </div>
