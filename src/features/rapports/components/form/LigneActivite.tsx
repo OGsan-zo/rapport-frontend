@@ -12,8 +12,7 @@ interface LigneActiviteProps {
   isTrimestriel: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
   logiqueInterventions?: LogiqueIntervention[];
-  setValue: UseFormSetValue<any>;
-  
+  setValue: UseFormSetValue<any>;  
 }
 
 export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue }: LigneActiviteProps) => {
