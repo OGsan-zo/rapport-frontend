@@ -110,6 +110,12 @@
       "namedRegex": "^/api/calendriers(?:/)?$"
     },
     {
+      "page": "/api/calendriers/supervision",
+      "regex": "^/api/calendriers/supervision(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/calendriers/supervision(?:/)?$"
+    },
+    {
       "page": "/api/calendriers/utilisateur",
       "regex": "^/api/calendriers/utilisateur(?:/)?$",
       "routeKeys": {},

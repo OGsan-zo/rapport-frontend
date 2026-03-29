@@ -8,6 +8,7 @@
   "/api/auth/me/route": "app/api/auth/me/route.js",
   "/api/calendriers/[id]/route": "app/api/calendriers/[id]/route.js",
   "/api/calendriers/route": "app/api/calendriers/route.js",
+  "/api/calendriers/supervision/route": "app/api/calendriers/supervision/route.js",
   "/api/calendriers/utilisateur/route": "app/api/calendriers/utilisateur/route.js",
   "/api/rapports/LI/[id]/route": "app/api/rapports/LI/[id]/route.js",
   "/api/rapports/LI/route": "app/api/rapports/LI/route.js",

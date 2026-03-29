@@ -8,6 +8,7 @@
   "/api/auth/me/route": "/api/auth/me",
   "/api/calendriers/[id]/route": "/api/calendriers/[id]",
   "/api/calendriers/route": "/api/calendriers",
+  "/api/calendriers/supervision/route": "/api/calendriers/supervision",
   "/api/calendriers/utilisateur/route": "/api/calendriers/utilisateur",
   "/api/rapports/LI/[id]/route": "/api/rapports/LI/[id]",
   "/api/rapports/LI/route": "/api/rapports/LI",

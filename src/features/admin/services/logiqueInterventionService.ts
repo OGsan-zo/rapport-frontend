@@ -52,5 +52,8 @@ export const logiqueInterventionService = {
 
     // Pas d'endpoint DELETE dans l'API pour l'instant
     delete: async (_id: number): Promise<void> => {
+        await fetchAuth(`/api/rapports/LI/${_id}`, {
+            method: "DELETE",
+        });
     },
 };
