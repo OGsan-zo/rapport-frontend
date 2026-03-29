@@ -1,4 +1,5 @@
 import { User } from "@/features/auth/types";
+import { CalendarPeriod } from "../../calendrier/calendrierType";
 
 export interface MissingUsersToolbarProps {
     selectedTypeId: string;
@@ -11,4 +12,5 @@ export interface MissingUsersToolbarProps {
 export interface MissingUsersTableProps {
     users: User[];
     isLoading: boolean;
+    calendrierPeriod?: CalendarPeriod;
 }

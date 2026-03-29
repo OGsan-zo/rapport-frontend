@@ -1,4 +1,4 @@
-import { callApiPut } from "@/lib/callApi";
+import { callApiDelete, callApiPut } from "@/lib/callApi";
 import { NextRequest } from "next/server";
 
 export async function PUT(
@@ -7,4 +7,13 @@ export async function PUT(
 ) {
   const { id } = await context.params;
   return callApiPut(req, `rapports/OS/${id}`, ["name"]);
+}
+export async function DELETE(
+  request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
+  const { id } = await context.params;
+  
+  // On construit l'url "rapports/1" dynamiquement
+  return await callApiDelete(request, `/rapports/OS/${id}`);
 }

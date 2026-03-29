@@ -1,6 +1,8 @@
 import { User } from "../../auth/types";
 import { useFetchAuth } from "@/hooks/useFetchAuth";
 import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
+import { sendRapportReminder } from "@/hooks/mailService";
+import { formatLongDate } from "@/features/common/utils/dateUtils";
 export interface AdminStats {
     totalUsers: number;
     reportsReceived: number;
@@ -11,7 +13,11 @@ export interface TypeCalendrier {
     id: number;
     name: string;
 }
-
+export interface EmailReponse {
+    success: boolean,
+    error?: string,
+    loading: boolean
+}
 
 let MOCK_PERIODS: CalendarPeriod[] = [
     {
@@ -154,4 +160,23 @@ export const adminService = {
             throw error;
         }
     },
+    envoyerMail: async(destinataire: string,calendrier: CalendarPeriod):Promise<EmailReponse> => {
+        try{
+            const typeCalendrier = calendrier.typeCalendrier?.name|| "Hebdomadaire";
+            const dateFin = formatLongDate(calendrier.dateFin); 
+            sendRapportReminder(destinataire,typeCalendrier,dateFin);
+            return {
+                success:true,
+                loading: false
+            }
+        }
+        catch(error)
+        {
+            return {
+                success:false,
+                loading:false,
+                error: "Erreur lors de l'envoye mail"
+            }
+        }
+    }
 };

@@ -70,4 +70,7 @@ export const useCalendrierSupervision =  (date: string) => {
     // On retourne l'objet typé
     return result;
 };
+export const getByIdCalendrier = (id: number,CalendrierResult: CalendrierResult): CalendarPeriod | undefined => {
+    return CalendrierResult.data.find((period) => period.id === id);
+};
 

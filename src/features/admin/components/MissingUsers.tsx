@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 // Sous-composants
 import { MissingUsersToolbar } from "./manquants/MissingUsersToolbar";
 import { MissingUsersTable } from "./manquants/MissingUsersTable";
+import { CalendarPeriod } from "@/features/rapports/types/calendrier/calendrierType";
 
 export const MissingUsers = () => {
     const {
@@ -24,12 +25,19 @@ export const MissingUsers = () => {
 
     // Utiliser useCalendrierSupervision avec la date sélectionnée
     const calendrierResult = useCalendrierSupervision(selectedDate);
+    const [calendrier, setCalendrier] = useState<CalendarPeriod | undefined>(undefined);
 
     useEffect(() => {
         if (!selectedPeriodId) {
             setUsers([]);
             setIsLoading(false);
             return;
+        }
+        if (calendrierResult.data.length > 0) {
+            const period = calendrierResult.data.find((period) => period.id === Number(selectedPeriodId));
+            if (period) {
+                setCalendrier(period);
+            }
         }
 
         const fetchMissing = async () => {
@@ -77,6 +85,8 @@ export const MissingUsers = () => {
             <MissingUsersTable 
                 users={users} 
                 isLoading={isLoading} 
+                calendrierPeriod={calendrier}
+
             />
 
             {/* 3. Pied de page / Note d'information */}
