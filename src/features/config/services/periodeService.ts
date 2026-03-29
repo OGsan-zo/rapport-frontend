@@ -161,5 +161,27 @@ export const periodeService = {
             // console.error("Erreur getLateUsers:", error);
             throw error;
         }
+    },
+    getCalendrierSupervision: async (date: string): Promise<CalendarPeriod[]> => {
+        try {
+            const response = await fetchAuth(`/api/calendriers/supervision?date=${date}`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return responseData.data || responseData;
+        } catch (error) {
+            // console.error("Erreur getCalendrierSupervision:", error);
+            throw error;
+        }
     }
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { User } from "../../auth/types";
 import { periodeService as configPeriodeService } from "@/features/config/services/periodeService";
 import { useAdminPilotage } from "../context/AdminPilotageContext";
-import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import { usePeriodes, useCalendrierSupervision } from "@/features/config/hooks/usePeriodes";
 import toast from "react-hot-toast";
 
 // Sous-composants
@@ -14,14 +14,16 @@ export const MissingUsers = () => {
         selectedTypeId,
         setSelectedTypeId,
         selectedPeriodId,
-        setSelectedPeriodId
+        setSelectedPeriodId,
+        selectedDate,
+        setSelectedDate
     } = useAdminPilotage();
 
     const [users, setUsers] = useState<User[]>([]);
     const [isLoading, setIsLoading] = useState(false);
 
-    // Nécessaire pour notre composant ToolbarSelects unifié
-    const calendrierResult = usePeriodes(false);
+    // Utiliser useCalendrierSupervision avec la date sélectionnée
+    const calendrierResult = useCalendrierSupervision(selectedDate);
 
     useEffect(() => {
         if (!selectedPeriodId) {
@@ -48,6 +50,20 @@ export const MissingUsers = () => {
 
     return (
         <div className="space-y-10">
+            {/* 0. Sélecteur de date */}
+            <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                <label htmlFor="missing-users-calendar-date" className="text-sm font-semibold text-slate-700">
+                    Date du calendrier :
+                </label>
+                <input
+                    id="missing-users-calendar-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
+                />
+            </div>
+
             {/* 1. En-tête (Filtres et Titre) */}
             <MissingUsersToolbar 
                 selectedTypeId={selectedTypeId}

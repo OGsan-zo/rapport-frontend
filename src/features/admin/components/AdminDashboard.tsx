@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { adminService } from "../services/adminService";
 import { periodeService as configPeriodeService } from "@/features/config/services/periodeService";
 import { useAdminPilotage } from "../context/AdminPilotageContext";
-import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import { usePeriodes, useCalendrierSupervision } from "@/features/config/hooks/usePeriodes";
 import { User } from "../../auth/types";
 
 // Sous-composants
@@ -22,7 +22,9 @@ export const AdminDashboard = () => {
         selectedTypeId,
         setSelectedTypeId,
         selectedPeriodId,
-        setSelectedPeriodId
+        setSelectedPeriodId,
+        selectedDate,
+        setSelectedDate
     } = useAdminPilotage();
 
     const [allUsers, setAllUsers] = useState<User[]>([]);
@@ -30,8 +32,8 @@ export const AdminDashboard = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [isRefreshing, setIsRefreshing] = useState(false);
 
-    // Nécessaire pour notre composant ToolbarSelects unifié
-    const calendrierResult = usePeriodes(false);
+    // Utiliser useCalendrierSupervision avec la date sélectionnée
+    const calendrierResult = useCalendrierSupervision(selectedDate);
 
     // 1. Chargement de la liste globale
     useEffect(() => {
@@ -95,6 +97,20 @@ export const AdminDashboard = () => {
 
     return (
         <div className="space-y-12 pb-20">
+            {/* 0. Sélecteur de date */}
+            <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                <label htmlFor="admin-calendar-date" className="text-sm font-semibold text-slate-700">
+                    Date du calendrier :
+                </label>
+                <input
+                    id="admin-calendar-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={(e) => setSelectedDate(e.target.value)}
+                    className="px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
+                />
+            </div>
+
             {/* 1. Barre d'outils refactorisée */}
             <AdminDashboardToolbar 
                 selectedTypeId={selectedTypeId}

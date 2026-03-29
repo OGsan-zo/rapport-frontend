@@ -7,6 +7,8 @@ interface AdminPilotageContextType {
     setSelectedTypeId: (id: string) => void;
     selectedPeriodId: string;
     setSelectedPeriodId: (id: string) => void;
+    selectedDate: string;
+    setSelectedDate: (date: string) => void;
 }
 
 const AdminPilotageContext = createContext<AdminPilotageContextType | undefined>(undefined);
@@ -14,6 +16,7 @@ const AdminPilotageContext = createContext<AdminPilotageContextType | undefined>
 export const AdminPilotageProvider = ({ children }: { children: ReactNode }) => {
     const [selectedTypeId, setSelectedTypeId] = useState<string>("");
     const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
+    const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
     // Logique de reset intelligent centralisée
     useEffect(() => {
@@ -27,6 +30,8 @@ export const AdminPilotageProvider = ({ children }: { children: ReactNode }) => 
                 setSelectedTypeId,
                 selectedPeriodId,
                 setSelectedPeriodId,
+                selectedDate,
+                setSelectedDate,
             }}
         >
             {children}

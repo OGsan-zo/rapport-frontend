@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { rapportService } from "../../services/rapportService";
 import { ApiRapport } from "../../types";
-import { usePeriodes } from "@/features/config/hooks/usePeriodes";
+import { useCalendrierSupervision, usePeriodes } from "@/features/config/hooks/usePeriodes";
 import { usePdfExport } from "../../hooks/usePdfExport";
 import { exportToWord } from "../../utils/exportUtils";
 
@@ -15,7 +15,6 @@ import { useRapportHistorique } from "../../hooks/useRapportHistorique";
 import { HistoriqueListView } from "./HistoriqueListView";
 import { HistoriqueDetailView } from "./HistoriqueDetailView";
 import { toast } from "react-hot-toast";
-
 export const SupervisionView: React.FC = () => {
     // --- ÉTATS ---
     const [rapports, setRapports] = useState<ApiRapport[]>([]);
@@ -25,6 +24,7 @@ export const SupervisionView: React.FC = () => {
     const [selectedTypeId, setSelectedTypeId] = useState<string>("");
     const [selectedPeriodId, setSelectedPeriodId] = useState<string>("");
     const [entiteFilter, setEntiteFilter] = useState("");
+    const [selectedDate, setSelectedDate] = useState<string>(new Date().toISOString().split('T')[0]);
 
     // --- ÉTAT NAVIGATION HISTORIQUE ---
     const [viewMode, setViewMode] = useState<"LIST" | "HISTORY_LIST" | "HISTORY_DETAIL">("LIST");
@@ -40,7 +40,7 @@ export const SupervisionView: React.FC = () => {
     // Data for the hidden rendering zone
     const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport[] | null>(null);
 
-    const calendrierResult = usePeriodes(false);
+    const calendrierResult = useCalendrierSupervision(selectedDate);
     // --- ÉTATS ---
     const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
@@ -207,9 +207,27 @@ export const SupervisionView: React.FC = () => {
             prev.map(r => r.id === idPrecedent ? updatedRapport : r)
         );
     };
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSelectedDate(e.target.value);
+        // On réinitialise l'ID de la période pour forcer le useEffect à sélectionner
+        // la nouvelle première période du nouveau calendrier
+        setSelectedPeriodId("");
+    };
 
     return (
         <div className="space-y-10 pb-20">
+            <div className="flex items-center gap-4 bg-white p-4 rounded-lg shadow-sm border border-slate-100">
+                <label htmlFor="calendar-date" className="text-sm font-semibold text-slate-700">
+                    Date du calendrier :
+                </label>
+                <input
+                    id="calendar-date"
+                    type="date"
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                    className="px-3 py-2 border border-slate-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-slate-700"
+                />
+            </div>
             {/* 1. Barre d'outils */}
             <SupervisionToolbar
                 selectedTypeId={selectedTypeId}
