@@ -28,33 +28,44 @@ export const MissingUsers = () => {
     const [calendrier, setCalendrier] = useState<CalendarPeriod | undefined>(undefined);
 
     useEffect(() => {
+        // Si aucune période sélectionnée, utiliser la première période disponible
+        if (!selectedPeriodId && calendrierResult.data.length > 0) {
+            setCalendrier(calendrierResult.data[0]);
+            return;
+        }
+
         if (!selectedPeriodId) {
             setUsers([]);
             setIsLoading(false);
             return;
         }
+
+        // Rechercher la période sélectionnée et charger les utilisateurs
         if (calendrierResult.data.length > 0) {
             const period = calendrierResult.data.find((period) => period.id === Number(selectedPeriodId));
             if (period) {
                 setCalendrier(period);
-            }
-        }
-
-        const fetchMissing = async () => {
-            setIsLoading(true);
-            try {
-                const data = await configPeriodeService.getLateUsers(selectedPeriodId);
                 
-                setUsers(data);
-            } catch (err) {
-                // console.error("Erreur MissingUsers:", err);
-                toast.error("Erreur lors du chargement des retardataires");
-            } finally {
+                // Charger les utilisateurs seulement si la période a changé
+                const fetchMissing = async () => {
+                    setIsLoading(true);
+                    try {
+                        const data = await configPeriodeService.getLateUsers(selectedPeriodId);
+                        setUsers(data);
+                    } catch (err) {
+                        // console.error("Erreur MissingUsers:", err);
+                        toast.error("Erreur lors du chargement des retardataires");
+                    } finally {
+                        setIsLoading(false);
+                    }
+                };
+                fetchMissing();
+            } else {
+                setUsers([]);
                 setIsLoading(false);
             }
-        };
-        fetchMissing();
-    }, [selectedPeriodId, selectedTypeId]);
+        }
+    }, [selectedPeriodId, selectedTypeId, calendrierResult.data]);
 
     return (
         <div className="space-y-10">
