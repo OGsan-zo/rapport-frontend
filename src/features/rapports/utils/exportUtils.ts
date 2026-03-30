@@ -55,8 +55,9 @@ export const exportToPdf = async (elementId: string, filename: string) => {
  * Exports a DOM element to a high-fidelity Word document (.doc).
  * @param elementId The ID of the HTML element to capture.
  * @param filename The name of the resulting Word file.
+ * @param isLandscape Whether to use landscape orientation (default: false).
  */
-export const exportToWord = async (elementId: string, filename: string) => {
+export const exportToWord = async (elementId: string, filename: string, isLandscape: boolean = false) => {
     const element = document.getElementById(elementId);
     if (!element) {
         // console.error(`Element with ID ${elementId} not found.`);
@@ -95,6 +96,19 @@ export const exportToWord = async (elementId: string, filename: string) => {
                 .header-table { width: 100%; border: none; margin-bottom: 20pt; }
                 .header-table td { border: none; vertical-align: middle; }
                 p { margin: 0; padding: 0; }
+                /* Style pour l'orientation du document */
+                @page { 
+                    ${isLandscape ? 'size: 297mm 210mm; /* landscape */' : 'size: 210mm 297mm; /* portrait */'}
+                    margin: 15mm 12mm;
+                }
+                body { 
+                    ${isLandscape 
+                        ? 'width: 250mm; height: 180mm; margin: 15mm auto; /* paysage centré */' 
+                        : 'width: 210mm; height: 297mm; margin: 0; /* portrait */'}
+                    padding: 0; 
+                    font-family: Arial, sans-serif;
+                    font-size: 12px;
+                }
             </style>
         </head>
         <body>

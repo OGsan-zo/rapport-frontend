@@ -57,7 +57,7 @@ export default function HomePage() {
                 Plateforme
               
                 <span className="text-red-600 font-bold text-lg mt-[-2px] tracking-normal">
-                  TATITRA SY TOMBANA
+                  TATITRA MESUPRES
                 </span>
               </span>
               

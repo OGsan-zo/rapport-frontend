@@ -39,7 +39,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   }, [fetchItems]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
-  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id === 3;
+  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id === 3 || rapport?.calendrier?.typeCalendrier?.id === 4;
 
   // 2. DÉFINITION DE LA LIGNE PAR DÉFAUT SELON LE TYPE
   const defaultLine = isTrimestriel

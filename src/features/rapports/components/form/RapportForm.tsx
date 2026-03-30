@@ -31,7 +31,7 @@ export const ConsolidationForm = () => {
   const { exportToPdf, isGenerating: isPdfGenerating } = usePdfExport();
 
   // 👇 MODIFICATION ICI : On vérifie si l'ID sélectionné est "3"
-  const isTrimestriel = selectedTypeId === "3"; 
+  const isTrimestriel = selectedTypeId === "3" || selectedTypeId === "4"; 
 
   const { register, handleSubmit, control, watch, setValue, formState: { errors } } = useForm<RapportFormValues>({
     resolver: zodResolver(rapportSchema),

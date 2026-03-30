@@ -49,7 +49,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
     const periodeStr = formatPeriode(rapport);
     
     const isTrimestriel = 
-        rapport?.calendrier?.typeCalendrier?.id === 3;
+        rapport?.calendrier?.typeCalendrier?.id === 3 || rapport?.calendrier?.typeCalendrier?.id === 4;
 
     const headers = isTrimestriel 
         ? ["Action", "Activité", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation", "Taux de réalisation", "Observation"]
@@ -86,7 +86,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
     );
 
     return (
-        <div className="w-full">
+        <div className="w-full" style={{ maxHeight: "100%", overflow: "hidden" }}>
             <table
                 className="w-full bg-white"
                 style={{ 
@@ -95,7 +95,9 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                     fontSize: tableFontSize, 
                     border: "1px solid black",
                     width: "100%", // Reste dans les limites de la page
-                    maxWidth: "100%"
+                    maxWidth: "100%",
+                    height: "auto", // Permet au tableau de s'adapter verticalement
+                    maxHeight: "100%" // Ne dépasse pas le conteneur parent
                 }}
             >
                 <thead>

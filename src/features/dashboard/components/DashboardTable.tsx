@@ -112,8 +112,13 @@ export const DashboardTable: React.FC<DashboardTableProps> = ({
                             {listRapports.map((rapport: ApiRapport) => (
                                 <tr key={rapport.id} className="hover:bg-slate-50/40 transition-colors">
                                     <td className="px-6 py-5 border-r border-slate-100">
-                                        <div className="text-sm font-black text-slate-900">Du {formatDate(rapport.calendrier.dateDebut)}</div>
-                                        <div className="text-[10px] font-medium text-slate-400 uppercase">au {formatDate(rapport.calendrier.dateFin)}</div>
+                                        <div className="space-y-1">
+                                            <div className="text-sm font-black text-slate-900">Du {formatDate(rapport.calendrier.dateDebut)}</div>
+                                            <div className="text-[10px] font-medium text-slate-400 uppercase">au {formatDate(rapport.calendrier.dateFin)}</div>
+                                            <div className="text-[9px] font-bold text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded-md inline-block">
+                                                {rapport.calendrier.typeCalendrier?.name || "Calendrier"}
+                                            </div>
+                                        </div>
                                     </td>
                                     <td className="px-6 py-4 border-r border-slate-100">
                                         <span className="text-[11px] font-bold text-slate-600 uppercase">{rapport.user.entite || "N/A"}</span>

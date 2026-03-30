@@ -173,6 +173,11 @@ export const SupervisionView: React.FC = () => {
             return;
         }
 
+        // 3. Détecter si c'est un rapport trimestriel (pour le mode paysage)
+        const isLandscape = validReports.some(r => 
+            r.calendrier?.typeCalendrier?.id === 3 || r.calendrier?.typeCalendrier?.id === 4
+        );
+
         // Désactivation du mode PDF (points/styles spécifiques) pour l'export Word
         setIsPdfMode(false);
 
@@ -190,8 +195,8 @@ export const SupervisionView: React.FC = () => {
                 ? "Consolidation_Rapports_Valides.doc"
                 : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.doc`;
 
-            // Lancement de l'export
-            exportToWord("rapport-a4-container", filename);
+            // Lancement de l'export avec le mode paysage si nécessaire
+            exportToWord("rapport-a4-container", filename, isLandscape);
 
             // Réinitialisation de l'état
             setGeneratingId(null);

@@ -107,7 +107,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
               {...register(`lignes.${index}.titre` as any)}
               className={`${selectClass} font-bold text-slate-800`}
             >
-              <option value="">Sélectionner un objectif...</option>
+              <option value="">Objectif spécifique</option>
               {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
                 // ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
                 <option key={obj.id} value={obj.nom}>
@@ -134,7 +134,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                 {...register(`lignes.${index}.effects.${i}.value` as any)}
                 className={selectClass}
               >
-                <option value="">Sélectionner une logique d'intervention...</option>
+                <option value="">Logique d'intervention</option>
                 {logiqueInterventions.map((logique: LogiqueIntervention) => (
                   // ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
                   <option key={logique.id} value={logique.nom}>
@@ -168,7 +168,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       <div className={colContainerClass}>
         {impactsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité PTA ${i + 1}...` : `Impact ${i + 1}...`} />
+            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`} />
             {impactsFields.length > 1 && (
               <button type="button" onClick={() => removeImpact(i)} className={closeBtnClass}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -177,6 +177,11 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           </div>
         ))}
         {/* <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>+ {isTrimestriel ? "activité PTA" : "impact"}</button> */}
+        {!isTrimestriel && (
+          <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>
+            + impact
+          </button>
+        )}
       </div>
 
       {/* Champs Trimestriels */}
@@ -186,7 +191,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} required />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={textAreaClass} placeholder={`Produit`} required />
                 {produitsFields.length > 1 && (
                   <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -201,7 +206,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} min="1" />
+                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={textAreaClass} placeholder={`0`} min="1" />
                 {ciblesFields.length > 1 && (
                   <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>

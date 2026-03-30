@@ -9,9 +9,10 @@ import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { AppTableSkeleton } from "@/features/common/components/ui/AppTableSkeleton";
 
-const formatDate = (dateStr?: string) => {
+const formatDate = (dateStr: string) => {
     if (!dateStr) return "N/A";
-    return new Date(dateStr).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" });
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "short", year: "numeric" });
 };
 
 const statusClasses: Record<string, string> = {
@@ -148,8 +149,15 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                                                 <div className="text-sm font-bold text-slate-900 uppercase">{rapport.user?.entite}</div>
                                                 <div className="text-[10px] text-slate-400">{rapport.user?.email}</div>
                                             </td>
-                                            <td className="px-6 py-5 text-xs text-slate-500 italic">
-                                                Du {formatDate(rapport.calendrier?.dateDebut)} au {formatDate(rapport.calendrier?.dateFin)}
+                                            <td className="px-6 py-5">
+                                                <div className="space-y-1">
+                                                    <div className="text-xs text-slate-500 italic">
+                                                        Du {formatDate(rapport.calendrier?.dateDebut)} au {formatDate(rapport.calendrier?.dateFin)}
+                                                    </div>
+                                                    <div className="text-[9px] font-bold text-blue-600 uppercase bg-blue-50 px-2 py-1 rounded-md inline-block">
+                                                        {rapport.calendrier?.typeCalendrier?.name || "Calendrier"}
+                                                    </div>
+                                                </div>
                                             </td>
                                             <td className="px-6 py-5 text-center">
                                                 <span 

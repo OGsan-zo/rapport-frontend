@@ -25,7 +25,7 @@ export default function DashboardPage() {
 
     const handlePdfClick = async (rapport: ApiRapport) => {
         const idRp = rapport.id !== undefined ? rapport.id : 0;
-        const isLandscape = rapport.calendrier?.typeCalendrier?.id === 3;
+        const isLandscape = rapport.calendrier?.typeCalendrier?.id === 3 || rapport.calendrier?.typeCalendrier?.id === 4;
         setGeneratingId(idRp);
         setSelectedForPdf(rapport);
 

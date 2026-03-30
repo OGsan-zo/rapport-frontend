@@ -16,7 +16,7 @@ export const sendRapportReminder = async (destinataire: string, typeRapport: str
   const mailOptions = {
     from: process.env.MAIL_FROM,
     to: destinataire,
-    subject: `Rappel - Envoi de votre rapport ${typeRapport} sur la plateforme Tatitra sy Tombana`,
+    subject: `Rappel - Envoi de votre rapport ${typeRapport} sur la plateforme Tatitra Mesupres`,
     html: `
       <div style="font-family: Arial, sans-serif; color: #333;">
         <p>Madame, Monsieur,</p>

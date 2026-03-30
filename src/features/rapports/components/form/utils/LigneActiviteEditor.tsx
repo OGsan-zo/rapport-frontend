@@ -164,11 +164,17 @@ export const LigneActiviteEditor = ({
             {impactsFields.length > 1 && (
               <button type="button" onClick={() => removeImpact(i)} className={closeBtnClass}>✕</button>
             )}
+        
           </div>
         ))}
         {/* <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>
           + {isTrimestriel ? "activité PTA" : "impact"}
         </button> */}
+        {!isTrimestriel && (
+          <button type="button" onClick={() => appendImpact({ value: "" })} className={addBtnClass}>
+            + impact
+          </button>
+        )}
       </div>
 
       {/* COLONNES TRIMESTRIELLES */}
