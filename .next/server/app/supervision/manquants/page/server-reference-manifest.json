@@ -1,20 +1,4 @@
 {
-  "node": {
-    "7097611af886851d1274cf1f95608ce5099f53a955": {
-      "workers": {
-        "app/supervision/manquants/page": {
-          "moduleId": 79521,
-          "async": false,
-          "exportedName": "sendRapportReminder",
-          "filename": "src/hooks/mailService.ts"
-        }
-      },
-      "layer": {
-        "app/supervision/manquants/page": "action-browser"
-      },
-      "exportedName": "sendRapportReminder",
-      "filename": "src/hooks/mailService.ts"
-    }
-  },
+  "node": {},
   "edge": {}
 }

@@ -17,6 +17,7 @@
   "/api/rapports/[id]/route": "/api/rapports/[id]",
   "/api/rapports/calendrier/route": "/api/rapports/calendrier",
   "/api/rapports/changerValidation/route": "/api/rapports/changerValidation",
+  "/api/rapports/envoyer-rappel/route": "/api/rapports/envoyer-rappel",
   "/api/rapports/historique/route": "/api/rapports/historique",
   "/api/rapports/recherche/route": "/api/rapports/recherche",
   "/api/rapports/route": "/api/rapports",

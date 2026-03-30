@@ -140,6 +140,12 @@
       "namedRegex": "^/api/rapports/changerValidation(?:/)?$"
     },
     {
+      "page": "/api/rapports/envoyer-rappel",
+      "regex": "^/api/rapports/envoyer\\-rappel(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/rapports/envoyer\\-rappel(?:/)?$"
+    },
+    {
       "page": "/api/rapports/historique",
       "regex": "^/api/rapports/historique(?:/)?$",
       "routeKeys": {},

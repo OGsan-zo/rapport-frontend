@@ -17,6 +17,7 @@
   "/api/rapports/[id]/route": "app/api/rapports/[id]/route.js",
   "/api/rapports/calendrier/route": "app/api/rapports/calendrier/route.js",
   "/api/rapports/changerValidation/route": "app/api/rapports/changerValidation/route.js",
+  "/api/rapports/envoyer-rappel/route": "app/api/rapports/envoyer-rappel/route.js",
   "/api/rapports/historique/route": "app/api/rapports/historique/route.js",
   "/api/rapports/recherche/route": "app/api/rapports/recherche/route.js",
   "/api/rapports/route": "app/api/rapports/route.js",

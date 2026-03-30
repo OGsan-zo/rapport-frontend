@@ -160,23 +160,43 @@ export const adminService = {
             throw error;
         }
     },
-    envoyerMail: async(destinataire: string,calendrier: CalendarPeriod):Promise<EmailReponse> => {
+    envoyerMail: async(destinataire: string, calendrier: CalendarPeriod): Promise<EmailReponse> => {
         try{
-            const typeCalendrier = calendrier.typeCalendrier?.name|| "Hebdomadaire";
-            const dateFin = formatLongDate(calendrier.dateFin); 
-            sendRapportReminder(destinataire,typeCalendrier,dateFin);
-            return {
-                success:true,
-                loading: false
+            // Préparer les données pour l'API
+            const emailData = {
+                destinataire: destinataire,
+                typeRapport: calendrier.typeCalendrier?.name || "Hebdomadaire",
+                dateLimite: formatLongDate(calendrier.dateFin)
+            };
+
+            // Appeler l'API pour envoyer l'email
+            const response = await fetchAuth('/api/rapports/envoyer-rappel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(emailData)
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.message || errorData.error || `Erreur serveur: ${response.status}`);
             }
+
+            const responseData = await response.json();
+            
+            return {
+                success: responseData.success || true,
+                loading: false
+            };
         }
         catch(error)
         {
             return {
                 success:false,
                 loading:false,
-                error: "Erreur lors de l'envoye mail"
-            }
+                error: "Erreur lors de l'envoi du mail"
+            };
         }
     }
 };
