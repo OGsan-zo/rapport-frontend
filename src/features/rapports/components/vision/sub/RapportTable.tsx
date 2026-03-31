@@ -85,6 +85,31 @@ export const RapportTable: React.FC<RapportTableProps> = ({
         </td>
     );
 
+    // Fonction spéciale pour afficher le taux avec le symbole %
+    const renderTauxCell = (items?: BaseNom[]) => (
+        <td style={{ 
+            border: "1px solid black", 
+            padding: cellPadding, 
+            verticalAlign: "top",
+            wordBreak: "break-word",
+            overflowWrap: "break-word"
+        }}>
+            {items && items.length > 0 ? (
+                <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
+                    {items.map((item: BaseNom, i: number) => (
+                        <li key={i} style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
+                            {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
+                            <span style={{ textAlign: "justify", color: "#000000" }}>{item.name}</span>
+                            {i === items.length - 1 && <span style={{ color: "#000000", fontWeight: "bold" }}> %</span>}
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <span style={{ color: "#666666", fontStyle: "italic", fontSize: tableFontSize }}> </span>
+            )}
+        </td>
+    );
+
     return (
         <div className="w-full" style={{ maxHeight: "100%", overflow: "hidden" }}>
             <table
@@ -194,7 +219,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                         {renderListCell(act.cibles)}
                                         {renderListCell(act.previsions)}
                                         {renderListCell(act.realisations)}
-                                        {renderListCell(act.taux) + " %"} 
+                                        {renderTauxCell(act.taux)}
                                         {renderListCell(act.observations)}
                                     </>
                                 )}
