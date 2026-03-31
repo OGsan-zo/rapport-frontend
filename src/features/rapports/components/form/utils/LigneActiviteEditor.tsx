@@ -13,6 +13,7 @@ interface LigneActiviteProps {
   isTrimestriel?: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
   logiqueInterventions?: LogiqueIntervention[];
+  gridLayout: string;
 
 }
 
@@ -26,6 +27,7 @@ export const LigneActiviteEditor = ({
   isTrimestriel = false,
   objectifSpecifiques = [],
   logiqueInterventions = [],
+  gridLayout
 }: LigneActiviteProps) => {
   
   // --- Hooks pour tous les champs ---
@@ -76,17 +78,16 @@ export const LigneActiviteEditor = ({
   }, [previsionsWatch, realisationsWatch]);
 
   // --- Grille dynamique synchronisée avec le parent ---
-  const gridLayout = isTrimestriel
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" 
-    : "grid-cols-[70px_1fr_1fr_1fr_70px]";
+ 
 
   // --- Classes CSS communes pour éviter la répétition ---
-  const colContainerClass = "border-l border-slate-100 p-3 space-y-2 flex flex-col h-full";
-  const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm relative";
-  const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[80px] p-0 placeholder:text-slate-300";
-  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-1 cursor-pointer";
+  const colContainerClass = "border-l border-slate-100 p-4 space-y-3 w-full h-full flex flex-col";
+  const itemBoxClass = "flex items-center gap-2 bg-white p-3 border border-slate-200 rounded-lg shadow-sm w-full relative group/item"; 
+  const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[100px] p-2 placeholder:text-slate-300 text-center placeholder:text-center flex items-center justify-center";
+  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-2 cursor-pointer text-center";
+  const inputClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 min-h-[100px] p-2 placeholder:text-slate-300 text-center placeholder:text-center flex items-center justify-center";
   const addBtnClass = "w-full py-2 mt-auto border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all";
-  const closeBtnClass = "mt-1 text-slate-300 hover:text-red-500 transition-colors";
+  const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
 
   return (
     <div className={`grid ${gridLayout} group/row transition-colors hover:bg-slate-50/30 items-stretch`}>
@@ -184,7 +185,7 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="text" {...register(`lignes.${index}.produits.${i}.value`)} className={textAreaClass} placeholder={`Produit ${i + 1}...`} required />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value`)} className={inputClass} placeholder={`Produit ${i + 1}...`} required />
                 {produitsFields.length > 1 && <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -195,7 +196,7 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={textAreaClass} placeholder={`Cible ${i + 1}...`} min="1" />
+                <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={inputClass} placeholder={`Cible ${i + 1}...`} min="1" />
                 {ciblesFields.length > 1 && <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -206,7 +207,12 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.previsions.${i}.value`)} className={textAreaClass} placeholder={`Prévision ${i + 1}...`} />
+                <input 
+                  type="number"
+                  {...register(`lignes.${index}.previsions.${i}.value`)} 
+                  className={inputClass} 
+                  placeholder={`Prévision ${i + 1}...`}
+                />
                 {previsionsFields.length > 1 && <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -217,7 +223,12 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.realisations.${i}.value`)} className={textAreaClass} placeholder={`Réalisation ${i + 1}...`} />
+                <input 
+                  type="number"
+                  {...register(`lignes.${index}.realisations.${i}.value`)} 
+                  className={inputClass} 
+                  placeholder={`Réalisation ${i + 1}...`}
+                />
                 {realisationsFields.length > 1 && <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -226,18 +237,21 @@ export const LigneActiviteEditor = ({
 
           {/* 9. Taux (calculé automatiquement, non modifiable) */}
           <div className={colContainerClass}>
-            {tauxFields.map((field, i) => (
-              <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100 relative`}>
-                <input
-                  type="text"
-                  {...register(`lignes.${index}.taux.${i}.value`)}
-                  value={calculerTaux(i)}
-                  readOnly
-                  className="w-full text-sm font-bold text-blue-600 bg-transparent border-none focus:ring-0 p-0 pointer-events-none"
-                />
-                <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-2">%</span>
-              </div>
-            ))}
+            {tauxFields.map((field, i) => {
+              const valeurTaux = calculerTaux(i);
+              return (
+                <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100`}>
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.taux.${i}.value`)}
+                    value={valeurTaux}
+                    readOnly
+                    className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`}
+                  />
+                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 transform -translate-y-1/2">%</span>
+                </div>
+              );
+            })}
           </div>
 
           {/* 10. Observations */}

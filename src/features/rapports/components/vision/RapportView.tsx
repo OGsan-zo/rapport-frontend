@@ -4,7 +4,7 @@ import React from "react";
 import { ApiRapport } from "../../types";
 import { RapportHeader } from "./sub/RapportHeader";
 import { RapportTable } from "./sub/RapportTable";
-import { RapportFooter } from "./sub/RapportFooter";
+// import { RapportFooter } from "./sub/RapportFooter";
 
 interface RapportViewProps {
     data: ApiRapport[];
@@ -23,6 +23,8 @@ export const RapportView: React.FC<RapportViewProps> = ({
 
     const pageWidth = isLandscape ? "297mm" : "210mm";
     const pageHeight = isLandscape ? "210mm" : "297mm";
+
+    // Appliquer un scale pour le mode paysage afin d'éviter les pages multiples
 
     return (
         <div

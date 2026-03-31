@@ -83,16 +83,17 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   //   ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
   //   : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
-  const colContainerClass = "border-l border-slate-100 p-3 space-y-2 w-full h-full flex flex-col";
-  const itemBoxClass = "flex items-start gap-2 bg-white p-2 border border-slate-200 rounded-lg shadow-sm w-full relative group/item"; 
-  const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[80px] p-0 placeholder:text-slate-300";
-  // Classe ajustée pour le select afin d'éviter le min-h-[80px] qui ferait un select trop grand
-  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-1 cursor-pointer";
+  const colContainerClass = "border-l border-slate-100 p-4 space-y-3 w-full h-full flex flex-col";
+  const itemBoxClass = "flex items-center gap-2 bg-white p-3 border border-slate-200 rounded-lg shadow-sm w-full relative group/item"; 
+  const textAreaClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 resize-none min-h-[100px] p-2 placeholder:text-slate-300 text-center placeholder:text-center flex items-center justify-center";
+  // Classe ajustée pour le select afin d'éviter le min-h-[100px] qui ferait un select trop grand
+  const selectClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 p-2 cursor-pointer text-center";
+  const inputClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 min-h-[100px] p-2 placeholder:text-slate-300 text-center placeholder:text-center flex items-center justify-center";
   const addBtnClass = "w-full py-2 mt-auto border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all";
   const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
 
   return (
-    <div className={`grid ${gridLayout} ${isTrimestriel ? 'min-w-[1500px]' : 'w-full'} group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
+    <div className={`grid ${gridLayout} ${isTrimestriel ? 'min-w-[2100px]' : 'w-full'} group/row bg-white border border-slate-200 rounded-xl shadow-sm transition-colors hover:border-blue-200 items-stretch overflow-hidden`}>
       
       {/* 1. Index */}
       <div className="flex items-center justify-center text-xs font-black text-slate-300 bg-slate-50/50">
@@ -191,7 +192,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={textAreaClass} placeholder={`Produit`} required />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={inputClass} placeholder={`Produit`} required />
                 {produitsFields.length > 1 && (
                   <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -206,7 +207,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={textAreaClass} placeholder={`0`} min="1" />
+                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={inputClass} placeholder={`0`} min="1" />
                 {ciblesFields.length > 1 && (
                   <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -224,7 +225,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                 <input 
                   type="number"
                   {...register(`lignes.${index}.previsions.${i}.value` as any)} 
-                  className={textAreaClass} 
+                  className={inputClass} 
                   placeholder="0" 
                 />
               </div>
@@ -238,7 +239,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                 <input 
                   type="number"
                   {...register(`lignes.${index}.realisations.${i}.value` as any)} 
-                  className={textAreaClass} 
+                  className={inputClass} 
                   placeholder="0" 
                 />
               </div>
@@ -258,7 +259,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                     // readOnly
                     className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`} 
                   />
-                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-2">%</span>
+                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
                 </div>
               );
             })}

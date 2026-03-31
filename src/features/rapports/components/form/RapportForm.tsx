@@ -168,7 +168,7 @@ export const ConsolidationForm = () => {
         control={control}
         register={register}
         remove={remove}
-        isTrimestriel={isTrimestriel}
+        isTrimestriel={Number(selectedTypeId)}
         objectifSpecifiques={objectifSpecifiques}
         logiqueInterventions={logiqueInterventions}
         setValue={setValue}

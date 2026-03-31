@@ -143,6 +143,11 @@ export const SupervisionView: React.FC = () => {
             return;
         }
 
+        // 3. Détecter si c'est un rapport trimestriel (pour le mode paysage)
+        const isLandscape = validReports.some(r => 
+            r.calendrier?.typeCalendrier?.id === 3 || r.calendrier?.typeCalendrier?.id === 4
+        );
+
         // On s'assure que le mode PDF est activé
         setIsPdfMode(true);
 
@@ -156,7 +161,7 @@ export const SupervisionView: React.FC = () => {
                 ? "Consolidation_Rapports_Valides.pdf"
                 : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.pdf`;
 
-            await exportToPdf("rapport-a4-container", filename);
+            await exportToPdf("rapport-a4-container", filename, isLandscape);
 
             setGeneratingId(null);
             setSelectedForPdf(null);

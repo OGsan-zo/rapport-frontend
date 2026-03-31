@@ -9,7 +9,7 @@ interface TableauActivitesProps {
   control: Control<any>;
   register: UseFormRegister<any>;
   remove: UseFieldArrayRemove;
-  isTrimestriel?: boolean;
+  isTrimestriel?: number;
   objectifSpecifiques?: ObjectifSpecifique[];
   logiqueInterventions?: LogiqueIntervention[];
   setValue: UseFormSetValue<any>;
@@ -20,28 +20,30 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
   control, 
   register, 
   remove, 
-  isTrimestriel = false,
+  isTrimestriel = 0,
   objectifSpecifiques = [],
   logiqueInterventions = [],
   setValue
 }) => {
+  const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
   
-  const headers = isTrimestriel 
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation","Taux de réalisation", "Observation", ""]
+  const headers = isTrimestriel === 3 
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
+    : isTrimestriel === 4
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
     : ["#", "Titre de l'activité", "Effets", "Impacts", ""];
 
-  // 1. CORRECTION DES COLONNES : Toutes les colonnes de texte sont maintenant à "1fr" (taille égale)
-  // 1. CORRECTION DES COLONNES : Il faut 9 "1fr" pour correspondre aux 11 headers
-  const gridLayout = isTrimestriel 
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" // <-- AJOUTE UN 1fr ICI
+  // 1. CORRECTION DES COLONNES : Distribution optimisée pour le mode trimestriel
+  const gridLayout = isTrim
+    ? "grid-cols-[60px_1.5fr_1.2fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_0.8fr_1fr_60px]" // Meilleure répartition
     : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   return (
     <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
       <div className="overflow-x-auto">
-        {/* 2. CORRECTION DE L'ESPACE : Passage de 1400px à 1800px pour éviter l'écrasement */}
-        <div className={isTrimestriel ? "min-w-[1800px]" : "min-w-[1000px]"}>
-          
+        {/* 2. CORRECTION DE L'ESPACE : Ajustement pour correspondre au layout */}
+        <div className={isTrim? "min-w-[2100px]" : "min-w-[1000px]"}>
+
           {/* En-têtes dynamiques */}
           <div className={`grid ${gridLayout} bg-slate-50/80 border-b border-slate-200 items-stretch`}>
             {headers.map((header, idx) => (
@@ -67,7 +69,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
                 register={register}
                 index={index}
                 remove={remove}
-                isTrimestriel={isTrimestriel}
+                isTrimestriel={isTrim}
                 canRemove={fields.length > 1}
                 objectifSpecifiques={objectifSpecifiques}
                 logiqueInterventions={logiqueInterventions}

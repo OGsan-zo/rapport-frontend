@@ -39,10 +39,10 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   }, [fetchItems]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
-  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id === 3 || rapport?.calendrier?.typeCalendrier?.id === 4;
-
+  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id;
+  const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
   // 2. DÉFINITION DE LA LIGNE PAR DÉFAUT SELON LE TYPE
-  const defaultLine = isTrimestriel
+  const defaultLine = isTrim
     ? {
         titre: "",
         effects: [{ value: "" }],
@@ -142,12 +142,14 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
 
   // 5. CONFIGURATION DES EN-TÊTES ET DE LA GRILLE
   
-  const headers = isTrimestriel 
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation","Taux de réalisation", "Observation", ""]
+    const headers = isTrimestriel === 3 
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
+    : isTrimestriel === 4
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
     : ["#", "Titre de l'activité", "Effets", "Impacts", ""];
 
 
-  const gridLayout = isTrimestriel 
+  const gridLayout = isTrim
     ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" 
     : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
@@ -156,7 +158,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           {/* 6. LARGEUR DYNAMIQUE (1800px pour Trimestriel) */}
-          <div className={isTrimestriel ? "min-w-[1800px]" : "min-w-[1000px]"}>
+          <div className={isTrim ? "min-w-[2100px]" : "min-w-[1000px]"}>
             
             {/* Header généré dynamiquement */}
             <div className={`grid ${gridLayout} bg-slate-50/80 border-b border-slate-200 items-stretch`}>
@@ -184,10 +186,11 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
                   index={index}
                   remove={remove}
                   canRemove={fields.length > 1}
-                  isTrimestriel={isTrimestriel}
+                  isTrimestriel={isTrim}
                   objectifSpecifiques={objectifSpecifiques}
                   logiqueInterventions={logiqueInterventions}
                   setValue={setValue}
+                  gridLayout={gridLayout}
                 />
               ))}
             </div>
