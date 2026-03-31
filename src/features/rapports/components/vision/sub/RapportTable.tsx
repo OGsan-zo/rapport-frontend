@@ -194,7 +194,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                         {renderListCell(act.cibles)}
                                         {renderListCell(act.previsions)}
                                         {renderListCell(act.realisations)}
-                                        {renderListCell(act.taux)}
+                                        {renderListCell(act.taux)} %
                                         {renderListCell(act.observations)}
                                     </>
                                 )}
