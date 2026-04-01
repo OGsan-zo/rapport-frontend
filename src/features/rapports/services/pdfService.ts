@@ -3,89 +3,9 @@ import html2canvas from "html2canvas";
 
 export const pdfService = {
     /**
-     * Génère un PDF à partir d'un élément HTML avec capture individuelle par section.
+     * Génère un PDF à partir d'un élément HTML avec support multi-pages.
      */
     async generatePdfBlob(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
-        // Dimensions A4 : portrait = 210×297, paysage = 297×210
-        const pdfWidth = isLandscape ? 297 : 210;
-        const pdfHeight = isLandscape ? 210 : 297;
-
-        const pdf = new jsPDF({
-            orientation: isLandscape ? "landscape" : "portrait",
-            unit: "mm",
-            format: "a4",
-            putOnlyUsedFonts: true,
-        });
-
-        // Trouver toutes les sections de rapport (div avec pageBreakAfter)
-        const rapportSections = element.querySelectorAll('.rapport-section');
-        
-        if (rapportSections.length === 0) {
-            // Fallback : si pas de sections, utiliser l'ancienne méthode
-            return this.generatePdfBlobOld(element, filename, isLandscape);
-        }
-
-        // Capturer chaque section individuellement
-        for (let i = 0; i < rapportSections.length; i++) {
-            const section = rapportSections[i] as HTMLElement;
-            
-            // Capture individuelle de la section
-            const canvas = await html2canvas(section, {
-                scale: 2.5,
-                useCORS: true,
-                logging: false,
-                backgroundColor: "#ffffff",
-                windowHeight: section.scrollHeight,
-                scrollY: 0
-            });
-
-            const imgData = canvas.toDataURL("image/png");
-            
-            // Validation
-            if (!imgData.startsWith("data:image/png")) {
-                throw new Error("Format d'image non supporté (PNG attendu)");
-            }
-
-            // Calcul pour adapter l'image à la page
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
-            
-            // Ajouter une nouvelle page si ce n'est pas la première section
-            if (i > 0) {
-                pdf.addPage();
-            }
-
-            // Ajouter l'image de la section
-            pdf.addImage(
-                imgData,
-                "PNG",
-                0,
-                0,
-                pdfWidth,
-                imgHeightInPdf,
-                undefined,
-                "FAST"
-            );
-
-            // Ajouter le pied de page
-            this.addFooter(pdf, "", pdfWidth, pdfHeight);
-        }
-
-        // Définir les propriétés du document
-        pdf.setProperties({
-            title: filename,
-            subject: "Rapport d'Activités",
-            author: "Systeme de Rapportage",
-        });
-
-        return pdf.output("blob");
-    },
-
-    /**
-     * Ancienne méthode (fallback) - Génère un PDF à partir d'un élément HTML avec support multi-pages.
-     */
-    async generatePdfBlobOld(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
         // Configuration de la capture pour une netteté maximale
         const canvas = await html2canvas(element, {
             scale: 2.5, // Équilibre entre netteté et poids du fichier
@@ -123,6 +43,8 @@ export const pdfService = {
 
         let heightLeft = imgHeightInPdf;
         let position = 0;
+        const footerHeight = 10; // Espace pour le copyright
+        const year = new Date().getFullYear();
         const footerText = ``;
 
         // Ajout de la première page
