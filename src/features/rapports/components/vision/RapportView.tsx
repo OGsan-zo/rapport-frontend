@@ -56,31 +56,10 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 {/* 1. Header (Affiché une seule fois au début) */}
                 {isPdf && <RapportHeader />}
 
-                {/* 2. Flux de Tableaux avec sauts de page entre chaque tableau */}
+                {/* 2. Flux de Tableaux (Enchaînement sans saut de page forcé) */}
                 <div className="flex flex-col gap-10">
                     {data.map((rapport, index) => (
-                        <div key={rapport.id || index} className="w-full" style={{
-                            pageBreakAfter: index < data.length - 1 ? 'always' : 'auto',
-                            breakInside: 'avoid'
-                        }}>
-                            {/* En-tête de séparateur pour les rapports multiples */}
-                            {data.length > 1 && (
-                                <div style={{
-                                    height: '60px',
-                                    borderBottom: '2px solid #e5e7eb',
-                                    marginBottom: '20px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '14px',
-                                    fontWeight: 'bold',
-                                    color: '#64748b',
-                                    pageBreakAfter: 'avoid',
-                                    breakInside: 'avoid'
-                                }}>
-                                    {index === 0 ? 'RAPPORT CONSOLIDÉ' : `RAPPORT ${index + 1}`}
-                                </div>
-                            )}
+                        <div key={rapport.id || index} className="w-full">
                             <RapportTable rapport={rapport} isPdf={isPdf} />
                         </div>
                     ))}
