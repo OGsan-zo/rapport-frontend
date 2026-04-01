@@ -35,7 +35,10 @@ export const SupervisionView: React.FC = () => {
     const [isPdfMode, setIsPdfMode] = useState<boolean>(true);
 
     // Hook d'exportation
-    const { exportToPdf, isGenerating } = usePdfExport();
+    const { exportToPdf, isGenerating: isGeneratingPdf } = usePdfExport();
+    
+    // État séparé pour l'export Word
+    const [isGeneratingWord, setIsGeneratingWord] = useState<boolean>(false);
 
     // Data for the hidden rendering zone
     const [selectedForPdf, setSelectedForPdf] = useState<ApiRapport[] | null>(null);
@@ -251,7 +254,8 @@ export const SupervisionView: React.FC = () => {
                 rapports={filtered}
                 onConsulter={() => handleConsulter(viewMode === "HISTORY_DETAIL" && selectedHistoryRapport ? [selectedHistoryRapport] : filtered)}
                 onExportWord={() => handleExportWord(viewMode === "HISTORY_DETAIL" && selectedHistoryRapport ? [selectedHistoryRapport] : filtered)}
-                isGenerating={isGenerating}
+                isGeneratingPdf={isGeneratingPdf}
+                isGeneratingWord={isGeneratingWord}
             />
 
             {/* 2. Contenu en fonction du mode de vue */}

@@ -17,7 +17,8 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
     rapports,
     onConsulter,
     onExportWord,
-    isGenerating,
+    isGeneratingPdf,
+    isGeneratingWord,
 }) => {
 
     const hasFilters = Boolean(selectedPeriodId || entiteFilter);
@@ -59,7 +60,8 @@ export const SupervisionToolbar: React.FC<SupervisionToolbarProps> = ({
                     entiteFilter={entiteFilter}
                     onConsulter={onConsulter}
                     onExportWord={onExportWord}
-                    isGenerating={isGenerating}
+                    isGeneratingPdf={isGeneratingPdf}
+                    isGeneratingWord={isGeneratingWord}
                 />
 
             </div>

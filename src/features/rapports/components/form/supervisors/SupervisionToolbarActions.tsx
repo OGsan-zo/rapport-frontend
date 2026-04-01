@@ -8,7 +8,8 @@ export const SupervisionToolbarActions: React.FC<SupervisionToolbarActionsProps>
     onClearFilters,
     onConsulter,
     onExportWord,
-    isGenerating,
+    isGeneratingPdf,
+    isGeneratingWord,
 }) => {
     return (
         <div className="flex items-center gap-4">
@@ -16,10 +17,10 @@ export const SupervisionToolbarActions: React.FC<SupervisionToolbarActionsProps>
             <div className="flex items-center gap-2 border-r border-slate-200 pr-4 mr-2">
                 <button
                     onClick={onConsulter}
-                    disabled={isGenerating}
+                    disabled={isGeneratingPdf}
                     className="flex items-center gap-2 px-4 py-2 bg-rose-50 text-rose-600 hover:bg-rose-100 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all border border-rose-100 shadow-sm shadow-rose-100/50 disabled:opacity-50"
                 >
-                    {isGenerating ? (
+                    {isGeneratingPdf ? (
                         <div className="w-3 h-3 border-2 border-rose-600 border-t-transparent rounded-full animate-spin" />
                     ) : (
                         <span>📕</span>
@@ -30,10 +31,10 @@ export const SupervisionToolbarActions: React.FC<SupervisionToolbarActionsProps>
                 {/* Nouveau bouton Word */}
                 <button
                     onClick={onExportWord}
-                    disabled={isGenerating}
+                    disabled={isGeneratingWord}
                     className="flex items-center gap-2 px-4 py-2 bg-blue-50 text-blue-600 hover:bg-blue-100 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-all border border-blue-100 shadow-sm shadow-blue-100/50 disabled:opacity-50"
                 >
-                    {isGenerating ? (
+                    {isGeneratingWord ? (
                         <div className="w-3 h-3 border-2 border-blue-600 border-t-transparent rounded-full animate-spin" />
                     ) : (
                         <span>📄</span>

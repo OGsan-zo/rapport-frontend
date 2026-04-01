@@ -7,7 +7,8 @@ export interface SupervisionToolbarActionsProps {
     entiteFilter: string;
     onConsulter: () => void;
     onExportWord: () => void;
-    isGenerating: boolean;
+    isGeneratingPdf: boolean;
+    isGeneratingWord: boolean;
 }
 
 export interface SupervisionTableProps {
@@ -31,5 +32,6 @@ export interface SupervisionToolbarProps {
     rapports: ApiRapport[];
     onConsulter: () => void;
     onExportWord: () => void;
-    isGenerating: boolean;
+    isGeneratingPdf: boolean;
+    isGeneratingWord: boolean;
 }
