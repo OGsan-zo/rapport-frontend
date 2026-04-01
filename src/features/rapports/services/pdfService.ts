@@ -62,8 +62,8 @@ export const pdfService = {
 
         heightLeft -= pdfHeight;
 
-        // Pages supplémentaires si nécessaire (uniquement si le contenu dépasse vraiment)
-        if (!fitsOnSinglePage && heightLeft > 5) { // Ajouter une marge de 5mm pour éviter les pages presque vides
+        // Pages supplémentaires si nécessaire (boucle pour toutes les pages)
+        while (!fitsOnSinglePage && heightLeft > 5) { // Ajouter une marge de 5mm pour éviter les pages presque vides
             position = heightLeft - imgHeightInPdf;
             pdf.addPage();
             pdf.addImage(
