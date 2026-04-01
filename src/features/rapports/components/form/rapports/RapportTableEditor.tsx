@@ -150,8 +150,8 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
 
 
   const gridLayout = isTrim
-    ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]" 
-    : "grid-cols-[70px_1fr_1fr_1fr_70px]";
+      ? "grid-cols-[60px_1.5fr_1.5fr_1.5fr_1.5fr_0.8fr_0.8fr_0.8fr_0.8fr_1.5fr_60px]" // Meilleure répartition
+      : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   return (
     <form onSubmit={handleSubmit(onSubmit, (errors) => console.log("Erreurs Formulaire:", errors))} className="space-y-6">

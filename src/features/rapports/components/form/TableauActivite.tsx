@@ -35,7 +35,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
 
   // 1. CORRECTION DES COLONNES : Distribution optimisée pour le mode trimestriel
   const gridLayout = isTrim
-    ? "grid-cols-[60px_1.5fr_1.2fr_1fr_0.8fr_0.8fr_0.8fr_0.8fr_0.8fr_1fr_60px]" // Meilleure répartition
+    ? "grid-cols-[60px_1.5fr_1.5fr_1.5fr_1.5fr_0.8fr_0.8fr_0.8fr_0.8fr_1.5fr_60px]" // Meilleure répartition
     : "grid-cols-[70px_1fr_1fr_1fr_70px]";
 
   return (
