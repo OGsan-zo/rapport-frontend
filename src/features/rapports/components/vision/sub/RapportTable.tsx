@@ -50,11 +50,16 @@ export const RapportTable: React.FC<RapportTableProps> = ({
     
     const isTrimestriel = 
         rapport?.calendrier?.typeCalendrier?.id === 3 || rapport?.calendrier?.typeCalendrier?.id === 4;
+    
+    const idTypeCalendrier = rapport?.calendrier?.typeCalendrier?.id;
+    const headers = idTypeCalendrier === 3 
+    ? ["Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation"]
+    : idTypeCalendrier === 4
+    ? ["Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation"]
+    : ["Titre de l'activité", "Effets", "Impacts"];
 
-    const headers = isTrimestriel 
-        ? ["Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision", "Réalisation", "Taux de réalisation", "Observation"]
-        : ["Activités", "Effets", "Impacts"];
 
+    
     const colSpanCount = headers.length;
 
     // Réduction de la taille pour forcer l'ajustement sur PDF
