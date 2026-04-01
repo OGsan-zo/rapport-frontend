@@ -303,58 +303,11 @@ export const SupervisionView: React.FC = () => {
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
                     <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        <style jsx>{`
-                            @media print {
-                                .rapport-section {
-                                    page-break-inside: avoid;
-                                    page-break-after: always;
-                                }
-                                .rapport-section:last-child {
-                                    page-break-after: auto;
-                                }
-                                .table-container {
-                                    page-break-inside: avoid;
-                                }
-                                table {
-                                    page-break-inside: avoid;
-                                }
-                                tr {
-                                    page-break-inside: avoid;
-                                    page-break-after: auto;
-                                }
-                            }
-                        `}</style>
-                        {selectedForPdf.map((rapport, index) => (
-                            <div key={rapport.id} className="rapport-section" style={{ 
-                                pageBreakAfter: index < selectedForPdf.length - 1 ? 'always' : 'auto',
-                                marginBottom: index < selectedForPdf.length - 1 ? '40px' : '0'
-                            }}>
-                                {/* En-tête de séparateur pour les rapports multiples */}
-                                {selectedForPdf.length > 1 && (
-                                    <div style={{
-                                        height: '60px',
-                                        borderBottom: '2px solid #e5e7eb',
-                                        marginBottom: '20px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontSize: '14px',
-                                        fontWeight: 'bold',
-                                        color: '#64748b',
-                                        pageBreakAfter: 'avoid'
-                                    }}>
-                                        {index === 0 ? 'RAPPORT CONSOLIDÉ' : `RAPPORT ${index + 1}`}
-                                    </div>
-                                )}
-                                <div className="table-container">
-                                    <RapportView
-                                        data={[rapport]}
-                                        isPrintMode={true}
-                                        isPdf={isPdfMode}
-                                    />
-                                </div>
-                            </div>
-                        ))}
+                        <RapportView
+                            data={selectedForPdf}
+                            isPrintMode={true}
+                            isPdf={isPdfMode} // Transmission de l'argument ici
+                        />
                     </div>
                 </div>
             )}
