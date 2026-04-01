@@ -152,14 +152,14 @@ export const SupervisionView: React.FC = () => {
         setIsPdfMode(true);
 
         // Utiliser 'validReports' au lieu de 'reports' pour la suite
-        const id = validReports.length === 1 ? (validReports[0].id || "temp") : "consolidation";
+        const id = validReports.length === 1 ? (validReports[0]?.id || "temp") : "consolidation";
         setGeneratingId(id);
         setSelectedForPdf(validReports);
 
         setTimeout(async () => {
             const filename = validReports.length > 1
                 ? "Consolidation_Rapports_Valides.pdf"
-                : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.pdf`;
+                : `Rapport_${validReports[0]?.user?.entite || "Inconnu"}_Valide.pdf`;
 
             await exportToPdf("rapport-a4-container", filename, isLandscape);
 
@@ -299,18 +299,41 @@ export const SupervisionView: React.FC = () => {
                 />
             )}
 
-            {/* 4. ZONE DE RENDU MASQUÉE */}
+            {/* 4. ZONE DE RENDU MASQUÉ */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
                     <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        <RapportView
-                            data={selectedForPdf}
-                            isPrintMode={true}
-                            isPdf={isPdfMode} // Transmission de l'argument ici
-                        />
+                        {selectedForPdf?.map((rapport, index) => (
+                            <div key={rapport.id} style={{ 
+                                pageBreakAfter: index < (selectedForPdf?.length - 1) ? 'always' : 'auto',
+                                marginBottom: index < (selectedForPdf?.length - 1) ? '40px' : '0'
+                            }}>
+                                {/* En-tête de séparateur pour les rapports multiples */}
+                                {selectedForPdf.length > 1 && (
+                                    <div style={{
+                                        height: '60px',
+                                        borderBottom: '2px solid #e5e7eb',
+                                        marginBottom: '20px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        fontSize: '14px',
+                                        fontWeight: 'bold',
+                                        color: '#64748b'
+                                    }}>
+                                        {index === 0 ? 'RAPPORT CONSOLIDÉ' : `RAPPORT ${index + 1}`}
+                                    </div>
+                                )}
+                                <RapportView
+                                    data={[rapport]}
+                                    isPrintMode={true}
+                                    isPdf={isPdfMode}
+                                />
+                            </div>
+                        ))}
                     </div>
                 </div>
             )}
         </div>
     );
-};
+}
