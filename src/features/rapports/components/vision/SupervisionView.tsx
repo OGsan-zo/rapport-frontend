@@ -152,14 +152,14 @@ export const SupervisionView: React.FC = () => {
         setIsPdfMode(true);
 
         // Utiliser 'validReports' au lieu de 'reports' pour la suite
-        const id = validReports.length === 1 ? (validReports[0]?.id || "temp") : "consolidation";
+        const id = validReports.length === 1 ? (validReports[0].id || "temp") : "consolidation";
         setGeneratingId(id);
         setSelectedForPdf(validReports);
 
         setTimeout(async () => {
             const filename = validReports.length > 1
                 ? "Consolidation_Rapports_Valides.pdf"
-                : `Rapport_${validReports[0]?.user?.entite || "Inconnu"}_Valide.pdf`;
+                : `Rapport_${validReports[0].user?.entite || "Inconnu"}_Valide.pdf`;
 
             await exportToPdf("rapport-a4-container", filename, isLandscape);
 
@@ -299,14 +299,35 @@ export const SupervisionView: React.FC = () => {
                 />
             )}
 
-            {/* 4. ZONE DE RENDU MASQUÉ */}
+            {/* 4. ZONE DE RENDU MASQUÉE */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
                     <div id="rapport-a4-container" style={{ width: "210mm" }}>
-                        {selectedForPdf?.map((rapport, index) => (
-                            <div key={rapport.id} style={{ 
-                                pageBreakAfter: index < (selectedForPdf?.length - 1) ? 'always' : 'auto',
-                                marginBottom: index < (selectedForPdf?.length - 1) ? '40px' : '0'
+                        <style jsx>{`
+                            @media print {
+                                .rapport-section {
+                                    page-break-inside: avoid;
+                                    page-break-after: always;
+                                }
+                                .rapport-section:last-child {
+                                    page-break-after: auto;
+                                }
+                                .table-container {
+                                    page-break-inside: avoid;
+                                }
+                                table {
+                                    page-break-inside: avoid;
+                                }
+                                tr {
+                                    page-break-inside: avoid;
+                                    page-break-after: auto;
+                                }
+                            }
+                        `}</style>
+                        {selectedForPdf.map((rapport, index) => (
+                            <div key={rapport.id} className="rapport-section" style={{ 
+                                pageBreakAfter: index < selectedForPdf.length - 1 ? 'always' : 'auto',
+                                marginBottom: index < selectedForPdf.length - 1 ? '40px' : '0'
                             }}>
                                 {/* En-tête de séparateur pour les rapports multiples */}
                                 {selectedForPdf.length > 1 && (
@@ -319,16 +340,19 @@ export const SupervisionView: React.FC = () => {
                                         justifyContent: 'center',
                                         fontSize: '14px',
                                         fontWeight: 'bold',
-                                        color: '#64748b'
+                                        color: '#64748b',
+                                        pageBreakAfter: 'avoid'
                                     }}>
                                         {index === 0 ? 'RAPPORT CONSOLIDÉ' : `RAPPORT ${index + 1}`}
                                     </div>
                                 )}
-                                <RapportView
-                                    data={[rapport]}
-                                    isPrintMode={true}
-                                    isPdf={isPdfMode}
-                                />
+                                <div className="table-container">
+                                    <RapportView
+                                        data={[rapport]}
+                                        isPrintMode={true}
+                                        isPdf={isPdfMode}
+                                    />
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -336,4 +360,4 @@ export const SupervisionView: React.FC = () => {
             )}
         </div>
     );
-}
+};
