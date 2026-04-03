@@ -28,7 +28,7 @@ export const authService = {
         return data.user as User;
     },
     login: async (credentials: LoginRequest): Promise<AuthResponse> => {
-        const response = await fetch(`${API_URL}/login`, {
+        const response = await fetch(`/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials),
@@ -45,7 +45,7 @@ export const authService = {
     },
 
     logout: async (): Promise<void> => {
-        await fetch(`${API_URL}/logout`, { method: 'POST' });
+        await fetch(`/api/auth/logout`, { method: 'POST' });
         await new Promise((resolve) => setTimeout(resolve, 300));
     },
 };

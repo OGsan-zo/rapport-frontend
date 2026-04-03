@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     });
 
     const data = backendResponse.data.data; // token et infos utilisateur
-
+    
     
 
     // Création de la réponse côté Next.js
