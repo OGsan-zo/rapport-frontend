@@ -37,11 +37,11 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   }, []);
 
   useEffect(() => {
-    // Ne charger les listes OS/LI que si mode trimestriel
-    if (isTrim) {
+    // Ne charger les listes OS/LI qu'une seule fois si mode trimestriel
+    if (isTrim && objectifSpecifiques.length === 0 && logiqueInterventions.length === 0) {
       fetchItems();
     }
-  }, [fetchItems, isTrim]);
+  }, [fetchItems, isTrim, objectifSpecifiques.length, logiqueInterventions.length]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
   

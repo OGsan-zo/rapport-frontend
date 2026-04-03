@@ -42,7 +42,7 @@ export const ConsolidationForm = () => {
   });
   const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
   const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
   const calendrierResult = usePeriodes(true);
   const watchedValues = watch();
@@ -125,8 +125,11 @@ export const ConsolidationForm = () => {
       }, []);
   
       useEffect(() => {
-          fetchItems();
-      }, [fetchItems]);
+          // Ne charger les listes OS/LI qu'une seule fois si mode trimestriel
+          if (isTrimestriel && objectifSpecifiques.length === 0 && logiqueInterventions.length === 0) {
+            fetchItems();
+          }
+        }, [fetchItems, isTrimestriel, objectifSpecifiques.length, logiqueInterventions.length]);
 
   const onInvalid = (errors: any) => {
     const champsManquants = Object.keys(errors).join(", ");
