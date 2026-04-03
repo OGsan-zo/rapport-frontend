@@ -73,7 +73,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   // sinon les selects n'ont pas encore leurs options et la valeur par défaut ne s'applique pas.
   useEffect(() => {
     if (!rapport?.activites) return;
-    if (isTrimestriel && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
+    if (isTrim && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
 
     const formattedData = rapport.activites.map((act) => ({
       titre: act.activite.name,
@@ -87,7 +87,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       observations: act.observations?.length ? act.observations.map(o => ({ value: o.name })) : [{ value: "" }]
     }));
     reset({ lignes: formattedData });
-  }, [rapport, reset, isTrimestriel, objectifSpecifiques, logiqueInterventions]);
+  }, [rapport, reset, isTrim, objectifSpecifiques, logiqueInterventions]);
 
   // LOGIQUE DE SOUMISSION
   const onSubmit = async (data: any) => {
