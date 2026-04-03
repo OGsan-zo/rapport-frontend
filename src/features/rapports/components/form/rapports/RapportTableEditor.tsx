@@ -21,6 +21,8 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
   const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
 
+  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id;
+  const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
   const fetchItems = useCallback(async () => {
     try {
       const [OS, LI] = await Promise.all([
@@ -35,12 +37,14 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   }, []);
 
   useEffect(() => {
-    fetchItems();
-  }, [fetchItems]);
+    // Ne charger les listes OS/LI que si mode trimestriel
+    if (isTrim) {
+      fetchItems();
+    }
+  }, [fetchItems, isTrim]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
-  const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id;
-  const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
+  
   // 2. DÉFINITION DE LA LIGNE PAR DÉFAUT SELON LE TYPE
   const defaultLine = isTrim
     ? {
