@@ -73,7 +73,17 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   // sinon les selects n'ont pas encore leurs options et la valeur par défaut ne s'applique pas.
   useEffect(() => {
     if (!rapport?.activites) return;
-    if (isTrimestriel && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
+    
+    // Pour le mode trimestriel, attendre que les listes soient chargées
+    if (isTrimestriel) {
+      if (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0) {
+        console.log(" [RapportTableEditor] Attente du chargement des listes OS/LI...");
+        return;
+      }
+      console.log(" [RapportTableEditor] Listes OS/LI chargées, reset du formulaire");
+    } else {
+      console.log(" [RapportTableEditor] Mode non trimestriel, reset direct du formulaire");
+    }
 
     const formattedData = rapport.activites.map((act) => ({
       titre: act.activite.name,
@@ -86,6 +96,13 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       taux: act.taux?.length ? act.taux.map(t => ({ value: t.name })) : [{ value: "" }],
       observations: act.observations?.length ? act.observations.map(o => ({ value: o.name })) : [{ value: "" }]
     }));
+    
+    console.log(" [RapportTableEditor] Données formatées pour reset:", {
+      isTrimestriel,
+      nbLignes: formattedData.length,
+      premiereLigne: formattedData[0]
+    });
+    
     reset({ lignes: formattedData });
   }, [rapport, reset, isTrimestriel, objectifSpecifiques, logiqueInterventions]);
 
