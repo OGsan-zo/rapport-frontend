@@ -3,8 +3,7 @@ import html2canvas from "html2canvas";
 
 export const pdfService = {
     /**
-     * Génère un PDF à partir d'un élément HTML avec une hauteur dynamique 
-     * qui s'adapte parfaitement au contenu.
+     * Génère un PDF à partir d'un élément HTML avec support multi-pages.
      */
     async generatePdfBlob(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
         // Configuration de la capture pour une netteté maximale
@@ -22,37 +21,68 @@ export const pdfService = {
             throw new Error("Format d'image non supporté (PNG attendu)");
         }
 
-        // On garde la largeur standard A4 pour la lisibilité (portrait = 210, paysage = 297)
+        // Dimensions A4 : portrait = 210×297, paysage = 297×210
         const pdfWidth = isLandscape ? 297 : 210;
+        const pdfHeight = isLandscape ? 210 : 297;
 
-        // Calcul dynamique de la HAUTEUR du PDF selon le ratio de l'image
+        // Calcul du ratio pour l'image
         const canvasWidth = canvas.width;
         const canvasHeight = canvas.height;
-        const pdfHeight = (canvasHeight * pdfWidth) / canvasWidth;
+        const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
 
-        // Création du PDF avec des dimensions personnalisées [largeur, hauteur]
+        // Calcul dynamique de la marge selon la taille du contenu
+        const dynamicMargin = Math.min(imgHeightInPdf * 0.05, 20); // 5% du contenu max 20mm
+        const footerSpace = 10; // Espace fixe pour le footer
+        const singlePageThreshold = pdfHeight - dynamicMargin - footerSpace;
+        const fitsOnSinglePage = imgHeightInPdf <= singlePageThreshold;
+
         const pdf = new jsPDF({
             orientation: isLandscape ? "landscape" : "portrait",
             unit: "mm",
-            format: [pdfWidth, pdfHeight], // <-- C'est ici que la magie opère
+            format: "a4",
             putOnlyUsedFonts: true,
         });
 
-        // Ajout de l'image qui remplira exactement l'unique page générée
+        let heightLeft = imgHeightInPdf;
+        let position = 0;
+        const footerHeight = 10; // Espace pour le copyright
+        const year = new Date().getFullYear();
+        const footerText = ``;
+
+        // Ajout de la première page
         pdf.addImage(
             imgData,
             "PNG",
             0,
-            0,
-            pdfWidth,
-            pdfHeight,
+            Number(position) || 0,
+            Number(pdfWidth) || 0,
+            Number(imgHeightInPdf) || 0,
             undefined,
             "FAST"
         );
-
-        // Ajout du footer en bas de cette page dynamique
-        const footerText = ``;
         this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
+
+        heightLeft -= pdfHeight;
+
+        // Pages supplémentaires si nécessaire (boucle pour toutes les pages)
+        // Marge dynamique pour éviter les pages presque vides
+        const minContentHeight = Math.max(pdfHeight * 0.1, 15); // 10% de la page min 15mm
+        while (!fitsOnSinglePage && heightLeft > minContentHeight) {
+            position = heightLeft - imgHeightInPdf;
+            pdf.addPage();
+            pdf.addImage(
+                imgData,
+                "PNG",
+                0,
+                Number(position) || 0,
+                Number(pdfWidth) || 0,
+                Number(imgHeightInPdf) || 0,
+                undefined,
+                "FAST"
+            );
+            this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
+            heightLeft -= pdfHeight;
+        }
 
         // Définir le titre du document pour les navigateurs
         pdf.setProperties({
@@ -68,10 +98,8 @@ export const pdfService = {
      * Ajoute le pied de page copyright sur une page PDF.
      */
     addFooter(pdf: jsPDF, text: string, width: number, height: number) {
-        if (!text) return; // Évite d'ajouter du texte vide inutilement
         pdf.setFontSize(8);
         pdf.setTextColor(100);
-        // Positionne le texte à 7mm du bas de la page, quelle que soit sa hauteur
         pdf.text(text, width / 2, height - 7, { align: "center" });
     }
 };
