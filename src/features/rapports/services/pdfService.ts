@@ -3,8 +3,8 @@ export const pdfService = {
         const html2pdf = (await import("html2pdf.js")).default;
 
         // On définit une largeur de travail fixe pour que le rendu soit prévisible
-        // A4 Portrait ~ 800px | A4 Paysage ~ 1130px
-        const workerWidth = isLandscape ? 1000 : 800;
+        // A4 Portrait ~ 800px | A4 Paysage ~ 1200px (plus large pour remplir la page)
+        const workerWidth = isLandscape ? 1200 : 800;
 
         const opt = {
             margin: isLandscape ? 5 : 10,
