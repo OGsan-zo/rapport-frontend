@@ -21,7 +21,8 @@ export const pdfService = {
                 unit: 'mm', 
                 format: 'a4', 
                 orientation: isLandscape ? 'landscape' : 'portrait',
-                compress: true 
+                compress: true,
+                align: 'center' // Centrer tout le contenu
             },
             pagebreak: { mode: ['css', 'legacy'] } 
         } as const;
