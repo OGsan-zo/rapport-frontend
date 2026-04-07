@@ -7,24 +7,23 @@ export const pdfService = {
         const workerWidth = isLandscape ? 800 : 800;
 
         const opt = {
-            margin: [10, 10] as [number, number],// Marges [haut/bas, gauche/droite]
+            margin: isLandscape ? 5 : 10,
             filename: filename,
-            image: { type: 'jpeg', quality: 0.98 }, // JPEG est souvent mieux pour les grands tableaux
+            image: { type: 'png', quality: 1 },
             html2canvas: { 
                 scale: 2, 
                 useCORS: true, 
                 backgroundColor: "#ffffff",
-                windowWidth: workerWidth, 
-                // On retire 'width' ici pour laisser le moteur prendre toute la hauteur réelle
+                width: workerWidth, // Capture cette largeur précise
+                windowWidth: workerWidth, // Simule cette largeur de fenêtre
             },
             jsPDF: { 
                 unit: 'mm', 
                 format: 'a4', 
                 orientation: isLandscape ? 'landscape' : 'portrait',
-                compress: true,
+                compress: true
             },
-            // Le mode 'avoid-all' est le plus puissant pour forcer la pagination des tableaux
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] } 
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         } as const;
 
         return await html2pdf().set(opt).from(element).output('blob');
