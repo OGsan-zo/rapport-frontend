@@ -30,8 +30,10 @@ export const pdfService = {
         const canvasHeight = canvas.height;
         const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
 
-        // Vérifier si le contenu tient sur une seule page (avec marge de sécurité)
-        const singlePageThreshold = pdfHeight - 15; // 15mm de marge pour le footer
+        // Calcul dynamique de la marge selon la taille du contenu
+        const dynamicMargin = Math.min(imgHeightInPdf * 0.05, 20); // 5% du contenu max 20mm
+        const footerSpace = 10; // Espace fixe pour le footer
+        const singlePageThreshold = pdfHeight - dynamicMargin - footerSpace;
         const fitsOnSinglePage = imgHeightInPdf <= singlePageThreshold;
 
         const pdf = new jsPDF({
@@ -63,7 +65,9 @@ export const pdfService = {
         heightLeft -= pdfHeight;
 
         // Pages supplémentaires si nécessaire (boucle pour toutes les pages)
-        while (!fitsOnSinglePage && heightLeft > 5) { // Ajouter une marge de 5mm pour éviter les pages presque vides
+        // Marge dynamique pour éviter les pages presque vides
+        const minContentHeight = Math.max(pdfHeight * 0.1, 15); // 10% de la page min 15mm
+        while (!fitsOnSinglePage && heightLeft > minContentHeight) {
             position = heightLeft - imgHeightInPdf;
             pdf.addPage();
             pdf.addImage(
