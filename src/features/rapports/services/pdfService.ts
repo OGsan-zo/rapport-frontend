@@ -21,10 +21,9 @@ export const pdfService = {
                 unit: 'mm', 
                 format: 'a4', 
                 orientation: isLandscape ? 'landscape' : 'portrait',
-                compress: true,
-                align: 'center' // Centrer tout le contenu
+                compress: true
             },
-            pagebreak: { mode: ['css', 'legacy'] } 
+            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
         } as const;
 
         return await html2pdf().set(opt).from(element).output('blob');
