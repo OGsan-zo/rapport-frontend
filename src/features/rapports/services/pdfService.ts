@@ -1,41 +1,29 @@
-/**
- * Service pour la génération de PDF.
- * Note : L'import est dynamique pour éviter les erreurs de SSR (Server Side Rendering) dans Next.js.
- */
 export const pdfService = {
-    /**
-     * Génère un PDF à partir d'un élément HTML avec support multi-pages intelligent.
-     */
     async generatePdfBlob(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
         
-        // 1. Import dynamique pour éviter l'erreur "self is not defined" au build Next.js
         const html2pdf = (await import("html2pdf.js")).default;
 
-        // 2. Configuration avec "as const" pour satisfaire le typage strict de TypeScript
         const opt = {
-            margin: isLandscape ? 5 : 10, // Marge réduite en paysage pour plus d'espace
+            margin: isLandscape ? 5 : 10,
             filename: filename,
             image: { type: 'png', quality: 1 },
             html2canvas: { 
-                scale: 2.5, 
+                scale: 2, // 2.5 peut parfois être trop lourd, 2 suffit souvent pour une bonne qualité
                 useCORS: true, 
                 logging: false,
                 backgroundColor: "#ffffff",
-                width: isLandscape ? 1200 : 800, // Largeur explicite pour éviter la coupure
-                height: isLandscape ? 850 : 1200 // Hauteur explicite
+                // SUPPRIMER width et height ici pour laisser l'auto-calcul fonctionner
             },
             jsPDF: { 
                 unit: 'mm', 
                 format: 'a4', 
                 orientation: isLandscape ? 'landscape' : 'portrait',
-                compress: true // Compression pour réduire la taille
+                compress: true 
             },
-            // Support du CSS "page-break-inside: avoid"
+            // Mode 'avoid-all' ou 'css' pour une meilleure gestion des coupures
             pagebreak: { mode: ['css', 'legacy'] } 
         } as const;
 
-        // 3. Exécution et retour du Blob
-        // On utilise "await" car les méthodes de html2pdf retournent des Promises
         const pdfBlob = await html2pdf()
             .set(opt)
             .from(element)
