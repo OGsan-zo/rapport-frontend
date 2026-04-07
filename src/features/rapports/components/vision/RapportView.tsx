@@ -21,7 +21,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
 }) => {
     if (!data || data.length === 0) return null;
 
-    const pageWidth = isLandscape ? "1400px" : "800px"; // Largeur maximale en paysage
+    const pageWidth = isLandscape ? "297mm" : "210mm";
     const pageHeight = isLandscape ? "210mm" : "297mm";
 
     // Appliquer un scale pour le mode paysage afin d'éviter les pages multiples
@@ -41,14 +41,14 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 style={{
                     width: pageWidth,
                     minHeight: pageHeight,
-                    padding: isLandscape ? "6mm 3mm" : "15mm 12mm", // Marges très réduites en paysage
+                    padding: "15mm 12mm",
                     boxSizing: "border-box",
                     color: "#000000",
                     position: "relative",
                     display: "flex",
                     flexDirection: "column",
-                    overflow: "visible",
-                    gap: isLandscape ? "30px" : "40px",
+                    gap: "40px",
+                    // Use standard shadow to avoid modern color function issues
                     boxShadow: isPrintMode ? "none" : "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                     border: isPrintMode ? "none" : "1px solid #e2e8f0"
                 }}

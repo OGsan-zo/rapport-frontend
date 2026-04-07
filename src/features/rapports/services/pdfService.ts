@@ -4,10 +4,10 @@ export const pdfService = {
 
         // On définit une largeur de travail fixe pour que le rendu soit prévisible
         // A4 Portrait ~ 800px | A4 Paysage ~ 1400px (largeur maximale pour remplir la page)
-        const workerWidth = isLandscape ? 1600 : 800;
+        const workerWidth = isLandscape ? 800 : 800;
 
         const opt = {
-            margin: isLandscape ? 3 : 10, // Marges très réduites en paysage pour plus d'espace
+            margin: isLandscape ? 5 : 10,
             filename: filename,
             image: { type: 'png', quality: 1 },
             html2canvas: { 
