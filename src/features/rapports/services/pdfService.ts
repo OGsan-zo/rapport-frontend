@@ -6,35 +6,25 @@ export const pdfService = {
      * Génère un PDF à partir d'un élément HTML avec support multi-pages.
      */
     async generatePdfBlob(element: HTMLElement, filename: string, isLandscape: boolean = false): Promise<Blob> {
-        // Configuration de la capture pour une netteté maximale
-        const canvas = await html2canvas(element, {
-            scale: 2.5, // Équilibre entre netteté et poids du fichier
-            useCORS: true,
-            logging: false,
-            backgroundColor: "#ffffff",
-        });
-
-        const imgData = canvas.toDataURL("image/png");
-
-        // --- VALIDATION SIGNATURE (Anti-Crash) ---
-        if (!imgData.startsWith("data:image/png")) {
-            throw new Error("Format d'image non supporté (PNG attendu)");
+        // Récupérer tous les rapports/sections du tableau
+        const reportSections = element.querySelectorAll('[data-report-section]');
+        const sections: HTMLElement[] = [];
+        
+        if (reportSections.length === 0) {
+            // Fallback : utiliser l'élément complet si pas de sections
+            sections.push(element);
+        } else {
+            // Convertir NodeList en tableau d'HTMLElement
+            reportSections.forEach(section => {
+                if (section instanceof HTMLElement) {
+                    sections.push(section);
+                }
+            });
         }
 
         // Dimensions A4 : portrait = 210×297, paysage = 297×210
         const pdfWidth = isLandscape ? 297 : 210;
         const pdfHeight = isLandscape ? 210 : 297;
-
-        // Calcul du ratio pour l'image
-        const canvasWidth = canvas.width;
-        const canvasHeight = canvas.height;
-        const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
-
-        // Calcul dynamique de la marge selon la taille du contenu
-        const dynamicMargin = Math.min(imgHeightInPdf * 0.05, 20); // 5% du contenu max 20mm
-        const footerSpace = 10; // Espace fixe pour le footer
-        const singlePageThreshold = pdfHeight - dynamicMargin - footerSpace;
-        const fitsOnSinglePage = imgHeightInPdf <= singlePageThreshold;
 
         const pdf = new jsPDF({
             orientation: isLandscape ? "landscape" : "portrait",
@@ -43,48 +33,53 @@ export const pdfService = {
             putOnlyUsedFonts: true,
         });
 
-        let heightLeft = imgHeightInPdf;
-        let position = 0;
-        const footerHeight = 10; // Espace pour le copyright
-        const year = new Date().getFullYear();
-        const footerText = ``;
+        // Traiter chaque section individuellement
+        for (let i = 0; i < sections.length; i++) {
+            const section = sections[i];
+            
+            // Configuration de la capture pour cette section
+            const canvas = await html2canvas(section, {
+                scale: 2.5,
+                useCORS: true,
+                logging: false,
+                backgroundColor: "#ffffff",
+            });
 
-        // Ajout de la première page
-        pdf.addImage(
-            imgData,
-            "PNG",
-            0,
-            Number(position) || 0,
-            Number(pdfWidth) || 0,
-            Number(imgHeightInPdf) || 0,
-            undefined,
-            "FAST"
-        );
-        this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
+            const imgData = canvas.toDataURL("image/png");
 
-        heightLeft -= pdfHeight;
+            // Validation signature
+            if (!imgData.startsWith("data:image/png")) {
+                throw new Error("Format d'image non supporté (PNG attendu)");
+            }
 
-        // Pages supplémentaires si nécessaire (boucle pour toutes les pages)
-        // Marge dynamique pour éviter les pages presque vides
-        const minContentHeight = Math.max(pdfHeight * 0.1, 15); // 10% de la page min 15mm
-        while (!fitsOnSinglePage && heightLeft > minContentHeight) {
-            position = heightLeft - imgHeightInPdf;
-            pdf.addPage();
+            // Calcul du ratio pour cette section
+            const canvasWidth = canvas.width;
+            const canvasHeight = canvas.height;
+            const imgHeightInPdf = (canvasHeight * pdfWidth) / canvasWidth;
+
+            // Ajouter une nouvelle page si ce n'est pas la première section
+            if (i > 0) {
+                pdf.addPage();
+            }
+
+            // Ajouter l'image de la section
             pdf.addImage(
                 imgData,
                 "PNG",
                 0,
-                Number(position) || 0,
-                Number(pdfWidth) || 0,
-                Number(imgHeightInPdf) || 0,
+                10, // Marge en haut
+                pdfWidth - 20, // Largeur avec marges
+                imgHeightInPdf * (pdfWidth - 20) / pdfWidth, // Hauteur proportionnelle
                 undefined,
                 "FAST"
             );
+
+            // Ajouter footer si nécessaire
+            const footerText = ``;
             this.addFooter(pdf, footerText, pdfWidth, pdfHeight);
-            heightLeft -= pdfHeight;
         }
 
-        // Définir le titre du document pour les navigateurs
+        // Définir les propriétés du document
         pdf.setProperties({
             title: filename,
             subject: "Rapport d'Activités",

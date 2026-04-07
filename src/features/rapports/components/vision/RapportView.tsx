@@ -59,7 +59,7 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 {/* 2. Flux de Tableaux (Enchaînement sans saut de page forcé) */}
                 <div className="flex flex-col gap-10">
                     {data.map((rapport, index) => (
-                        <div key={rapport.id || index} className="w-full">
+                        <div key={rapport.id || index} className="w-full" data-report-section>
                             <RapportTable rapport={rapport} isPdf={isPdf} />
                         </div>
                     ))}
