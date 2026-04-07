@@ -41,14 +41,14 @@ export const RapportView: React.FC<RapportViewProps> = ({
                 style={{
                     width: pageWidth,
                     minHeight: pageHeight,
-                    padding: "15mm 12mm",
+                    padding: isLandscape ? "10mm 8mm" : "15mm 12mm",
                     boxSizing: "border-box",
                     color: "#000000",
                     position: "relative",
                     display: "flex",
                     flexDirection: "column",
-                    gap: "40px",
-                    // Use standard shadow to avoid modern color function issues
+                    overflow: "visible",
+                    gap: isLandscape ? "30px" : "40px",
                     boxShadow: isPrintMode ? "none" : "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                     border: isPrintMode ? "none" : "1px solid #e2e8f0"
                 }}

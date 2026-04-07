@@ -13,19 +13,22 @@ export const pdfService = {
 
         // 2. Configuration avec "as const" pour satisfaire le typage strict de TypeScript
         const opt = {
-            margin: 10, // Marge de 10mm
+            margin: isLandscape ? 5 : 10, // Marge réduite en paysage pour plus d'espace
             filename: filename,
             image: { type: 'png', quality: 1 },
             html2canvas: { 
                 scale: 2.5, 
                 useCORS: true, 
                 logging: false,
-                backgroundColor: "#ffffff"
+                backgroundColor: "#ffffff",
+                width: isLandscape ? 1200 : 800, // Largeur explicite pour éviter la coupure
+                height: isLandscape ? 850 : 1200 // Hauteur explicite
             },
             jsPDF: { 
                 unit: 'mm', 
                 format: 'a4', 
-                orientation: isLandscape ? 'landscape' : 'portrait' 
+                orientation: isLandscape ? 'landscape' : 'portrait',
+                compress: true // Compression pour réduire la taille
             },
             // Support du CSS "page-break-inside: avoid"
             pagebreak: { mode: ['css', 'legacy'] } 
