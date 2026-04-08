@@ -117,7 +117,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
 
     return (
         <div className="w-full" style={{ 
-            maxHeight: isTrimestriel && isPdf ? "180px" : "100%", 
+            maxHeight: isTrimestriel && isPdf ? "100%" : "100%", 
             overflow: "hidden" 
         }}>
             <table
