@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-    const requiredFields = ["email", "mdp", "idRole", "adresse", "nom", "prenom"];
+    const requiredFields = ["email", "mdp", "idRole", "entite", "rang"];
     return callApiPost(request, "utilisateurs", requiredFields);
 }
 
@@ -25,6 +25,6 @@ export async function PUT(request: NextRequest) {
         return NextResponse.json({ error: "ID de l'utilisateur requis pour la modification" }, { status: 400 });
     }
 
-    const requiredFields = ["email", "mdp", "idRole", "adresse", "nom", "prenom"];
+    const requiredFields = ["email", "entite", "idRole", "rang"];
     return callApiPut(request, `utilisateurs/${id}`, requiredFields);
 }
