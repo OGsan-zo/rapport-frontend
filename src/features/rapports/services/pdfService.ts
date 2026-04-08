@@ -23,19 +23,26 @@ export const pdfService = {
         return new Promise((resolve, reject) => {
             doc.html(element, {
                 callback: (doc) => {
+                    // Supprimer la dernière page si elle est vide ou presque vide
+                    const pageCount = doc.getNumberOfPages();
+                    if (pageCount > 1) {
+                        // Vérifier si la dernière page a peu de contenu
+                        doc.setPage(pageCount);
+                        // Supprimer la dernière page
+                        doc.deletePage(pageCount);
+                    }
                     resolve(doc.output('blob'));
                 },
                 x: margin,
                 y: margin,
-                width: contentWidth, // Cible la largeur du document PDF
-                windowWidth: 800,    // Largeur du "viewport" pour le calcul du responsive
+                width: contentWidth,
+                windowWidth: isLandscape ? 1400 : 800,
                 html2canvas: {
-                    scale: 0.2645,   // Conversion précise px vers mm (environ)
+                    scale: 0.2645,
                     useCORS: true,
                     logging: false,
                     backgroundColor: "#ffffff",
                 },
-                autoPaging: 'text',  // Évite de couper les lignes de texte au milieu
             });
         });
     }
