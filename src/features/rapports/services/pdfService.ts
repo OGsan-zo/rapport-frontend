@@ -27,9 +27,22 @@ export const pdfService = {
             doc.html(element, {
                 callback: (doc) => {
                     const pageCount = doc.getNumberOfPages();
-                    if (pageCount > 1) {
+                    
+                    // 1. Calculer la hauteur d'une page A4 utile (en mm)
+                    const pageHeight = isLandscape ? 210 : 297;
+                    
+                    // 2. Calculer la hauteur réelle du contenu convertie en mm
+                    // Formule : (Pixels de l'élément * Largeur PDF) / Largeur virtuelle
+                    const contentHeightMm = (element.offsetHeight * contentWidth) / virtualWidth;
+
+                    // 3. Si la hauteur totale du contenu est inférieure à l'espace des pages précédentes
+                    // on supprime la dernière page (on ajoute une marge de sécurité de 5mm)
+                    const totalAvailableHeightBeforeLastPage = (pageCount - 1) * (pageHeight - margin);
+                    
+                    if (pageCount > 1 && contentHeightMm <= totalAvailableHeightBeforeLastPage) {
                         doc.deletePage(pageCount);
                     }
+
                     resolve(doc.output('blob'));
                 },
                 x: margin,

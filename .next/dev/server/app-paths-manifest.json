@@ -1,6 +1,0 @@
-{
-  "/api/auth/me/route": "app/api/auth/me/route.js",
-  "/api/calendriers/supervision/route": "app/api/calendriers/supervision/route.js",
-  "/api/type-calendriers/route": "app/api/type-calendriers/route.js",
-  "/supervision/page": "app/supervision/page.js"
-}
