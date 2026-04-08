@@ -79,7 +79,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                 <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
                     {items.map((item: BaseNom, i: number) => (
                         <li key={i} style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
-                            {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
+                            {isPdf && !isTrimestriel && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
                             <span style={{ textAlign: "justify", color: "#000000" }}>{item.name}</span>
                         </li>
                     ))}
@@ -103,9 +103,9 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                 <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
                     {items.map((item: BaseNom, i: number) => (
                         <li key={i} style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
-                            {isPdf && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
+                            {isPdf && !isTrimestriel && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
                             <span style={{ textAlign: "justify", color: "#000000" }}>{item.name}</span>
-                            {i === items.length - 1 && <span style={{ color: "#000000", fontWeight: "bold" }}> %</span>}
+                            {i === items.length - 1 && !isNaN(parseFloat(item.name)) && <span style={{ color: "#000000", fontWeight: "bold" }}> %</span>}
                         </li>
                     ))}
                 </ul>

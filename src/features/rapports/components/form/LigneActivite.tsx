@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, Control, UseFormRegister, useWatch, useFormContext, UseFormSetValue } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
@@ -52,15 +52,33 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   // Surveiller la sélection de l'objectif spécifique pour remplir automatiquement les autres champs
   const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
 
+  const [isHorsPta, setIsHorsPta] = useState(true);
   useEffect(() => {
+    setIsHorsPta(true);
     if (isTrimestriel && objectifSpecifiqueWatch) {
       const selectedObj = objectifSpecifiques.find(obj => obj.name === objectifSpecifiqueWatch);
+      let horsPta = true;
+      if (selectedObj?.activitePta) {
+        console.log('activitePta', selectedObj.activitePta);
+        horsPta = false;
+        setIsHorsPta(false);
+      }
+      
       if (selectedObj) {
         // Remplir automatiquement les champs avec les valeurs de l'objectif spécifique
         setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
         setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
         setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
         setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
+        
+        
+      }
+      if (horsPta) {
+        console.log('isHorsPta', isHorsPta);
+          setValue(`lignes.${index}.cibles.0.value`, 'hors pta');  
+          setValue(`lignes.${index}.previsions.0.value`, 'hors pta');
+          setValue(`lignes.${index}.realisations.0.value`, 'hors pta');
+          setValue(`lignes.${index}.taux.0.value`, 'hors pta');
       }
     }
   }, [objectifSpecifiqueWatch, objectifSpecifiques, isTrimestriel, setValue, index]);
@@ -85,13 +103,14 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   };
   useEffect(() => {
     tauxFields.forEach((_, i) => {
-      const resultatCalcul = calculerTaux(i);
-      
-      // On force la mise à jour INTERNE du formulaire
-      // C'est ce qui permet de récupérer la valeur au submit !
-      setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
+      if (isHorsPta) {
+        setValue(`lignes.${index}.taux.${i}.value`, 'hors pta');
+      } else {
+        const resultatCalcul = calculerTaux(i);
+        setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
+      }
     });
-  }, [previsionsWatch, realisationsWatch, setValue]);
+  }, [previsionsWatch, realisationsWatch, setValue, isHorsPta, tauxFields, index]);
 
 
   // const gridLayout = isTrimestriel
@@ -147,8 +166,9 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div key={field.id} className={itemBoxClass}>
             <textarea
                 {...register(`lignes.${index}.effects.${i}.value` as any)}
-                className={textAreaClass}
+                className={`${textAreaClass} ${isTrimestriel ? 'pointer-events-none bg-slate-50' : ''}`}
                 placeholder={isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`}
+                readOnly={isTrimestriel}
               />
             
             {effectsFields.length > 1 && (
@@ -169,7 +189,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       <div className={colContainerClass}>
         {impactsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`} />
+            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`} readOnly={!isHorsPta} />
             {impactsFields.length > 1 && (
               <button type="button" onClick={() => removeImpact(i)} className={closeBtnClass}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -192,7 +212,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={inputClass} placeholder={`Produit`} required />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value` as any)} className={inputClass} placeholder={`Produit`} required readOnly={!isHorsPta} />
                 {produitsFields.length > 1 && (
                   <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -207,7 +227,14 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={inputClass} placeholder={`0`} min="1" />
+                <input 
+                  key={`cible-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"} 
+                  {...register(`lignes.${index}.cibles.${i}.value` as any)} 
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder={`0`} 
+                  readOnly={isHorsPta}
+                />
                 {ciblesFields.length > 1 && (
                   <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -223,10 +250,12 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
                 <input 
-                  type="number"
+                  key={`prev-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"}
                   {...register(`lignes.${index}.previsions.${i}.value` as any)} 
-                  className={inputClass} 
-                  placeholder="0" 
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder="0"
+                  readOnly={isHorsPta}
                 />
               </div>
             ))}
@@ -237,10 +266,12 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
                 <input 
-                  type="number"
+                  key={`real-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"}
                   {...register(`lignes.${index}.realisations.${i}.value` as any)} 
-                  className={inputClass} 
-                  placeholder="0" 
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder="0"
+                  readOnly={isHorsPta}
                 />
               </div>
             ))}
@@ -253,31 +284,17 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
               return (
                 <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100`}>
                   <input 
-                    type="text" // On utilise text car c'est une valeur calculée affichée
+                    type="text"
                     {...register(`lignes.${index}.taux.${i}.value` as any)}
-                    value={valeurTaux}
-                    // readOnly
-                    className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`} 
+                    value={isHorsPta ? 'hors pta' : valeurTaux}
+                    readOnly={true}
+                    className={`${textAreaClass} font-bold ${isHorsPta ? 'text-slate-400' : 'text-blue-600'} pointer-events-none`} 
                   />
                   <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
                 </div>
               );
             })}
           </div>
-          {/* <div className={colContainerClass}>
-            {tauxFields.map((field, i) => (
-              <div key={field.id} className={itemBoxClass}>
-                <textarea {...register(`lignes.${index}.taux.${i}.value` as any)} className={textAreaClass} placeholder={`Taux ${i + 1}...`} />
-                {tauxFields.length > 1 && (
-                  <button type="button" onClick={() => removeTaux(i)} className={closeBtnClass}>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                  </button>
-                )}
-              </div>
-            ))} */}
-            {/* <button type="button" onClick={() => appendTaux({ value: "" })} className={addBtnClass}>+ taux</button> */}
-          {/* </div> */}
-
 
           {/* 9. Observations */}
           <div className={colContainerClass}>

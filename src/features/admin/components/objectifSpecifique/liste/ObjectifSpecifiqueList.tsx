@@ -11,6 +11,7 @@ interface ObjectifSpecifiqueListProps {
 }
 
 export const ObjectifSpecifiqueList = ({ items, isLoading, onEdit, onDelete, onValidate }: ObjectifSpecifiqueListProps) => {
+    console.log(items);
     return (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto overflow-y-auto max-h-[500px]">

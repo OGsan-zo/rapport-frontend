@@ -5,14 +5,14 @@ import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/obj
 interface LigneActiviteProps {
   control: any;
   register: any;
-   setValue: UseFormSetValue<any>;    
+  setValue: UseFormSetValue<any>;
   index: number;
   remove: (index: number) => void;
   canRemove: boolean;
   isTrimestriel?: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
   gridLayout: string;
-
+  isSupervision?: boolean;
 }
 
 export const LigneActiviteEditor = ({
@@ -24,7 +24,8 @@ export const LigneActiviteEditor = ({
   canRemove,
   isTrimestriel = false,
   objectifSpecifiques = [],
-  gridLayout
+  gridLayout,
+  isSupervision = false
 }: LigneActiviteProps) => {
   
   // --- Hooks pour tous les champs ---
@@ -113,15 +114,24 @@ export const LigneActiviteEditor = ({
       <div className={colContainerClass}>
         <div className={itemBoxClass}>
           {isTrimestriel ? (
-            <select
-              {...register(`lignes.${index}.titre`)}
-              className={`${selectClass} font-bold text-slate-800`}
-            >
-              <option value="">Sélectionner un objectif...</option>
-              {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
-                <option key={obj.id} value={obj.name}>{obj.name}</option>
-              ))}
-            </select>
+            isSupervision ? (
+              <textarea
+                {...register(`lignes.${index}.titre`)}
+                className={`${textAreaClass} font-bold text-slate-800 h-full pointer-events-none bg-slate-50`}
+                placeholder="Objectif spécifique"
+                readOnly
+              />
+            ) : (
+              <select
+                {...register(`lignes.${index}.titre`)}
+                className={`${selectClass} font-bold text-slate-800`}
+              >
+                <option value="">Sélectionner un objectif...</option>
+                {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
+                  <option key={obj.id} value={obj.name}>{obj.name}</option>
+                ))}
+              </select>
+            )
           ) : (
             <textarea
               {...register(`lignes.${index}.titre`)}
@@ -216,7 +226,7 @@ export const LigneActiviteEditor = ({
                 {previsionsFields.length > 1 && <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button>
+            {/* <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button> */}
           </div>
 
           {/* 8. Réalisations */}
@@ -232,7 +242,7 @@ export const LigneActiviteEditor = ({
                 {realisationsFields.length > 1 && <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button>
+            {/* <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button> */}
           </div>
 
           {/* 9. Taux (calculé automatiquement, non modifiable) */}

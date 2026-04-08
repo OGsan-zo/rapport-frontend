@@ -7,15 +7,15 @@ import { LigneActiviteEditor } from "../utils/LigneActiviteEditor";
 import { rapportService } from "@/features/rapports/services/rapportService";
 import { toast } from "react-hot-toast";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
-import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
 
 interface RapportTableEditorProps {
   rapport: ApiRapport;
   onSuccess?: (idPrecedent: number, updatedRapport: ApiRapport) => void;
+  isSupervision?: boolean;
 }
 
-export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess }) => {
+export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess, isSupervision = false }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
  
@@ -190,6 +190,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
                   objectifSpecifiques={objectifSpecifiques}
                   setValue={setValue}
                   gridLayout={gridLayout}
+                  isSupervision={isSupervision}
                 />
               ))}
             </div>

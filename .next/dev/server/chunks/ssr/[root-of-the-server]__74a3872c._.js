@@ -959,7 +959,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hoo
 ;
 ;
 ;
-const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], gridLayout })=>{
+const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], gridLayout, isSupervision = false })=>{
     // --- Hooks pour tous les champs ---
     const { fields: effectsFields, append: appendEffect, remove: removeEffect } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useFieldArray"])({
         control,
@@ -1103,14 +1103,23 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                 children: String(index + 1).padStart(2, '0')
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                lineNumber: 108,
+                lineNumber: 109,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: colContainerClass,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     className: itemBoxClass,
-                    children: isTrimestriel ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                    children: isTrimestriel ? isSupervision ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                        ...register(`lignes.${index}.titre`),
+                        className: `${textAreaClass} font-bold text-slate-800 h-full pointer-events-none bg-slate-50`,
+                        placeholder: "Objectif spécifique",
+                        readOnly: true
+                    }, void 0, false, {
+                        fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
+                        lineNumber: 118,
+                        columnNumber: 15
+                    }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
                         ...register(`lignes.${index}.titre`),
                         className: `${selectClass} font-bold text-slate-800`,
                         children: [
@@ -1119,39 +1128,39 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                 children: "Sélectionner un objectif..."
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                lineNumber: 120,
-                                columnNumber: 15
+                                lineNumber: 129,
+                                columnNumber: 17
                             }, ("TURBOPACK compile-time value", void 0)),
                             objectifSpecifiques.map((obj)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
                                     value: obj.name,
                                     children: obj.name
                                 }, obj.id, false, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 122,
-                                    columnNumber: 17
+                                    lineNumber: 131,
+                                    columnNumber: 19
                                 }, ("TURBOPACK compile-time value", void 0)))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 116,
-                        columnNumber: 13
+                        lineNumber: 125,
+                        columnNumber: 15
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                         ...register(`lignes.${index}.titre`),
                         className: `${textAreaClass} font-bold text-slate-800 h-full`,
                         placeholder: "Nom de l'activité..."
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 126,
+                        lineNumber: 136,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                    lineNumber: 114,
+                    lineNumber: 115,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                lineNumber: 113,
+                lineNumber: 114,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1166,7 +1175,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                     placeholder: isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 139,
+                                    lineNumber: 149,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 effectsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1176,13 +1185,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                     children: "✕"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 145,
+                                    lineNumber: 155,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, field.id, true, {
                             fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                            lineNumber: 138,
+                            lineNumber: 148,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))),
                     !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1194,13 +1203,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                         children: "+ effet"
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 150,
+                        lineNumber: 160,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                lineNumber: 136,
+                lineNumber: 146,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1215,7 +1224,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                     placeholder: isTrimestriel ? `Activité PTA ${i + 1}...` : `Impact ${i + 1}...`
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 160,
+                                    lineNumber: 170,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 impactsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1225,13 +1234,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                     children: "✕"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 166,
+                                    lineNumber: 176,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, field.id, true, {
                             fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                            lineNumber: 159,
+                            lineNumber: 169,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))),
                     !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1243,13 +1252,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                         children: "+ impact"
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 175,
+                        lineNumber: 185,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                lineNumber: 157,
+                lineNumber: 167,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -1267,7 +1276,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         required: true
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 188,
+                                        lineNumber: 198,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     produitsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1277,18 +1286,18 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         children: "✕"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 189,
+                                        lineNumber: 199,
                                         columnNumber: 47
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                lineNumber: 187,
+                                lineNumber: 197,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 185,
+                        lineNumber: 195,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1304,7 +1313,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         min: "1"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 199,
+                                        lineNumber: 209,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     ciblesFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1314,118 +1323,90 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         children: "✕"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 200,
+                                        lineNumber: 210,
                                         columnNumber: 45
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                lineNumber: 198,
+                                lineNumber: 208,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 196,
+                        lineNumber: 206,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: colContainerClass,
-                        children: [
-                            previsionsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: itemBoxClass,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                            type: "number",
-                                            ...register(`lignes.${index}.previsions.${i}.value`),
-                                            className: inputClass,
-                                            placeholder: `Prévision ${i + 1}...`
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 210,
-                                            columnNumber: 17
-                                        }, ("TURBOPACK compile-time value", void 0)),
-                                        previsionsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>removePrevision(i),
-                                            className: closeBtnClass,
-                                            children: "✕"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 216,
-                                            columnNumber: 49
-                                        }, ("TURBOPACK compile-time value", void 0))
-                                    ]
-                                }, field.id, true, {
-                                    fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 209,
-                                    columnNumber: 15
-                                }, ("TURBOPACK compile-time value", void 0))),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                type: "button",
-                                onClick: ()=>appendPrevision({
-                                        value: ""
-                                    }),
-                                className: addBtnClass,
-                                children: "+ prévision"
-                            }, void 0, false, {
+                        children: previsionsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: itemBoxClass,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        type: "number",
+                                        ...register(`lignes.${index}.previsions.${i}.value`),
+                                        className: inputClass,
+                                        placeholder: `Prévision ${i + 1}...`
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
+                                        lineNumber: 220,
+                                        columnNumber: 17
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    previsionsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        type: "button",
+                                        onClick: ()=>removePrevision(i),
+                                        className: closeBtnClass,
+                                        children: "✕"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
+                                        lineNumber: 226,
+                                        columnNumber: 49
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
                                 lineNumber: 219,
-                                columnNumber: 13
-                            }, ("TURBOPACK compile-time value", void 0))
-                        ]
-                    }, void 0, true, {
+                                columnNumber: 15
+                            }, ("TURBOPACK compile-time value", void 0)))
+                    }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 207,
+                        lineNumber: 217,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         className: colContainerClass,
-                        children: [
-                            realisationsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: itemBoxClass,
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                            type: "number",
-                                            ...register(`lignes.${index}.realisations.${i}.value`),
-                                            className: inputClass,
-                                            placeholder: `Réalisation ${i + 1}...`
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 226,
-                                            columnNumber: 17
-                                        }, ("TURBOPACK compile-time value", void 0)),
-                                        realisationsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                            type: "button",
-                                            onClick: ()=>removeRealisation(i),
-                                            className: closeBtnClass,
-                                            children: "✕"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 232,
-                                            columnNumber: 51
-                                        }, ("TURBOPACK compile-time value", void 0))
-                                    ]
-                                }, field.id, true, {
-                                    fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 225,
-                                    columnNumber: 15
-                                }, ("TURBOPACK compile-time value", void 0))),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
-                                type: "button",
-                                onClick: ()=>appendRealisation({
-                                        value: ""
-                                    }),
-                                className: addBtnClass,
-                                children: "+ réalisation"
-                            }, void 0, false, {
+                        children: realisationsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: itemBoxClass,
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
+                                        type: "number",
+                                        ...register(`lignes.${index}.realisations.${i}.value`),
+                                        className: inputClass,
+                                        placeholder: `Réalisation ${i + 1}...`
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
+                                        lineNumber: 236,
+                                        columnNumber: 17
+                                    }, ("TURBOPACK compile-time value", void 0)),
+                                    realisationsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                                        type: "button",
+                                        onClick: ()=>removeRealisation(i),
+                                        className: closeBtnClass,
+                                        children: "✕"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
+                                        lineNumber: 242,
+                                        columnNumber: 51
+                                    }, ("TURBOPACK compile-time value", void 0))
+                                ]
+                            }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
                                 lineNumber: 235,
-                                columnNumber: 13
-                            }, ("TURBOPACK compile-time value", void 0))
-                        ]
-                    }, void 0, true, {
+                                columnNumber: 15
+                            }, ("TURBOPACK compile-time value", void 0)))
+                    }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 223,
+                        lineNumber: 233,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1443,7 +1424,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         className: `${textAreaClass} font-bold text-blue-600 pointer-events-none`
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 244,
+                                        lineNumber: 254,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -1451,19 +1432,19 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                         children: "%"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                        lineNumber: 251,
+                                        lineNumber: 261,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                lineNumber: 243,
+                                lineNumber: 253,
                                 columnNumber: 17
                             }, ("TURBOPACK compile-time value", void 0));
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 239,
+                        lineNumber: 249,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1478,7 +1459,7 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                             placeholder: `Observation ${i + 1}...`
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 261,
+                                            lineNumber: 271,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         observationsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1488,13 +1469,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                             children: "✕"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                            lineNumber: 262,
+                                            lineNumber: 272,
                                             columnNumber: 51
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, field.id, true, {
                                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                    lineNumber: 260,
+                                    lineNumber: 270,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1506,13 +1487,13 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                                 children: "+ observation"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                                lineNumber: 265,
+                                lineNumber: 275,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 258,
+                        lineNumber: 268,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
@@ -1536,28 +1517,28 @@ const LigneActiviteEditor = ({ control, register, setValue, index, remove, canRe
                             d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         }, void 0, false, {
                             fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                            lineNumber: 279,
+                            lineNumber: 289,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                        lineNumber: 278,
+                        lineNumber: 288,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                    lineNumber: 272,
+                    lineNumber: 282,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-                lineNumber: 271,
+                lineNumber: 281,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/rapports/components/form/utils/LigneActiviteEditor.tsx",
-        lineNumber: 105,
+        lineNumber: 106,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1594,7 +1575,8 @@ const objectifSpecifiqueService = {
                 li: item.li || "",
                 activitePta: item.activitePta,
                 produit: item.produit,
-                cible: item.cible
+                cible: item.cible,
+                dateValidation: item.dateValidation
             }));
     },
     create: async (data)=>{
@@ -1709,7 +1691,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$admin$2f$
 ;
 ;
 ;
-const RapportTableEditor = ({ rapport, onSuccess })=>{
+const RapportTableEditor = ({ rapport, onSuccess, isSupervision = false })=>{
     const [isSubmitting, setIsSubmitting] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])(false);
     const [objectifSpecifiques, setObjectifSpecifiques] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useState"])([]);
     const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id;
@@ -2010,7 +1992,8 @@ const RapportTableEditor = ({ rapport, onSuccess })=>{
                                         isTrimestriel: isTrim,
                                         objectifSpecifiques: objectifSpecifiques,
                                         setValue: setValue,
-                                        gridLayout: gridLayout
+                                        gridLayout: gridLayout,
+                                        isSupervision: isSupervision
                                     }, field.id, false, {
                                         fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
                                         lineNumber: 182,
@@ -2052,12 +2035,12 @@ const RapportTableEditor = ({ rapport, onSuccess })=>{
                                     children: "+"
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                                    lineNumber: 208,
+                                    lineNumber: 209,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                                lineNumber: 207,
+                                lineNumber: 208,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2065,13 +2048,13 @@ const RapportTableEditor = ({ rapport, onSuccess })=>{
                                 children: "Ajouter une ligne"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                                lineNumber: 210,
+                                lineNumber: 211,
                                 columnNumber: 11
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                        lineNumber: 202,
+                        lineNumber: 203,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2083,18 +2066,18 @@ const RapportTableEditor = ({ rapport, onSuccess })=>{
                             children: isSubmitting ? "Enregistrement..." : "Enregistrer les modifications"
                         }, void 0, false, {
                             fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                            lineNumber: 215,
+                            lineNumber: 216,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                        lineNumber: 214,
+                        lineNumber: 215,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/rapports/RapportTableEditor.tsx",
-                lineNumber: 200,
+                lineNumber: 201,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]

@@ -111,6 +111,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                 <RapportTableEditor
                     rapport={editingRapport}
                     onSuccess={handleUpdateSuccess}
+                    isSupervision={true}
                 />
 
                 <button onClick={() => setEditingRapport(null)} className="text-xs font-black uppercase text-slate-400 hover:text-slate-600">

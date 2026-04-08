@@ -1,197 +1,607 @@
-[00:00:02.246] Server  LOG     ✓ Ready in 1669ms
-[00:00:14.913] Server  LOG       Reload env: .env.local
-[00:01:56.280] Server  LOG     ○ Compiling / ...
-[00:01:59.923] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:11:36.655] Server  LOG     ✓ Compiled in 108ms
-[00:12:03.313] Server  LOG     ✓ Compiled in 106ms
-[00:14:37.374] Server  LOG     ✓ Compiled in 130ms
-[00:15:05.597] Server  LOG     ✓ Compiled in 228ms
-[00:15:55.939] Server  LOG     ✓ Compiled in 176ms
-[00:16:07.653] Server  LOG     ✓ Compiled in 200ms
-[00:17:02.586] Server  LOG     ✓ Compiled in 152ms
-[00:19:00.190] Server  LOG     ✓ Compiled in 154ms
-[00:19:32.191] Server  LOG     ✓ Compiled in 154ms
-[00:19:33.059] Browser ERROR   ./src/features/admin/services/objectifSpecifiqueService.ts:39:32
-Ecmascript file had an error
-  37 |     },
-  38 |
-> 39 |     update: async (id: number, data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
-     |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  40 |         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
-  41 |             method: "PUT",
-  42 |             headers: { "Content-Type": "application/json" },
+[00:00:08.113] Server  LOG     ✓ Ready in 7.6s
+[00:02:55.345] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:04:57.385] Server  LOG     ✓ Compiled in 344ms
+[00:09:56.312] Server  LOG     ✓ Compiled in 47ms
+[00:17:06.986] Server  LOG     ✓ Compiled in 57ms
+[00:17:40.052] Server  LOG     ✓ Compiled in 31ms
+[00:18:47.934] Server  LOG     ✓ Compiled in 65ms
+[00:24:02.502] Server  LOG     ✓ Compiled in 54ms
+[00:26:25.857] Server  LOG     ✓ Compiled in 48ms
+[00:27:30.535] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:28:49.543] Server  LOG     ✓ Compiled in 29ms
+[00:29:49.315] Server  LOG     ✓ Compiled in 66ms
+[00:30:32.285] Server  LOG     ✓ Compiled in 58ms
+[00:32:04.099] Server  LOG     ✓ Compiled in 24ms
+[00:33:04.192] Server  LOG     ✓ Compiled in 56ms
+[00:34:13.547] Server  LOG     ✓ Compiled in 55ms
+[00:35:05.528] Server  LOG     ✓ Compiled in 32ms
+[00:38:38.344] Server  LOG     ✓ Compiled in 33ms
+[00:39:40.547] Server  LOG     ✓ Compiled in 62ms
+[00:40:03.194] Server  LOG     ✓ Compiled in 55ms
+[00:42:37.358] Server  LOG     ✓ Compiled in 69ms
+[00:45:27.660] Server  LOG     ✓ Compiled in 54ms
+[00:48:46.480] Server  LOG     ✓ Compiled in 39ms
+[00:48:58.014] Server  LOG     ✓ Compiled in 24ms
+[00:51:09.115] Server  LOG     ✓ Compiled in 72ms
+[00:51:46.466] Server  LOG     ✓ Compiled in 29ms
+[00:52:52.837] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:56:01.844] Server  LOG     ✓ Compiled in 83ms
+[00:57:10.713] Server  LOG     ✓ Compiled in 46ms
+[01:00:17.026] Server  LOG     ✓ Compiled in 62ms
+[01:00:17.796] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
 
-cannot reassign to a variable declared with `const`
+Previous: %s
+Incoming: %s useEffect [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0] [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0, true]
+[01:00:46.545] Server  LOG     ✓ Compiled in 33ms
+[01:00:46.790] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0, true] [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0]
+[01:00:59.214] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:07:03.571] Server  LOG     ✓ Compiled in 28ms
+[01:07:50.219] Server  LOG     ✓ Compiled in 55ms
+[01:08:33.971] Server  LOG     ✓ Compiled in 47ms
+[01:08:37.180] Server  LOG     ✓ Compiled in 53ms
+[01:10:23.609] Server  LOG     ✓ Compiled in 56ms
+[01:10:37.121] Browser LOG     hors pta
+[01:10:46.021] Browser LOG     hors pta
+[01:11:10.825] Server  LOG     ✓ Compiled in 28ms
+[01:11:45.608] Server  LOG     ✓ Compiled in 33ms
+[01:11:55.214] Browser LOG     activitePta 1bb
+[01:12:23.267] Server  LOG     ✓ Compiled in 58ms
+[01:12:27.765] Browser LOG     activitePta mety
+[01:12:36.777] Browser LOG     activitePta 1bb
+[01:12:36.777] Browser LOG     hors pta
+[01:13:07.822] Browser LOG     hors pta
+[01:13:38.342] Server  LOG     ✓ Compiled in 53ms
+[01:13:43.825] Server  LOG     ✓ Compiled in 53ms
+[01:13:55.728] Server  LOG     ✓ Compiled in 61ms
+[01:15:05.760] Server  LOG     ✓ Compiled in 53ms
+[01:15:40.743] Browser LOG     activitePta 1bb
+[01:16:02.092] Server  LOG     ✓ Compiled in 31ms
+[01:16:06.508] Browser LOG     activitePta 1bb
+[01:16:06.508] Browser LOG     hors pta
+[01:16:38.083] Server  LOG     ✓ Compiled in 58ms
+[01:16:43.451] Browser LOG     hors pta
+[01:16:49.821] Browser LOG     activitePta 1bb
+[01:16:56.515] Browser LOG     hors pta
+[01:17:19.547] Server  LOG     ✓ Compiled in 30ms
+[01:17:51.877] Server  LOG     ✓ Compiled in 64ms
+[01:17:56.328] Browser LOG     activitePta 1bb
+[01:17:56.328] Browser LOG     true
+[01:18:03.045] Browser LOG     activitePta 1bb
+[01:18:03.045] Browser LOG     true
+[01:18:09.478] Server  LOG     ✓ Compiled in 30ms
+[01:18:29.458] Browser LOG     activitePta mety
+[01:18:29.458] Browser LOG     isHorsPta true
+[01:22:33.941] Server  LOG     ✓ Compiled in 53ms
+[01:22:56.325] Server  LOG     ✓ Compiled in 52ms
+[01:23:07.870] Server  LOG     ✓ Compiled in 55ms
+[01:23:16.039] Browser LOG     activitePta mety
+[01:23:16.039] Browser LOG     isHorsPta true
+[01:23:28.250] Server  LOG     ✓ Compiled in 63ms
+[01:24:30.350] Server  LOG     ✓ Compiled in 46ms
+[01:24:33.671] Browser LOG     activitePta 1bb
+[01:24:37.339] Browser LOG     isHorsPta false
+[01:24:51.474] Browser LOG     activitePta 1bb
+[01:24:54.362] Browser LOG     isHorsPta false
+[01:25:17.071] Browser LOG     activitePta 1bb
+[01:25:20.889] Browser LOG     isHorsPta true
+[01:25:30.906] Browser LOG     activitePta 1bb
+[01:25:49.421] Browser LOG     isHorsPta true
+[01:26:08.982] Server  LOG     ✓ Compiled in 66ms
+[01:26:17.853] Browser LOG     activitePta 1bb
+[01:26:21.736] Browser LOG     isHorsPta false
+[01:26:28.041] Browser LOG     isHorsPta true
+[01:27:15.305] Browser LOG     isHorsPta true
+[01:27:20.623] Browser LOG     activitePta 1bb
+[01:27:22.771] Browser LOG     isHorsPta false
+[01:29:53.968] Server  LOG     ✓ Compiled in 25ms
+[01:30:11.521] Browser LOG     activitePta 1bb
+[01:30:26.057] Server  LOG     ✓ Compiled in 22ms
+[01:31:35.031] Server  LOG     ✓ Compiled in 21ms
+[01:31:41.390] Browser LOG     activitePta 1bb
+[01:31:43.121] Browser LOG     isHorsPta false
+[01:32:20.719] Server  LOG     ✓ Compiled in 28ms
+[01:32:27.605] Browser LOG     activitePta 1bb
+[01:32:29.622] Browser LOG     isHorsPta false
+[01:33:59.676] Server  LOG     ✓ Compiled in 19ms
+[01:34:04.489] Browser LOG     activitePta 1bb
+[01:34:07.388] Browser LOG     isHorsPta false
+[01:34:23.684] Server  LOG     ✓ Compiled in 23ms
+[01:34:55.675] Server  LOG     ✓ Compiled in 27ms
+[01:35:07.073] Browser LOG     activitePta 1bb
+[01:35:09.320] Browser LOG     isHorsPta true
+[01:35:16.320] Browser LOG     activitePta 1bb
+[01:35:35.388] Browser LOG     activitePta mety
+[01:36:25.449] Server  LOG     ✓ Compiled in 32ms
+[01:36:39.988] Browser LOG     activitePta 1bb
+[01:36:43.888] Browser LOG     isHorsPta true
+[01:37:10.667] Server  LOG     ✓ Compiled in 28ms
+[01:37:16.820] Browser LOG     activitePta 1bb
+[01:37:26.105] Browser LOG     isHorsPta true
+[01:37:33.605] Browser LOG     activitePta 1bb
+[01:38:00.242] Server  LOG     ✓ Compiled in 27ms
+[01:38:13.406] Browser LOG     isHorsPta true
+[01:38:22.071] Browser LOG     activitePta 1bb
+[01:38:28.705] Browser LOG     activitePta mety
+[01:38:55.380] Server  LOG     ✓ Compiled in 25ms
+[01:39:01.854] Browser LOG     isHorsPta true
+[01:39:07.686] Browser LOG     activitePta mety
+[01:39:14.344] Server  LOG     ✓ Compiled in 37ms
+[01:39:26.236] Browser LOG     isHorsPta true
+[01:39:50.553] Server  LOG     ✓ Compiled in 35ms
+[01:40:09.121] Browser LOG     activitePta 1bb
+[01:40:15.804] Browser LOG     isHorsPta true
+[01:40:47.377] Server  LOG     ✓ Compiled in 50ms
+[01:40:54.888] Browser LOG     activitePta 1bb
+[01:41:01.836] Server  LOG     ✓ Compiled in 24ms
+[01:41:23.853] Server  LOG     ✓ Compiled in 23ms
+[01:41:32.071] Browser LOG     isHorsPta true
+[01:41:37.486] Browser LOG     activitePta 1bb
+[01:41:48.136] Browser LOG     isHorsPta false
+[01:41:52.654] Browser LOG     activitePta 1bb
+[01:41:58.404] Browser LOG     isHorsPta false
+[01:43:02.608] Server  LOG     ✓ Compiled in 30ms
+[01:43:09.185] Browser LOG     activitePta 1bb
+[01:43:30.736] Browser LOG     isHorsPta false
+[01:43:35.307] Server  LOG     ✓ Compiled in 19ms
+[01:44:10.049] Server  LOG     ✓ Compiled in 26ms
+[01:44:10.789] Browser ERROR   A component is changing an uncontrolled input to be controlled. This is likely caused by the value changing from undefined to a defined value, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components
+[01:44:17.973] Server  LOG     ✓ Compiled in 39ms
+[01:44:18.788] Browser ERROR   A component is changing a controlled input to be uncontrolled. This is likely caused by the value changing from a defined to undefined, which should not happen. Decide between using a controlled or uncontrolled input element for the lifetime of the component. More info: https://react.dev/link/controlled-components
+[01:44:24.565] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:44:40.105] Server  LOG     ✓ Compiled in 21ms
+[01:44:45.297] Server  LOG     ✓ Compiled in 19ms
+[01:44:51.854] Browser LOG     isHorsPta true
+[01:44:56.971] Browser LOG     activitePta 1bb
+[01:45:09.554] Browser LOG     activitePta mety
+[01:45:13.735] Browser LOG     isHorsPta false
+[01:45:17.486] Browser LOG     activitePta 1bb
+[01:45:27.371] Browser LOG     isHorsPta false
+[01:45:43.483] Server  LOG     ✓ Compiled in 28ms
+[01:45:51.304] Browser LOG     activitePta 1bb
+[01:46:00.754] Server  LOG     ✓ Compiled in 20ms
+[01:46:14.320] Browser LOG     isHorsPta false
+[01:46:23.503] Browser LOG     isHorsPta true
+[01:48:12.736] Browser LOG     isHorsPta true
+[01:48:17.119] Browser LOG     activitePta 1bb
+[01:48:20.220] Browser LOG     isHorsPta false
+[01:48:26.069] Browser LOG     isHorsPta true
+[01:50:21.069] Server  LOG     ✓ Compiled in 31ms
+[01:51:03.375] Server  LOG     ✓ Compiled in 28ms
+[01:51:32.920] Browser LOG     activitePta 1bb
+[01:51:36.435] Browser LOG     activitePta mety
+[01:51:47.987] Browser LOG     activitePta mety
+[01:51:52.170] Browser LOG     isHorsPta false
+[01:51:59.352] Browser LOG     isHorsPta true
+[01:53:17.147] Server  LOG     ✓ Compiled in 27ms
+[01:53:17.788] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0] [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0, true]
+[01:54:50.664] Server  LOG     ✓ Compiled in 20ms
+[01:54:50.815] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0, true] [Hors tace, [object Object],[object Object],[object Object], true, (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, 0]
+[01:56:06.354] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:56:24.614] Browser LOG     isHorsPta true
+[01:56:27.618] Browser LOG     activitePta 1bb
+[01:56:30.497] Browser LOG     isHorsPta false
+[02:00:04.440] Server  LOG     ✓ Compiled in 59ms
+[02:01:15.609] Server  LOG     ✓ Compiled in 76ms
+[02:01:15.802] Browser ERROR   ./src/features/rapports/components/form/LigneActivite.tsx:222:20
+Parsing ecmascript source code failed
+  220 |                     readOnly={true}
+  221 |                     className={`${textAreaClass} font-bold ${isHorsPta ? 'text-slate-400' : 'text-blue-600'} pointer-events-none`} 
+> 222 |                   />
+      |                    ^
+  223 |                   <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
+  224 |                 </div>
+  225 |               );
+
+Unexpected token. Did you mean `{'>'}` or `&gt;`?
 
 Import traces:
   Client Component Browser:
-    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component Browser]
+    ./src/features/rapports/components/form/LigneActivite.tsx [Client Component Browser]
+    ./src/features/rapports/components/form/TableauActivite.tsx [Client Component Browser]
     ./src/features/rapports/components/form/RapportForm.tsx [Client Component Browser]
     ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
     ./src/app/dashboard/nouveau/page.tsx [Server Component]
 
   Client Component SSR:
-    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component SSR]
+    ./src/features/rapports/components/form/LigneActivite.tsx [Client Component SSR]
+    ./src/features/rapports/components/form/TableauActivite.tsx [Client Component SSR]
     ./src/features/rapports/components/form/RapportForm.tsx [Client Component SSR]
     ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
     ./src/app/dashboard/nouveau/page.tsx [Server Component]
-[00:19:33.059] Browser ERROR   ./src/features/admin/services/objectifSpecifiqueService.ts:39:32
-Ecmascript file had an error
-  37 |     },
-  38 |
-> 39 |     update: async (id: number, data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
-     |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  40 |         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
-  41 |             method: "PUT",
-  42 |             headers: { "Content-Type": "application/json" },
+[02:02:02.295] Server  LOG     ✓ Compiled in 21ms
+[02:02:02.788] Browser ERROR   ./src/features/rapports/components/form/LigneActivite.tsx:300:18
+Parsing ecmascript source code failed
+  298 |                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+  299 |                   </button>
+> 300 |                 )}
+      |                  ^
+  301 |               </div>
+  302 |             ))} */}
+  303 |             {/* <button type="button" onClick={() => appendTaux({ value: "" })} className={addBtnClass}>+ taux</button> */}
 
-cannot reassign to a variable declared with `const`
+Unexpected token. Did you mean `{'}'}` or `&rbrace;`?
 
 Import traces:
   Client Component Browser:
-    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component Browser]
+    ./src/features/rapports/components/form/LigneActivite.tsx [Client Component Browser]
+    ./src/features/rapports/components/form/TableauActivite.tsx [Client Component Browser]
     ./src/features/rapports/components/form/RapportForm.tsx [Client Component Browser]
     ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
     ./src/app/dashboard/nouveau/page.tsx [Server Component]
 
   Client Component SSR:
-    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component SSR]
+    ./src/features/rapports/components/form/LigneActivite.tsx [Client Component SSR]
+    ./src/features/rapports/components/form/TableauActivite.tsx [Client Component SSR]
     ./src/features/rapports/components/form/RapportForm.tsx [Client Component SSR]
     ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
     ./src/app/dashboard/nouveau/page.tsx [Server Component]
-[00:20:21.221] Server  LOG     ✓ Compiled in 160ms
-[00:25:33.769] Server  LOG     ✓ Compiled in 114ms
-[00:27:09.649] Server  LOG     ✓ Compiled in 154ms
-[00:27:13.101] Server  LOG     ✓ Compiled in 136ms
-[00:27:15.317] Server  LOG     ✓ Compiled in 130ms
-[00:27:37.018] Server  LOG     ✓ Compiled in 142ms
-[00:29:03.461] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:33:42.867] Server  LOG     ✓ Compiled in 134ms
-[00:39:41.466] Server  LOG     ✓ Compiled in 119ms
-[00:41:37.555] Server  LOG     ✓ Compiled in 20ms
-[00:42:07.700] Server  LOG     ✓ Compiled in 21ms
-[00:42:22.871] Browser ERROR   uncaughtError: TypeError: onValidate is not a function
-[00:43:13.598] Server  LOG     ✓ Compiled in 15ms
-[00:48:10.487] Server  LOG     ✓ Compiled in 26ms
-[00:52:02.979] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[00:53:03.616] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[00:54:23.102] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[00:54:58.359] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[00:55:53.453] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[00:56:23.974] Server  ERROR   ⨯ Detected default export in '[project]/src/app/api/rapports/OS/[id]/validate/route.ts'. Export a named export for each HTTP method instead.
-[00:56:23.978] Server  ERROR   ⨯ No HTTP methods exported in '[project]/src/app/api/rapports/OS/[id]/validate/route.ts'. Export a named export for each HTTP method.
-[00:58:57.016] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[01:00:26.179] Server  LOG     ✓ Compiled in 11ms
-[01:00:37.834] Server  LOG     ✓ Compiled in 16ms
-[01:00:44.798] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[01:03:20.763] Server  ERROR   Erreur API : {}
-[01:03:55.924] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[01:06:17.971] Server  LOG     ✓ Compiled in 27ms
-[01:06:57.568] Server  LOG     ✓ Compiled in 24ms
-[01:07:04.369] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[01:07:12.910] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
-[01:07:38.403] Server  LOG     ✓ Compiled in 17ms
-[01:09:30.146] Server  LOG     ✓ Compiled in 13ms
-[01:10:11.412] Server  LOG     ✓ Compiled in 14ms
-[01:10:50.676] Server  LOG     ✓ Compiled in 15ms
-[01:11:42.815] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:12:45.513] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:13:26.793] Server  LOG     ✓ Compiled in 17ms
-[01:14:11.942] Server  LOG     ✓ Compiled in 16ms
-[01:14:28.058] Server  LOG     ✓ Compiled in 12ms
-[01:14:40.976] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:15:14.436] Server  LOG     ✓ Compiled in 16ms
-[01:15:44.543] Server  LOG     ✓ Compiled in 17ms
-[01:15:55.546] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:18:25.337] Server  LOG     ✓ Compiled in 20ms
-[01:18:55.098] Server  LOG     ✓ Compiled in 16ms
-[01:19:18.179] Server  LOG     ✓ Compiled in 12ms
-[01:19:56.122] Server  LOG     ✓ Compiled in 18ms
-[01:20:39.722] Server  LOG     ✓ Compiled in 13ms
-[01:21:09.206] Server  LOG     ✓ Compiled in 12ms
-[01:21:26.250] Server  LOG     ✓ Compiled in 10ms
-[01:22:04.155] Server  LOG     ✓ Compiled in 12ms
-[01:22:21.591] Server  LOG     ✓ Compiled in 21ms
-[01:23:13.246] Server  LOG     ✓ Compiled in 27ms
-[01:23:25.391] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:24:22.060] Server  LOG     ✓ Compiled in 22ms
-[01:24:42.908] Server  LOG     ✓ Compiled in 49ms
-[01:24:53.548] Server  LOG     ✓ Compiled in 25ms
-[01:27:53.098] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:28:30.104] Server  LOG     ✓ Compiled in 14ms
-[01:28:38.941] Browser LOG     {"dateValidation":null,"li":""}
-[01:29:09.682] Server  LOG     ✓ Compiled in 16ms
-[01:29:19.541] Browser LOG     {"dateValidation":null,"li":""}
-[01:31:21.308] Server  LOG     ✓ Compiled in 31ms
-[01:31:34.325] Browser LOG     {"data":{"data":{"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"},"status":"success"},"message":"Créé avec succès"}
-[01:31:34.325] Browser LOG     {"dateValidation":null,"li":""}
-[01:31:59.809] Server  LOG     ✓ Compiled in 15ms
-[01:32:45.575] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:36:36","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:32:51.673] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:32:53.840] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:36:44","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:32:58.707] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:34:59.967] Server  LOG     ✓ Compiled in 26ms
-[01:35:00.220] Server  LOG     ✓ Compiled in 16ms
-[01:35:20.400] Server  LOG     ✓ Compiled in 25ms
-[01:35:33.544] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:39:24","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:35:38.223] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:35:48.825] Server  LOG     ✓ Compiled in 22ms
-[01:37:07.941] Server  LOG     ✓ Compiled in 24ms
-[01:37:20.330] Server  LOG     ✓ Compiled in 22ms
-[01:37:27.983] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:19","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:37:32.779] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:37:36.610] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:27","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:37:39.509] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:37:49.528] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:40","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:37:53.956] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:38:49.720] Server  LOG     ✓ Compiled in 181ms
-[01:38:58.054] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:42:49","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:39:02.844] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:39:04.709] Server  LOG     ✓ Compiled in 16ms
-[01:39:05.407] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:42:56","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:39:11.675] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:39:15.411] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 14:43:06","id":5,"li":"mety","name":"mety","produit":"1"}
-[01:39:26.955] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":null,"id":5,"li":"mety","name":"mety","produit":"1"}
-[01:39:38.759] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:43:29","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:39:40.210] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:41:19.952] Server  LOG     ✓ Compiled in 13ms
-[01:41:29.592] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 14:45:20","id":5,"li":"mety","name":"mety","produit":"1"}
-[01:41:39.314] Server  LOG     ✓ Compiled in 20ms
-[01:41:55.788] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:45:46","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:41:57.658] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:42:40.237] Server  LOG     ✓ Compiled in 13ms
-[01:42:57.275] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:46:48","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:43:02.024] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:43:06.025] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:46:57","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:43:15.980] Server  LOG     ✓ Compiled in 26ms
-[01:43:20.491] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
-[01:43:23.459] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:47:14","id":6,"li":"test","name":"1bb","produit":"111"}
-[01:49:05.696] Server  LOG     ✓ Compiled in 170ms
-[01:49:07.053] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
-[01:49:11.858] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[01:49:11.868] Server  LOG     ✓ Compiled in 47ms
-[01:49:13.327] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:49:22.586] Server  LOG     ✓ Compiled in 19ms
-[01:49:38.017] Server  LOG     ✓ Compiled in 42ms
-[01:49:55.687] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
-[01:51:12.975] Server  LOG     ✓ Compiled in 213ms
-[01:51:12.979] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[01:51:14.118] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[01:51:20.756] Server  LOG     ✓ Compiled in 45ms
-[01:57:16.748] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:03:18.217] Server  LOG     ✓ Compiled in 116ms
-[02:03:18.703] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:03:50.201] Server  LOG     ✓ Compiled in 81ms
-[02:04:27.229] Server  LOG     ✓ Compiled in 14ms
-[02:05:00.719] Server  LOG     ✓ Compiled in 13ms
-[02:08:19.696] Server  LOG     ✓ Compiled in 20ms
-[02:12:26.826] Server  LOG     ✓ Compiled in 85ms
-[02:12:27.885] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:12:35.118] Server  LOG     ✓ Compiled in 36ms
-[02:13:03.115] Server  LOG     ✓ Compiled in 26ms
-[02:13:52.708] Server  LOG     ✓ Compiled in 24ms
-[02:14:16.582] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
-[02:16:01.950] Server  LOG     ✓ Compiled in 52ms
-[02:16:01.964] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
-[02:16:03.273] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[02:19:39.778] Server  LOG     ✓ Compiled in 43ms
+[02:02:28.500] Browser LOG     activitePta 1bb
+[02:02:32.183] Browser LOG     isHorsPta false
+[02:02:41.234] Browser LOG     activitePta 1bb
+[02:02:53.100] Browser LOG     isHorsPta false
+[02:05:33.273] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:05:45.700] Browser LOG     isHorsPta true
+[02:06:17.283] Browser LOG     activitePta 1bb
+[02:08:10.484] Server  LOG     ✓ Compiled in 56ms
+[02:08:44.776] Server  LOG     ✓ Compiled in 38ms
+[02:08:45.795] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
+[02:09:01.207] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[02:09:01.227] Server  LOG     ✓ Compiled in 20ms
+[02:09:02.106] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:09:17.400] Server  LOG     ✓ Compiled in 41ms
+[02:10:00.016] Browser LOG     isHorsPta true
+[02:12:14.042] Server  LOG     ✓ Compiled in 39ms
+[02:12:14.792] Browser LOG     isHorsPta true
+[02:14:47.789] Server  LOG     ✓ Compiled in 40ms
+[02:15:04.744] Server  LOG     ✓ Compiled in 28ms
+[02:15:09.622] Server  LOG     ✓ Compiled in 23ms
+[02:16:54.664] Server  LOG     ✓ Compiled in 24ms
+[02:17:21.190] Server  LOG     ✓ Compiled in 25ms
+[02:17:58.412] Server  LOG     ✓ Compiled in 16ms
+[02:18:28.267] Server  LOG     ✓ Compiled in 21ms
+[02:19:18.449] Server  LOG     ✓ Compiled in 17ms
+[02:19:51.447] Server  LOG     ✓ Compiled in 24ms
+[02:21:28.906] Server  LOG     ✓ Compiled in 23ms
+[02:21:46.413] Browser LOG     activitePta 1bb
+[02:22:02.164] Browser LOG     isHorsPta false
+[02:22:04.796] Browser LOG     activitePta 1bb
+[02:22:49.931] Server  LOG     ✓ Compiled in 46ms
+[02:22:50.796] Browser LOG     activitePta 1bb
+[02:23:31.321] Server  LOG     ✓ Compiled in 57ms
+[02:23:31.797] Browser ERROR   The final argument passed to %s changed size between renders. The order and size of this array must remain constant.
+
+Previous: %s
+Incoming: %s useEffect [[object Object], [object Object], (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }] [[object Object], [object Object], (name, value1, options = {})=>{
+        const field = get(_fields, name);
+        const isFieldArray = _names.array.has(name);
+        const cloneValue = cloneObject(value1);
+        set(_formValues, name, cloneValue);
+        if (isFieldArray) {
+            _subjects.array.next({
+                name,
+                values: cloneObject(_formValues)
+            });
+            if ((_proxyFormState.isDirty || _proxyFormState.dirtyFields || _proxySubscribeFormState.isDirty || _proxySubscribeFormState.dirtyFields) && options.shouldDirty) {
+                _subjects.state.next({
+                    name,
+                    dirtyFields: getDirtyFields(_defaultValues, _formValues),
+                    isDirty: _getDirty(name, cloneValue)
+                });
+            }
+        } else {
+            field && !field._f && !isNullOrUndefined(cloneValue) ? setValues(name, cloneValue, options) : setFieldValue(name, cloneValue, options);
+        }
+        if (isWatched(name, _names)) {
+            _subjects.state.next({
+                ..._formState,
+                name,
+                values: cloneObject(_formValues)
+            });
+        } else {
+            _subjects.state.next({
+                name: _state.mount ? name : undefined,
+                values: cloneObject(_formValues)
+            });
+        }
+    }, false, [object Object], 0]
+[02:23:57.753] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:24:15.263] Browser LOG     activitePta 1bb
+[02:24:38.545] Browser LOG     isHorsPta false
+[02:24:48.030] Browser LOG     activitePta 1bb

@@ -16,15 +16,16 @@ export const objectifSpecifiqueService = {
             throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
         }
         const data = await response.json();
-        const items = data.data || data;
+        const items = (data.data || data) as ObjectifSpecifique[];
         // L'API retourne { name, id }, on mappe vers { nom, id }
-        return items.map((item: { id: number; name: string; li?: string; activitePta?: string; produit?: string; cible?: string }) => ({ 
+        return items.map((item: { id: number; name: string; li?: string; activitePta?: string; produit?: string; cible?: string; dateValidation?: string }) => ({ 
             id: item.id, 
             name: item.name,
             li: item.li || "",
             activitePta: item.activitePta,
             produit: item.produit,
-            cible: item.cible
+            cible: item.cible,
+            dateValidation: item.dateValidation
         }));
     },
 

@@ -807,7 +807,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             marginBottom: "4px"
                         },
                         children: [
-                            isPdf && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            isPdf && !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -816,7 +816,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 82,
-                                columnNumber: 39
+                                columnNumber: 57
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
@@ -878,7 +878,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             marginBottom: "4px"
                         },
                         children: [
-                            isPdf && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            isPdf && !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -887,7 +887,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 106,
-                                columnNumber: 39
+                                columnNumber: 57
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
@@ -900,7 +900,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                                 lineNumber: 107,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0)),
-                            i === items.length - 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            i === items.length - 1 && !isNaN(parseFloat(item.name)) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -909,7 +909,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 108,
-                                columnNumber: 56
+                                columnNumber: 89
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, i, true, {
@@ -1921,18 +1921,33 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
         control,
         name: `lignes.${index}.titre`
     });
+    const [isHorsPta, setIsHorsPta] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(true);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "LigneActivite.useEffect": ()=>{
+            setIsHorsPta(true);
             if (isTrimestriel && objectifSpecifiqueWatch) {
                 const selectedObj = objectifSpecifiques.find({
                     "LigneActivite.useEffect.selectedObj": (obj)=>obj.name === objectifSpecifiqueWatch
                 }["LigneActivite.useEffect.selectedObj"]);
+                let horsPta = true;
+                if (selectedObj?.activitePta) {
+                    console.log('activitePta', selectedObj.activitePta);
+                    horsPta = false;
+                    setIsHorsPta(false);
+                }
                 if (selectedObj) {
                     // Remplir automatiquement les champs avec les valeurs de l'objectif spécifique
                     setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
                     setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
                     setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
                     setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
+                }
+                if (horsPta) {
+                    console.log('isHorsPta', isHorsPta);
+                    setValue(`lignes.${index}.cibles.0.value`, 'hors pta');
+                    setValue(`lignes.${index}.previsions.0.value`, 'hors pta');
+                    setValue(`lignes.${index}.realisations.0.value`, 'hors pta');
+                    setValue(`lignes.${index}.taux.0.value`, 'hors pta');
                 }
             }
         }
@@ -1968,17 +1983,22 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
         "LigneActivite.useEffect": ()=>{
             tauxFields.forEach({
                 "LigneActivite.useEffect": (_, i)=>{
-                    const resultatCalcul = calculerTaux(i);
-                    // On force la mise à jour INTERNE du formulaire
-                    // C'est ce qui permet de récupérer la valeur au submit !
-                    setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
+                    if (isHorsPta) {
+                        setValue(`lignes.${index}.taux.${i}.value`, 'hors pta');
+                    } else {
+                        const resultatCalcul = calculerTaux(i);
+                        setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
+                    }
                 }
             }["LigneActivite.useEffect"]);
         }
     }["LigneActivite.useEffect"], [
         previsionsWatch,
         realisationsWatch,
-        setValue
+        setValue,
+        isHorsPta,
+        tauxFields,
+        index
     ]);
     // const gridLayout = isTrimestriel
     //   ? "grid-cols-[50px_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr_50px]"
@@ -1999,7 +2019,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                 children: String(index + 1).padStart(2, '0')
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 114,
+                lineNumber: 133,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2015,7 +2035,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                 children: "Objectif spécifique"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 126,
+                                lineNumber: 145,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             objectifSpecifiques.map((obj)=>// ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
@@ -2024,13 +2044,13 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                     children: obj.name
                                 }, obj.id, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 148,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 122,
+                        lineNumber: 141,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                         ...register(`lignes.${index}.titre`),
@@ -2038,17 +2058,17 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         placeholder: "Nom de l'activité..."
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 135,
+                        lineNumber: 154,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                    lineNumber: 120,
+                    lineNumber: 139,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 119,
+                lineNumber: 138,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2059,11 +2079,12 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                                     ...register(`lignes.${index}.effects.${i}.value`),
-                                    className: textAreaClass,
-                                    placeholder: isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`
+                                    className: `${textAreaClass} ${isTrimestriel ? 'pointer-events-none bg-slate-50' : ''}`,
+                                    placeholder: isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`,
+                                    readOnly: isTrimestriel
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 148,
+                                    lineNumber: 167,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 effectsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2082,23 +2103,23 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                             d: "M6 18L18 6M6 6l12 12"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 156,
+                                            lineNumber: 176,
                                             columnNumber: 96
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 156,
+                                        lineNumber: 176,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 155,
+                                    lineNumber: 175,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, field.id, true, {
                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                            lineNumber: 147,
+                            lineNumber: 166,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))),
                     !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2110,13 +2131,13 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         children: "+ effet"
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 162,
+                        lineNumber: 182,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 145,
+                lineNumber: 164,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2128,10 +2149,11 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                                     ...register(`lignes.${index}.impacts.${i}.value`),
                                     className: textAreaClass,
-                                    placeholder: isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`
+                                    placeholder: isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`,
+                                    readOnly: !isHorsPta
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 172,
+                                    lineNumber: 192,
                                     columnNumber: 13
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 impactsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2150,23 +2172,23 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                             d: "M6 18L18 6M6 6l12 12"
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 175,
+                                            lineNumber: 195,
                                             columnNumber: 96
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 175,
+                                        lineNumber: 195,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0))
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 174,
+                                    lineNumber: 194,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, field.id, true, {
                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                            lineNumber: 171,
+                            lineNumber: 191,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))),
                     !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2178,13 +2200,13 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         children: "+ impact"
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 182,
+                        lineNumber: 202,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 169,
+                lineNumber: 189,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
@@ -2199,10 +2221,11 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                         ...register(`lignes.${index}.produits.${i}.value`),
                                         className: inputClass,
                                         placeholder: `Produit`,
-                                        required: true
+                                        required: true,
+                                        readOnly: !isHorsPta
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 195,
+                                        lineNumber: 215,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     produitsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2221,28 +2244,28 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                                 d: "M6 18L18 6M6 6l12 12"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                                lineNumber: 198,
+                                                lineNumber: 218,
                                                 columnNumber: 100
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 198,
+                                            lineNumber: 218,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 197,
+                                        lineNumber: 217,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 194,
+                                lineNumber: 214,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 192,
+                        lineNumber: 212,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2251,14 +2274,14 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                 className: itemBoxClass,
                                 children: [
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                        type: "number",
+                                        type: isHorsPta ? "text" : "number",
                                         ...register(`lignes.${index}.cibles.${i}.value`),
-                                        className: inputClass,
+                                        className: `${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`,
                                         placeholder: `0`,
-                                        min: "1"
-                                    }, void 0, false, {
+                                        readOnly: isHorsPta
+                                    }, `cible-${isHorsPta}`, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 210,
+                                        lineNumber: 230,
                                         columnNumber: 17
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     ciblesFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2277,28 +2300,28 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                                 d: "M6 18L18 6M6 6l12 12"
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                                lineNumber: 213,
+                                                lineNumber: 240,
                                                 columnNumber: 100
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 213,
+                                            lineNumber: 240,
                                             columnNumber: 21
                                         }, ("TURBOPACK compile-time value", void 0))
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 212,
+                                        lineNumber: 239,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 209,
+                                lineNumber: 229,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 207,
+                        lineNumber: 227,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2306,23 +2329,24 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         children: previsionsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: itemBoxClass,
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    type: "number",
+                                    type: isHorsPta ? "text" : "number",
                                     ...register(`lignes.${index}.previsions.${i}.value`),
-                                    className: inputClass,
-                                    placeholder: "0"
-                                }, void 0, false, {
+                                    className: `${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`,
+                                    placeholder: "0",
+                                    readOnly: isHorsPta
+                                }, `prev-${isHorsPta}`, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 225,
+                                    lineNumber: 252,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, field.id, false, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 224,
+                                lineNumber: 251,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 222,
+                        lineNumber: 249,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2330,23 +2354,24 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         children: realisationsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                 className: itemBoxClass,
                                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                                    type: "number",
+                                    type: isHorsPta ? "text" : "number",
                                     ...register(`lignes.${index}.realisations.${i}.value`),
-                                    className: inputClass,
-                                    placeholder: "0"
-                                }, void 0, false, {
+                                    className: `${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`,
+                                    placeholder: "0",
+                                    readOnly: isHorsPta
+                                }, `real-${isHorsPta}`, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 239,
+                                    lineNumber: 268,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0))
                             }, field.id, false, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 238,
+                                lineNumber: 267,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 236,
+                        lineNumber: 265,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2359,12 +2384,12 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                         type: "text",
                                         ...register(`lignes.${index}.taux.${i}.value`),
-                                        value: valeurTaux,
-                                        // readOnly
-                                        className: `${textAreaClass} font-bold text-blue-600 pointer-events-none`
+                                        value: isHorsPta ? 'hors pta' : valeurTaux,
+                                        readOnly: true,
+                                        className: `${textAreaClass} font-bold ${isHorsPta ? 'text-slate-400' : 'text-blue-600'} pointer-events-none`
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 255,
+                                        lineNumber: 286,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0)),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -2372,19 +2397,19 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                         children: "%"
                                     }, void 0, false, {
                                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                        lineNumber: 262,
+                                        lineNumber: 293,
                                         columnNumber: 19
                                     }, ("TURBOPACK compile-time value", void 0))
                                 ]
                             }, field.id, true, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 254,
+                                lineNumber: 285,
                                 columnNumber: 17
                             }, ("TURBOPACK compile-time value", void 0));
                         })
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 250,
+                        lineNumber: 281,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2399,7 +2424,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                             placeholder: `Observation ${i + 1}...`
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 286,
+                                            lineNumber: 303,
                                             columnNumber: 17
                                         }, ("TURBOPACK compile-time value", void 0)),
                                         observationsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2418,23 +2443,23 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                                     d: "M6 18L18 6M6 6l12 12"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                                    lineNumber: 289,
+                                                    lineNumber: 306,
                                                     columnNumber: 100
                                                 }, ("TURBOPACK compile-time value", void 0))
                                             }, void 0, false, {
                                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                                lineNumber: 289,
+                                                lineNumber: 306,
                                                 columnNumber: 21
                                             }, ("TURBOPACK compile-time value", void 0))
                                         }, void 0, false, {
                                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                            lineNumber: 288,
+                                            lineNumber: 305,
                                             columnNumber: 19
                                         }, ("TURBOPACK compile-time value", void 0))
                                     ]
                                 }, field.id, true, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 285,
+                                    lineNumber: 302,
                                     columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0))),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -2446,13 +2471,13 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                 children: "+ observation"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 294,
+                                lineNumber: 311,
                                 columnNumber: 13
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 283,
+                        lineNumber: 300,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
@@ -2476,32 +2501,32 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                             d: "M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                         }, void 0, false, {
                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                            lineNumber: 308,
+                            lineNumber: 325,
                             columnNumber: 13
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 307,
+                        lineNumber: 324,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                    lineNumber: 301,
+                    lineNumber: 318,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 300,
+                lineNumber: 317,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-        lineNumber: 111,
+        lineNumber: 130,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(LigneActivite, "gsvEf9Ow37msQtyr1lpqWxrFad4=", false, function() {
+_s(LigneActivite, "WBNtN3Jha1LxuOk4ZVL4Pl46jGA=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFieldArray"],
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFieldArray"],
@@ -2671,7 +2696,8 @@ const objectifSpecifiqueService = {
                 li: item.li || "",
                 activitePta: item.activitePta,
                 produit: item.produit,
-                cible: item.cible
+                cible: item.cible,
+                dateValidation: item.dateValidation
             }));
     },
     create: async (data)=>{
@@ -2841,7 +2867,6 @@ const ConsolidationForm = ()=>{
         }
     });
     const [objectifSpecifiques, setObjectifSpecifiques] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
-    const [logiqueInterventions, setLogiqueInterventions] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
     const [isLoading, setIsLoading] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const { fields, append, remove } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useFieldArray"])({
         control,
@@ -2974,15 +2999,14 @@ const ConsolidationForm = ()=>{
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ConsolidationForm.useEffect": ()=>{
             // Ne charger les listes OS/LI qu'une seule fois si mode trimestriel
-            if (isTrimestriel && objectifSpecifiques.length === 0 && logiqueInterventions.length === 0) {
+            if (isTrimestriel && objectifSpecifiques.length === 0) {
                 fetchItems();
             }
         }
     }["ConsolidationForm.useEffect"], [
         fetchItems,
         isTrimestriel,
-        objectifSpecifiques.length,
-        logiqueInterventions.length
+        objectifSpecifiques.length
     ]);
     const onInvalid = (errors)=>{
         const champsManquants = Object.keys(errors).join(", ");
@@ -2999,12 +3023,12 @@ const ConsolidationForm = ()=>{
                 className: "animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 143,
+                lineNumber: 141,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         }, void 0, false, {
             fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-            lineNumber: 142,
+            lineNumber: 140,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0));
     }
@@ -3028,7 +3052,7 @@ const ConsolidationForm = ()=>{
                 calendrierResult: calendrierResult
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 151,
+                lineNumber: 149,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$rapports$2f$components$2f$form$2f$TableauActivite$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
@@ -3041,7 +3065,7 @@ const ConsolidationForm = ()=>{
                 setValue: setValue
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 166,
+                lineNumber: 164,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -3093,12 +3117,12 @@ const ConsolidationForm = ()=>{
                             children: "+"
                         }, void 0, false, {
                             fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                            lineNumber: 191,
+                            lineNumber: 189,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                        lineNumber: 190,
+                        lineNumber: 188,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -3106,13 +3130,13 @@ const ConsolidationForm = ()=>{
                         children: "Ajouter une autre"
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                        lineNumber: 193,
+                        lineNumber: 191,
                         columnNumber: 9
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 176,
+                lineNumber: 174,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3120,7 +3144,7 @@ const ConsolidationForm = ()=>{
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                     id: "pdf-render-zone",
                     style: {
-                        width: isTrimestriel ? "297mm" : "210mm"
+                        width: isTrimestriel ? "210mm" : "210mm"
                     },
                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$rapports$2f$components$2f$vision$2f$RapportView$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["RapportView"], {
                         data: [
@@ -3130,17 +3154,17 @@ const ConsolidationForm = ()=>{
                         isLandscape: isTrimestriel
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                        lineNumber: 199,
+                        lineNumber: 197,
                         columnNumber: 11
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                    lineNumber: 198,
+                    lineNumber: 196,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 197,
+                lineNumber: 195,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             Object.keys(errors).length > 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -3148,17 +3172,17 @@ const ConsolidationForm = ()=>{
                 children: "Veuillez remplir tous les champs obligatoires (Titre, Effets, Impacts et Période)."
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-                lineNumber: 204,
+                lineNumber: 202,
                 columnNumber: 9
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/rapports/components/form/RapportForm.tsx",
-        lineNumber: 149,
+        lineNumber: 147,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
-_s(ConsolidationForm, "9wx42/Nkx8eCegqZUDZf72c9PBw=", false, function() {
+_s(ConsolidationForm, "+SmqrMM0xL3ZM4IVMT4fuqj3uFA=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRouter"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$rapports$2f$hooks$2f$usePdfExport$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePdfExport"],
