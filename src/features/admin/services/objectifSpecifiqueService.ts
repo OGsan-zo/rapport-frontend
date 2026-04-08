@@ -1,5 +1,5 @@
 import { useFetchAuth } from "@/hooks/useFetchAuth";
-import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { ObjectifSpecifique, ObjectifSpecifiqueFormValues } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 
 const fetchAuth = useFetchAuth();
 
@@ -18,37 +18,72 @@ export const objectifSpecifiqueService = {
         const data = await response.json();
         const items = data.data || data;
         // L'API retourne { name, id }, on mappe vers { nom, id }
-        return items.map((item: { id: number; name: string }) => ({ id: item.id, nom: item.name }));
+        return items.map((item: { id: number; name: string; li?: string; activitePta?: string; produit?: string; cible?: string }) => ({ 
+            id: item.id, 
+            name: item.name,
+            li: item.li || "",
+            activitePta: item.activitePta,
+            produit: item.produit,
+            cible: item.cible
+        }));
     },
 
-    create: async (nom: string): Promise<ObjectifSpecifique> => {
+    create: async (data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
         const response = await fetchAuth("/api/rapports/OS", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: nom }),
+            body: JSON.stringify({ 
+                name: data.name,
+                li: data.li,
+                activitePta: data.activitePta,
+                produit: data.produit,
+                cible: data.cible
+            }),
         });
         if (!response.ok) {
             const err = await response.json().catch(() => ({}));
             throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
         }
-        const data = await response.json();
-        const item = data.data || data;
-        return { id: item.id, nom: item.name };
+        const result = await response.json();
+        const item = result.data || result;
+        return { 
+            id: item.id, 
+            name: item.name,
+            li: item.li || "",
+            activitePta: item.activitePta,
+            produit: item.produit,
+            cible: item.cible,
+            dateValidation: item.dateValidation || null
+        };
     },
 
-    update: async (id: number, nom: string): Promise<ObjectifSpecifique> => {
+    update: async (id: number, data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ name: nom }),
+            body: JSON.stringify({ 
+                name: data.name,
+                li: data.li,
+                activitePta: data.activitePta,
+                produit: data.produit,
+                cible: data.cible
+            }),
         });
         if (!response.ok) {
             const err = await response.json().catch(() => ({}));
             throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
         }
-        const data = await response.json();
-        const item = data.data || data;
-        return { id: item.id, nom: item.name };
+        const result = await response.json();
+        const item = result.data || result;
+        return { 
+            id: item.id, 
+            name: item.name,
+            li: item.li || "",
+            activitePta: item.activitePta,
+            produit: item.produit,
+            cible: item.cible,
+            dateValidation: item.dateValidation || null
+        };
     },
 
     // Pas d'endpoint DELETE dans l'API pour l'instant
@@ -58,4 +93,24 @@ export const objectifSpecifiqueService = {
         });
         
     },
+    validate: async (id: number): Promise<ObjectifSpecifique> => {
+        const response = await fetchAuth(`/api/rapports/OS/${id}/validate`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ 
+                name: ""
+            }),
+        });
+        const result = await response.json();
+        const item = result.data.data;
+        return { 
+            id: item.id, 
+            name: item.name,
+            li: item.li || "",
+            activitePta: item.activitePta,
+            produit: item.produit,
+            cible: item.cible,
+            dateValidation: item.dateValidation || null
+        };
+    }
 };

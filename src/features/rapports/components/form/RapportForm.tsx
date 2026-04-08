@@ -22,7 +22,6 @@ import TableauActivites from "./TableauActivite";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
-import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 
 export const ConsolidationForm = () => {
   const router = useRouter();
@@ -115,8 +114,6 @@ export const ConsolidationForm = () => {
           try {
               const OS = await objectifSpecifiqueService.getAll();
               setObjectifSpecifiques(OS);
-              const LI = await logiqueInterventionService.getAll();
-              setLogiqueInterventions(LI);
           } catch {
               toast.error("Erreur lors du chargement des objectifs spécifiques");
           } finally {
@@ -173,7 +170,6 @@ export const ConsolidationForm = () => {
         remove={remove}
         isTrimestriel={Number(selectedTypeId)}
         objectifSpecifiques={objectifSpecifiques}
-        logiqueInterventions={logiqueInterventions}
         setValue={setValue}
       />
 

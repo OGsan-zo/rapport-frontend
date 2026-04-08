@@ -93,7 +93,7 @@ export default function DashboardPage() {
             {/* Zone de rendu PDF masquée */}
             {selectedForPdf && (
                 <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-                    <div id="rapport-a4-container" style={{ width: selectedForPdf.calendrier?.typeCalendrier?.id === 3 ? "297mm" : "210mm" }}>
+                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
                         <RapportView
                             data={[selectedForPdf]}
                             isPrintMode={true}

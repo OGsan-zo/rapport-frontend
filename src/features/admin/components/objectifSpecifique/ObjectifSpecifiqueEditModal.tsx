@@ -21,16 +21,20 @@ export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalPr
         formState: { errors, isSubmitting },
     } = useForm<ObjectifSpecifiqueFormValues>({
         resolver: zodResolver(objectifSpecifiqueSchema),
-        defaultValues: { nom: item.nom },
+        defaultValues: { nom: item.nom, li: item.li, activitePta: item.activitePta || "", produit: item.produit || "", cible: item.cible || "" },
     });
 
     useEffect(() => {
         setValue("nom", item.nom);
+        setValue("li", item.li);
+        setValue("activitePta", item.activitePta || "");
+        setValue("produit", item.produit || "");
+        setValue("cible", item.cible || "");
     }, [item, setValue]);
 
     const onSubmit = async (data: ObjectifSpecifiqueFormValues) => {
         try {
-            await objectifSpecifiqueService.update(item.id, data.nom);
+            await objectifSpecifiqueService.update(item.id, data);
             toast.success("Objectif spécifique mis à jour !");
             onSuccess();
         } catch (err: any) {
@@ -65,6 +69,46 @@ export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalPr
                             className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.nom ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
                         />
                         {errors.nom && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.nom.message}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Logique d'intervention</label>
+                        <input
+                            type="text"
+                            {...register("li")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.li ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                        />
+                        {errors.li && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.li.message}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Activité PTA</label>
+                        <input
+                            type="text"
+                            {...register("activitePta")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.activitePta ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                        />
+                        {errors.activitePta && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.activitePta.message}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Produit</label>
+                        <input
+                            type="text"
+                            {...register("produit")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.produit ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                        />
+                        {errors.produit && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.produit.message}</p>}
+                    </div>
+
+                    <div className="space-y-2">
+                        <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Cible</label>
+                        <input
+                            type="text"
+                            {...register("cible")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.cible ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                        />
+                        {errors.cible && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.cible.message}</p>}
                     </div>
 
                     <div className="flex gap-3 pt-2">

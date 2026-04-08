@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 39, "column": 0}, "map": {"version":3,"sources":["file:///D:/prog/symfonyNext/rapport/rapport-frontend/src/app/api/rapports/OS/%5Bid%5D/validate/route.ts"],"sourcesContent":["// import { callApiDelete, callApiPut } from \"@/lib/callApi\";\r\n// import { NextRequest } from \"next/server\";\r\n\r\n// export async function PUT(\r\n//   req: NextRequest,\r\n//   context: { params: Promise<{ id: string }> }\r\n// ) {\r\n//   const { id } = await context.params;\r\n//   const requiredFields = [\"name\",\"li\"];\r\n//   return callApiPut(req, `rapports/OS/${id}`, requiredFields);\r\n// }\r\n// export async function DELETE(\r\n//   request: NextRequest,\r\n//   context: { params: Promise<{ id: string }> }\r\n// ) {\r\n//   const { id } = await context.params;\r\n  \r\n//   // On construit l'url \"rapports/1\" dynamiquement\r\n//   return await callApiDelete(request, `/rapports/OS/${id}`);\r\n// }"],"names":[],"mappings":"AAAA,6DAA6D;AAC7D,6CAA6C;AAE7C,6BAA6B;AAC7B,sBAAsB;AACtB,iDAAiD;AACjD,MAAM;AACN,yCAAyC;AACzC,0CAA0C;AAC1C,iEAAiE;AACjE,IAAI;AACJ,gCAAgC;AAChC,0BAA0B;AAC1B,iDAAiD;AACjD,MAAM;AACN,yCAAyC;AAEzC,qDAAqD;AACrD,+DAA+D;AAC/D,IAAI"}}]
+}

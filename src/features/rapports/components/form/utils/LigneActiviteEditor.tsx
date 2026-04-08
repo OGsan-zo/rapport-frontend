@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useFieldArray, UseFormSetValue, useWatch } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
-import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
   control: any;
@@ -12,7 +11,6 @@ interface LigneActiviteProps {
   canRemove: boolean;
   isTrimestriel?: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
-  logiqueInterventions?: LogiqueIntervention[];
   gridLayout: string;
 
 }
@@ -26,7 +24,6 @@ export const LigneActiviteEditor = ({
   canRemove,
   isTrimestriel = false,
   objectifSpecifiques = [],
-  logiqueInterventions = [],
   gridLayout
 }: LigneActiviteProps) => {
   
@@ -58,6 +55,21 @@ export const LigneActiviteEditor = ({
     isTrimestriel, appendEffect, appendImpact, appendProduit, appendCible, appendPrevision, 
     appendRealisation, appendTaux, appendObservation
   ]);
+
+  // --- Auto-remplissage des champs depuis l'objectif spécifique ---
+  const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
+
+  useEffect(() => {
+    if (isTrimestriel && objectifSpecifiqueWatch) {
+      const selectedObj = objectifSpecifiques.find(obj => obj.name === objectifSpecifiqueWatch);
+      if (selectedObj) {
+        setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
+        setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
+        setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
+        setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
+      }
+    }
+  }, [objectifSpecifiqueWatch, objectifSpecifiques, isTrimestriel, setValue, index]);
 
   // --- Calcul automatique du taux (comme dans LigneActivite) ---
   const previsionsWatch = useWatch({ control, name: `lignes.${index}.previsions` });
@@ -107,7 +119,7 @@ export const LigneActiviteEditor = ({
             >
               <option value="">Sélectionner un objectif...</option>
               {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
-                <option key={obj.id} value={obj.nom}>{obj.nom}</option>
+                <option key={obj.id} value={obj.name}>{obj.name}</option>
               ))}
             </select>
           ) : (
@@ -124,23 +136,11 @@ export const LigneActiviteEditor = ({
       <div className={colContainerClass}>
         {effectsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            {isTrimestriel ? (
-              <select
-                {...register(`lignes.${index}.effects.${i}.value`)}
-                className={selectClass}
-              >
-                <option value="">Sélectionner une logique d'intervention...</option>
-                {logiqueInterventions.map((logique: LogiqueIntervention) => (
-                  <option key={logique.id} value={logique.nom}>{logique.nom}</option>
-                ))}
-              </select>
-            ) : (
-              <textarea
-                {...register(`lignes.${index}.effects.${i}.value`)}
-                className={textAreaClass}
-                placeholder={`Effet ${i + 1}...`}
-              />
-            )}
+            <textarea
+              {...register(`lignes.${index}.effects.${i}.value`)}
+              className={textAreaClass}
+              placeholder={isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`}
+            />
             {effectsFields.length > 1 && (
               <button type="button" onClick={() => removeEffect(i)} className={closeBtnClass}>✕</button>
             )}

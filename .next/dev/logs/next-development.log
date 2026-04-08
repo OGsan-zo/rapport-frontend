@@ -1,0 +1,197 @@
+[00:00:02.246] Server  LOG     ✓ Ready in 1669ms
+[00:00:14.913] Server  LOG       Reload env: .env.local
+[00:01:56.280] Server  LOG     ○ Compiling / ...
+[00:01:59.923] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:11:36.655] Server  LOG     ✓ Compiled in 108ms
+[00:12:03.313] Server  LOG     ✓ Compiled in 106ms
+[00:14:37.374] Server  LOG     ✓ Compiled in 130ms
+[00:15:05.597] Server  LOG     ✓ Compiled in 228ms
+[00:15:55.939] Server  LOG     ✓ Compiled in 176ms
+[00:16:07.653] Server  LOG     ✓ Compiled in 200ms
+[00:17:02.586] Server  LOG     ✓ Compiled in 152ms
+[00:19:00.190] Server  LOG     ✓ Compiled in 154ms
+[00:19:32.191] Server  LOG     ✓ Compiled in 154ms
+[00:19:33.059] Browser ERROR   ./src/features/admin/services/objectifSpecifiqueService.ts:39:32
+Ecmascript file had an error
+  37 |     },
+  38 |
+> 39 |     update: async (id: number, data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
+     |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  40 |         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
+  41 |             method: "PUT",
+  42 |             headers: { "Content-Type": "application/json" },
+
+cannot reassign to a variable declared with `const`
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component Browser]
+    ./src/features/rapports/components/form/RapportForm.tsx [Client Component Browser]
+    ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
+    ./src/app/dashboard/nouveau/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component SSR]
+    ./src/features/rapports/components/form/RapportForm.tsx [Client Component SSR]
+    ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
+    ./src/app/dashboard/nouveau/page.tsx [Server Component]
+[00:19:33.059] Browser ERROR   ./src/features/admin/services/objectifSpecifiqueService.ts:39:32
+Ecmascript file had an error
+  37 |     },
+  38 |
+> 39 |     update: async (id: number, data: ObjectifSpecifiqueFormValues): Promise<ObjectifSpecifique> => {
+     |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  40 |         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
+  41 |             method: "PUT",
+  42 |             headers: { "Content-Type": "application/json" },
+
+cannot reassign to a variable declared with `const`
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component Browser]
+    ./src/features/rapports/components/form/RapportForm.tsx [Client Component Browser]
+    ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
+    ./src/app/dashboard/nouveau/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/services/objectifSpecifiqueService.ts [Client Component SSR]
+    ./src/features/rapports/components/form/RapportForm.tsx [Client Component SSR]
+    ./src/features/rapports/components/form/RapportForm.tsx [Server Component]
+    ./src/app/dashboard/nouveau/page.tsx [Server Component]
+[00:20:21.221] Server  LOG     ✓ Compiled in 160ms
+[00:25:33.769] Server  LOG     ✓ Compiled in 114ms
+[00:27:09.649] Server  LOG     ✓ Compiled in 154ms
+[00:27:13.101] Server  LOG     ✓ Compiled in 136ms
+[00:27:15.317] Server  LOG     ✓ Compiled in 130ms
+[00:27:37.018] Server  LOG     ✓ Compiled in 142ms
+[00:29:03.461] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:33:42.867] Server  LOG     ✓ Compiled in 134ms
+[00:39:41.466] Server  LOG     ✓ Compiled in 119ms
+[00:41:37.555] Server  LOG     ✓ Compiled in 20ms
+[00:42:07.700] Server  LOG     ✓ Compiled in 21ms
+[00:42:22.871] Browser ERROR   uncaughtError: TypeError: onValidate is not a function
+[00:43:13.598] Server  LOG     ✓ Compiled in 15ms
+[00:48:10.487] Server  LOG     ✓ Compiled in 26ms
+[00:52:02.979] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[00:53:03.616] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[00:54:23.102] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[00:54:58.359] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[00:55:53.453] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[00:56:23.974] Server  ERROR   ⨯ Detected default export in '[project]/src/app/api/rapports/OS/[id]/validate/route.ts'. Export a named export for each HTTP method instead.
+[00:56:23.978] Server  ERROR   ⨯ No HTTP methods exported in '[project]/src/app/api/rapports/OS/[id]/validate/route.ts'. Export a named export for each HTTP method.
+[00:58:57.016] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[01:00:26.179] Server  LOG     ✓ Compiled in 11ms
+[01:00:37.834] Server  LOG     ✓ Compiled in 16ms
+[01:00:44.798] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[01:03:20.763] Server  ERROR   Erreur API : {}
+[01:03:55.924] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[01:06:17.971] Server  LOG     ✓ Compiled in 27ms
+[01:06:57.568] Server  LOG     ✓ Compiled in 24ms
+[01:07:04.369] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[01:07:12.910] Server  ERROR   Erreur inconnue sur l'api put: SyntaxError: Unexpected end of JSON input
+[01:07:38.403] Server  LOG     ✓ Compiled in 17ms
+[01:09:30.146] Server  LOG     ✓ Compiled in 13ms
+[01:10:11.412] Server  LOG     ✓ Compiled in 14ms
+[01:10:50.676] Server  LOG     ✓ Compiled in 15ms
+[01:11:42.815] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:12:45.513] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:13:26.793] Server  LOG     ✓ Compiled in 17ms
+[01:14:11.942] Server  LOG     ✓ Compiled in 16ms
+[01:14:28.058] Server  LOG     ✓ Compiled in 12ms
+[01:14:40.976] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:15:14.436] Server  LOG     ✓ Compiled in 16ms
+[01:15:44.543] Server  LOG     ✓ Compiled in 17ms
+[01:15:55.546] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:18:25.337] Server  LOG     ✓ Compiled in 20ms
+[01:18:55.098] Server  LOG     ✓ Compiled in 16ms
+[01:19:18.179] Server  LOG     ✓ Compiled in 12ms
+[01:19:56.122] Server  LOG     ✓ Compiled in 18ms
+[01:20:39.722] Server  LOG     ✓ Compiled in 13ms
+[01:21:09.206] Server  LOG     ✓ Compiled in 12ms
+[01:21:26.250] Server  LOG     ✓ Compiled in 10ms
+[01:22:04.155] Server  LOG     ✓ Compiled in 12ms
+[01:22:21.591] Server  LOG     ✓ Compiled in 21ms
+[01:23:13.246] Server  LOG     ✓ Compiled in 27ms
+[01:23:25.391] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:24:22.060] Server  LOG     ✓ Compiled in 22ms
+[01:24:42.908] Server  LOG     ✓ Compiled in 49ms
+[01:24:53.548] Server  LOG     ✓ Compiled in 25ms
+[01:27:53.098] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:28:30.104] Server  LOG     ✓ Compiled in 14ms
+[01:28:38.941] Browser LOG     {"dateValidation":null,"li":""}
+[01:29:09.682] Server  LOG     ✓ Compiled in 16ms
+[01:29:19.541] Browser LOG     {"dateValidation":null,"li":""}
+[01:31:21.308] Server  LOG     ✓ Compiled in 31ms
+[01:31:34.325] Browser LOG     {"data":{"data":{"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"},"status":"success"},"message":"Créé avec succès"}
+[01:31:34.325] Browser LOG     {"dateValidation":null,"li":""}
+[01:31:59.809] Server  LOG     ✓ Compiled in 15ms
+[01:32:45.575] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:36:36","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:32:51.673] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:32:53.840] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:36:44","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:32:58.707] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:34:59.967] Server  LOG     ✓ Compiled in 26ms
+[01:35:00.220] Server  LOG     ✓ Compiled in 16ms
+[01:35:20.400] Server  LOG     ✓ Compiled in 25ms
+[01:35:33.544] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:39:24","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:35:38.223] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:35:48.825] Server  LOG     ✓ Compiled in 22ms
+[01:37:07.941] Server  LOG     ✓ Compiled in 24ms
+[01:37:20.330] Server  LOG     ✓ Compiled in 22ms
+[01:37:27.983] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:19","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:37:32.779] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:37:36.610] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:27","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:37:39.509] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:37:49.528] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:41:40","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:37:53.956] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:38:49.720] Server  LOG     ✓ Compiled in 181ms
+[01:38:58.054] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:42:49","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:39:02.844] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:39:04.709] Server  LOG     ✓ Compiled in 16ms
+[01:39:05.407] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:42:56","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:39:11.675] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:39:15.411] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 14:43:06","id":5,"li":"mety","name":"mety","produit":"1"}
+[01:39:26.955] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":null,"id":5,"li":"mety","name":"mety","produit":"1"}
+[01:39:38.759] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:43:29","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:39:40.210] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:41:19.952] Server  LOG     ✓ Compiled in 13ms
+[01:41:29.592] Browser LOG     {"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 14:45:20","id":5,"li":"mety","name":"mety","produit":"1"}
+[01:41:39.314] Server  LOG     ✓ Compiled in 20ms
+[01:41:55.788] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:45:46","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:41:57.658] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:42:40.237] Server  LOG     ✓ Compiled in 13ms
+[01:42:57.275] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:46:48","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:43:02.024] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:43:06.025] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:46:57","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:43:15.980] Server  LOG     ✓ Compiled in 26ms
+[01:43:20.491] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":null,"id":6,"li":"test","name":"1bb","produit":"111"}
+[01:43:23.459] Browser LOG     {"activitePta":"1bb","cible":"454","dateValidation":"2026-04-08 14:47:14","id":6,"li":"test","name":"1bb","produit":"111"}
+[01:49:05.696] Server  LOG     ✓ Compiled in 170ms
+[01:49:07.053] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
+[01:49:11.858] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:49:11.868] Server  LOG     ✓ Compiled in 47ms
+[01:49:13.327] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:49:22.586] Server  LOG     ✓ Compiled in 19ms
+[01:49:38.017] Server  LOG     ✓ Compiled in 42ms
+[01:49:55.687] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
+[01:51:12.975] Server  LOG     ✓ Compiled in 213ms
+[01:51:12.979] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[01:51:14.118] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[01:51:20.756] Server  LOG     ✓ Compiled in 45ms
+[01:57:16.748] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:03:18.217] Server  LOG     ✓ Compiled in 116ms
+[02:03:18.703] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:03:50.201] Server  LOG     ✓ Compiled in 81ms
+[02:04:27.229] Server  LOG     ✓ Compiled in 14ms
+[02:05:00.719] Server  LOG     ✓ Compiled in 13ms
+[02:08:19.696] Server  LOG     ✓ Compiled in 20ms
+[02:12:26.826] Server  LOG     ✓ Compiled in 85ms
+[02:12:27.885] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:12:35.118] Server  LOG     ✓ Compiled in 36ms
+[02:13:03.115] Server  LOG     ✓ Compiled in 26ms
+[02:13:52.708] Server  LOG     ✓ Compiled in 24ms
+[02:14:16.582] Browser ERROR   uncaughtError: ReferenceError: logiqueInterventions is not defined
+[02:16:01.950] Server  LOG     ✓ Compiled in 52ms
+[02:16:01.964] Server  WARN    ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+[02:16:03.273] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[02:19:39.778] Server  LOG     ✓ Compiled in 43ms

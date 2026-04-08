@@ -11,12 +11,11 @@ interface LigneActiviteProps {
   canRemove: boolean;
   isTrimestriel: boolean;
   objectifSpecifiques?: ObjectifSpecifique[];
-  logiqueInterventions?: LogiqueIntervention[];
   setValue: UseFormSetValue<any>;  
   gridLayout: string;
 }
 
-export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue, gridLayout }: LigneActiviteProps) => {
+export const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], setValue, gridLayout }: LigneActiviteProps) => {
   // --- Hooks ---
   const { fields: effectsFields, append: appendEffect, remove: removeEffect } = useFieldArray({ control, name: `lignes.${index}.effects` as any });
   const { fields: impactsFields, append: appendImpact, remove: removeImpact } = useFieldArray({ control, name: `lignes.${index}.impacts` as any });
@@ -49,6 +48,22 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
   
  
   // ... à l'intérieur de votre composant LigneActivite ...
+
+  // Surveiller la sélection de l'objectif spécifique pour remplir automatiquement les autres champs
+  const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
+
+  useEffect(() => {
+    if (isTrimestriel && objectifSpecifiqueWatch) {
+      const selectedObj = objectifSpecifiques.find(obj => obj.name === objectifSpecifiqueWatch);
+      if (selectedObj) {
+        // Remplir automatiquement les champs avec les valeurs de l'objectif spécifique
+        setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
+        setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
+        setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
+        setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
+      }
+    }
+  }, [objectifSpecifiqueWatch, objectifSpecifiques, isTrimestriel, setValue, index]);
 
   // On surveille les valeurs des prévisions et réalisations pour cet index précis
 // ... à l'intérieur de votre composant LigneActivite ...
@@ -111,8 +126,8 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
               <option value="">Objectif spécifique</option>
               {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
                 // ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
-                <option key={obj.id} value={obj.nom}>
-                  {obj.nom} 
+                <option key={obj.id} value={obj.name}>
+                  {obj.name}
                 </option>
               ))}
             </select>
@@ -130,26 +145,11 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       <div className={colContainerClass}>
         {effectsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            {isTrimestriel ? (
-              <select
+            <textarea
                 {...register(`lignes.${index}.effects.${i}.value` as any)}
-                className={selectClass}
-              >
-                <option value="">Logique d'intervention</option>
-                {logiqueInterventions.map((logique: LogiqueIntervention) => (
-                  // ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
-                  <option key={logique.id} value={logique.nom}>
-                    {logique.nom}
-                  </option>
-                ))}
-              </select>
-            ) : (
-              <textarea 
-                {...register(`lignes.${index}.effects.${i}.value` as any)} 
-                className={textAreaClass} 
-                placeholder={`Effet ${i + 1}...`} 
+                className={textAreaClass}
+                placeholder={isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`}
               />
-            )}
             
             {effectsFields.length > 1 && (
               <button type="button" onClick={() => removeEffect(i)} className={closeBtnClass}>

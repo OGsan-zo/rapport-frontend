@@ -35,14 +35,17 @@ export const ObjectifSpecifiqueForm = () => {
 
     const handleCreate = async (data: ObjectifSpecifiqueFormValues, resetForm: () => void) => {
         setFeedback(null);
+        setIsLoading(true);
         try {
-            await objectifSpecifiqueService.create(data.nom);
+            const result = await objectifSpecifiqueService.create(data);
             resetForm();
             setFeedback({ type: "success", message: "Objectif spécifique créé avec succès !" });
-            fetchItems();
+            setItems((prev) => [...prev, result]);
             setTimeout(() => setFeedback(null), 3000);
         } catch (err: any) {
             setFeedback({ type: "error", message: err.message || "Erreur de création" });
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -63,11 +66,25 @@ export const ObjectifSpecifiqueForm = () => {
             await objectifSpecifiqueService.delete(deletingItem.id);
             toast.success("Objectif spécifique supprimé !");
             setDeletingItem(null);
-            fetchItems();
+            setItems((prev) => prev.filter((item) => item.id !== deletingItem.id));
         } catch (err: any) {
             toast.error(err.message || "Erreur lors de la suppression");
         } finally {
             setIsDeleting(false);
+        }
+    };
+    const handleValidate = async (id: number) => {
+        try {
+            const result = await objectifSpecifiqueService.validate(id);
+            toast.success("Objectif spécifique validé !");
+            console.log(result);
+            setItems((prev) =>
+                prev.map((item) =>
+                    item.id === id ? { ...item, dateValidation: result.dateValidation } : item
+                )
+            );
+        } catch (err: any) {
+            toast.error(err.message || "Erreur lors de la validation");
         }
     };
 
@@ -84,6 +101,7 @@ export const ObjectifSpecifiqueForm = () => {
                         isLoading={isLoading}
                         onEdit={setEditingItem}
                         onDelete={handleDeleteRequest}
+                        onValidate={handleValidate}
                     />
                 </div>
             </div>

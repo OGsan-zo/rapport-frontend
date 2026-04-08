@@ -6,5 +6,6 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
-  return callApiPost(request, "rapports/OS", ["name"]);
+  const requiredFields = ["name","li"];
+  return callApiPost(request, "rapports/OS", requiredFields);
 }
