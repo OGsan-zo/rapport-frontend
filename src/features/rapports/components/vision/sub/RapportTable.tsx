@@ -130,7 +130,9 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                     width: "100%", // Reste dans les limites de la page
                     maxWidth: "100%",
                     height: "auto", // Permet au tableau de s'adapter verticalement
-                    maxHeight: "100%" // Ne dépasse pas le conteneur parent
+                    maxHeight: "100%", // Ne dépasse pas le conteneur parent
+                    wordSpacing: "0.5px", // Force l'espacement entre les mots
+                    letterSpacing: "0.2px" // Espacement entre les lettres
                 }}
             >
                 <thead>

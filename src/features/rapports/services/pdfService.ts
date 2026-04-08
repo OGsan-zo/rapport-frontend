@@ -15,20 +15,19 @@ export const pdfService = {
             compress: true
         });
 
-        // Largeur de l'A4 en mm
         const pageWidth = isLandscape ? 297 : 210;
         const margin = 10;
         const contentWidth = pageWidth - (margin * 2);
 
+        // 1. On augmente significativement la windowWidth pour que le texte respire
+        // Pour un tableau complexe, 1600px est une bonne base.
+        const virtualWidth = 1600; 
+
         return new Promise((resolve, reject) => {
             doc.html(element, {
                 callback: (doc) => {
-                    // Supprimer la dernière page si elle est vide ou presque vide
                     const pageCount = doc.getNumberOfPages();
                     if (pageCount > 1) {
-                        // Vérifier si la dernière page a peu de contenu
-                        doc.setPage(pageCount);
-                        // Supprimer la dernière page
                         doc.deletePage(pageCount);
                     }
                     resolve(doc.output('blob'));
@@ -36,13 +35,16 @@ export const pdfService = {
                 x: margin,
                 y: margin,
                 width: contentWidth,
-                windowWidth: isLandscape ? 1400 : 800,
+                windowWidth: virtualWidth, // Fenêtre large pour éviter que les mots se touchent
                 html2canvas: {
-                    scale: 0.2645,
+                    // 2. SUPPRIMER LE SCALE. jsPDF le calcule tout seul 
+                    // via le rapport entre 'width' (277mm) et 'windowWidth' (1600px).
                     useCORS: true,
                     logging: false,
                     backgroundColor: "#ffffff",
+                    letterRendering: true, // Aide à mieux séparer les lettres
                 },
+                autoPaging: 'text',
             });
         });
     }
