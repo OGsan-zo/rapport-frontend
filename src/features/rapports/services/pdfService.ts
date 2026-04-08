@@ -4,7 +4,7 @@ export const pdfService = {
 
         // On définit une largeur de travail fixe pour que le rendu soit prévisible
         // A4 Portrait ~ 800px | A4 Paysage ~ 1400px (largeur maximale pour remplir la page)
-        const workerWidth = isLandscape ? 800 : 800;
+        const workerWidth = isLandscape ? 1400 : 800;
 
         const opt = {
             margin: isLandscape ? 5 : 10,
@@ -23,7 +23,7 @@ export const pdfService = {
                 orientation: isLandscape ? 'landscape' : 'portrait',
                 compress: true
             },
-            pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+            pagebreak: { mode: ['css', 'legacy'], avoid: ['tr', 'td', 'th'] }
         } as const;
 
         return await html2pdf().set(opt).from(element).output('blob');
