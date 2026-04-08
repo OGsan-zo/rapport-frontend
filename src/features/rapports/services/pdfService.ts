@@ -21,7 +21,7 @@ export const pdfService = {
 
         // 1. On augmente significativement la windowWidth pour que le texte respire
         // Pour un tableau complexe, 1600px est une bonne base.
-        const virtualWidth = 1600; 
+        const virtualWidth = 750; 
 
         return new Promise((resolve, reject) => {
             doc.html(element, {
