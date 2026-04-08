@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useFieldArray, UseFormSetValue, useWatch } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
 
@@ -60,14 +60,33 @@ export const LigneActiviteEditor = ({
   // --- Auto-remplissage des champs depuis l'objectif spécifique ---
   const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
 
+  const [isHorsPta, setIsHorsPta] = useState(true);
+  
   useEffect(() => {
+    setIsHorsPta(true);
     if (isTrimestriel && objectifSpecifiqueWatch) {
       const selectedObj = objectifSpecifiques.find(obj => obj.name === objectifSpecifiqueWatch);
+      let horsPta = true;
+      if (selectedObj?.activitePta) {
+        horsPta = false;
+        setIsHorsPta(false);
+      }
+      
       if (selectedObj) {
         setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
-        setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
-        setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
+        if (!horsPta) {
+          setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
+          setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');  
+        }
+        
         setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
+      }
+      
+      if (horsPta) {
+        setValue(`lignes.${index}.cibles.0.value`, 'hors pta');
+        setValue(`lignes.${index}.previsions.0.value`, 'hors pta');
+        setValue(`lignes.${index}.realisations.0.value`, 'hors pta');
+        setValue(`lignes.${index}.taux.0.value`, 'hors pta');
       }
     }
   }, [objectifSpecifiqueWatch, objectifSpecifiques, isTrimestriel, setValue, index]);
@@ -86,9 +105,13 @@ export const LigneActiviteEditor = ({
 
   useEffect(() => {
     tauxFields.forEach((_, i) => {
-      setValue(`lignes.${index}.taux.${i}.value`, calculerTaux(i));
+      if (isHorsPta) {
+        setValue(`lignes.${index}.taux.${i}.value`, 'hors pta');
+      } else {
+        setValue(`lignes.${index}.taux.${i}.value`, calculerTaux(i));
+      }
     });
-  }, [previsionsWatch, realisationsWatch]);
+  }, [previsionsWatch, realisationsWatch, isHorsPta, tauxFields, index, setValue]);
 
   // --- Grille dynamique synchronisée avec le parent ---
  
@@ -148,8 +171,9 @@ export const LigneActiviteEditor = ({
           <div key={field.id} className={itemBoxClass}>
             <textarea
               {...register(`lignes.${index}.effects.${i}.value`)}
-              className={textAreaClass}
+              className={`${textAreaClass} ${isTrimestriel ? 'pointer-events-none bg-slate-50' : ''}`}
               placeholder={isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`}
+              readOnly={isTrimestriel}
             />
             {effectsFields.length > 1 && (
               <button type="button" onClick={() => removeEffect(i)} className={closeBtnClass}>✕</button>
@@ -169,8 +193,9 @@ export const LigneActiviteEditor = ({
           <div key={field.id} className={itemBoxClass}>
             <textarea
               {...register(`lignes.${index}.impacts.${i}.value`)}
-              className={textAreaClass}
-              placeholder={isTrimestriel ? `Activité PTA ${i + 1}...` : `Impact ${i + 1}...`}
+              className={`${textAreaClass} ${isTrimestriel ? 'bg-slate-50' : ''}`}
+              placeholder={isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`}
+              readOnly={!isHorsPta}
             />
             {impactsFields.length > 1 && (
               <button type="button" onClick={() => removeImpact(i)} className={closeBtnClass}>✕</button>
@@ -195,7 +220,7 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {produitsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="text" {...register(`lignes.${index}.produits.${i}.value`)} className={inputClass} placeholder={`Produit ${i + 1}...`} required />
+                <input type="text" {...register(`lignes.${index}.produits.${i}.value`)} className={inputClass} placeholder={`Produit`} required readOnly={!isHorsPta} />
                 {produitsFields.length > 1 && <button type="button" onClick={() => removeProduit(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -206,7 +231,14 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={inputClass} placeholder={`Cible ${i + 1}...`} min="1" />
+                <input 
+                  key={`cible-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"}
+                  {...register(`lignes.${index}.cibles.${i}.value`)}
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder={`0`}
+                  readOnly={isHorsPta}
+                />
                 {ciblesFields.length > 1 && <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -218,10 +250,12 @@ export const LigneActiviteEditor = ({
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
                 <input 
-                  type="number"
-                  {...register(`lignes.${index}.previsions.${i}.value`)} 
-                  className={inputClass} 
-                  placeholder={`Prévision ${i + 1}...`}
+                  key={`prev-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"}
+                  {...register(`lignes.${index}.previsions.${i}.value`)}
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder="0"
+                  readOnly={isHorsPta}
                 />
                 {previsionsFields.length > 1 && <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>✕</button>}
               </div>
@@ -234,15 +268,18 @@ export const LigneActiviteEditor = ({
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
                 <input 
-                  type="number"
-                  {...register(`lignes.${index}.realisations.${i}.value`)} 
-                  className={inputClass} 
-                  placeholder={`Réalisation ${i + 1}...`}
+                  key={`real-${isHorsPta}`}
+                  type={isHorsPta ? "text" : "number"}
+                  {...register(`lignes.${index}.realisations.${i}.value`)}
+                  className={`${inputClass} ${isHorsPta ? 'pointer-events-none bg-slate-50' : ''}`}
+                  placeholder="0"
+                  readOnly={isHorsPta}
                 />
                 {realisationsFields.length > 1 && <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            {/* <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button> */}
+            {/* 
+            <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button> */}
           </div>
 
           {/* 9. Taux (calculé automatiquement, non modifiable) */}
@@ -254,9 +291,9 @@ export const LigneActiviteEditor = ({
                   <input
                     type="text"
                     {...register(`lignes.${index}.taux.${i}.value`)}
-                    value={valeurTaux}
+                    value={isHorsPta ? 'hors pta' : valeurTaux}
                     readOnly
-                    className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`}
+                    className={`${textAreaClass} font-bold ${isHorsPta ? 'text-slate-400' : 'text-blue-600'} pointer-events-none`}
                   />
                   <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 transform -translate-y-1/2">%</span>
                 </div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useFieldArray, Control, UseFormRegister, useWatch, useFormContext, UseFormSetValue } from "react-hook-form";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
-import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 
 interface LigneActiviteProps {
   control: Control<any>; // Remplace "any" par ton interface si besoin
