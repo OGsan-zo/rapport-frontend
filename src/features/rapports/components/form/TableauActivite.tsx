@@ -11,6 +11,7 @@ interface TableauActivitesProps {
   remove: UseFieldArrayRemove;
   isTrimestriel?: number;
   objectifSpecifiques?: ObjectifSpecifique[];
+  logiqueInterventions?: LogiqueIntervention[];
   setValue: UseFormSetValue<any>;
 }
 
@@ -21,6 +22,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
   remove, 
   isTrimestriel = 0,
   objectifSpecifiques = [],
+  logiqueInterventions = [],
   setValue
 }) => {
   const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
@@ -70,6 +72,7 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
                 isTrimestriel={isTrim}
                 canRemove={fields.length > 1}
                 objectifSpecifiques={objectifSpecifiques}
+                logiqueInterventions={logiqueInterventions}
                 setValue={setValue}
                 gridLayout={gridLayout}
               />

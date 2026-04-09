@@ -35,17 +35,14 @@ export const ObjectifSpecifiqueForm = () => {
 
     const handleCreate = async (data: ObjectifSpecifiqueFormValues, resetForm: () => void) => {
         setFeedback(null);
-        setIsLoading(true);
         try {
-            const result = await objectifSpecifiqueService.create(data);
+            await objectifSpecifiqueService.create(data.nom);
             resetForm();
             setFeedback({ type: "success", message: "Objectif spécifique créé avec succès !" });
-            setItems((prev) => [...prev, result]);
+            fetchItems();
             setTimeout(() => setFeedback(null), 3000);
         } catch (err: any) {
             setFeedback({ type: "error", message: err.message || "Erreur de création" });
-        } finally {
-            setIsLoading(false);
         }
     };
 
@@ -66,42 +63,27 @@ export const ObjectifSpecifiqueForm = () => {
             await objectifSpecifiqueService.delete(deletingItem.id);
             toast.success("Objectif spécifique supprimé !");
             setDeletingItem(null);
-            setItems((prev) => prev.filter((item) => item.id !== deletingItem.id));
+            fetchItems();
         } catch (err: any) {
             toast.error(err.message || "Erreur lors de la suppression");
         } finally {
             setIsDeleting(false);
         }
     };
-    const handleValidate = async (id: number) => {
-        try {
-            const result = await objectifSpecifiqueService.validate(id);
-            toast.success("Objectif spécifique validé !");
-            console.log(result);
-            setItems((prev) =>
-                prev.map((item) =>
-                    item.id === id ? { ...item, dateValidation: result.dateValidation } : item
-                )
-            );
-        } catch (err: any) {
-            toast.error(err.message || "Erreur lors de la validation");
-        }
-    };
 
     return (
         <>
-            <div className="w-full space-y-8">
-                <div className="w-full">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div className="lg:col-span-1">
                     <ObjectifSpecifiqueCreateForm onSubmit={handleCreate} feedback={feedback} />
                 </div>
 
-                <div className="w-full">
+                <div className="lg:col-span-2">
                     <ObjectifSpecifiqueList
                         items={items}
                         isLoading={isLoading}
                         onEdit={setEditingItem}
                         onDelete={handleDeleteRequest}
-                        onValidate={handleValidate}
                     />
                 </div>
             </div>

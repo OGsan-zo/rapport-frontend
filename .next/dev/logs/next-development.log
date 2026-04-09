@@ -184,3 +184,284 @@
 [01:30:01.730] Server  LOG     ✓ Compiled in 68ms
 [01:30:20.885] Server  LOG     ✓ Compiled in 221ms
 [01:31:25.246] Server  LOG     ✓ Compiled in 55ms
+[01:33:36.792] Browser LOG     isHorsPta true
+[01:33:41.392] Browser LOG     activitePta 1bb jfawpo[j wafeafeaw
+[01:36:07.999] Browser LOG     []
+[01:36:07.999] Browser LOG     []
+[01:36:09.182] Browser LOG     [{"activitePta":"","cible":"","dateValidation":"2026-04-09 11:31:41","id":7,"li":"Kors taxe","name":"Hors tace","produit":""},{"activitePta":"1bb jfawpo[j wafeafeaw","cible":"454","dateValidation":"2026-04-09 12:03:45","id":6,"li":"test nfiapowf e lk;wjmfioewa[ f","name":"1bb fjieowjfewq f waopf e jifoapfa jfieawpo ","produit":"111"},{"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 16:32:40","id":5,"li":"mety","name":"mety","produit":"1"}]
+[01:36:09.182] Browser LOG     [{"activitePta":"","cible":"","dateValidation":"2026-04-09 11:31:41","id":7,"li":"Kors taxe","name":"Hors tace","produit":""},{"activitePta":"1bb jfawpo[j wafeafeaw","cible":"454","dateValidation":"2026-04-09 12:03:45","id":6,"li":"test nfiapowf e lk;wjmfioewa[ f","name":"1bb fjieowjfewq f waopf e jifoapfa jfieawpo ","produit":"111"},{"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 16:32:40","id":5,"li":"mety","name":"mety","produit":"1"}]
+[01:36:10.251] Browser LOG     [{"activitePta":"","cible":"","dateValidation":"2026-04-09 11:31:41","id":7,"li":"Kors taxe","name":"Hors tace","produit":""},{"activitePta":"1bb jfawpo[j wafeafeaw","cible":"454","dateValidation":"2026-04-09 12:03:45","id":6,"li":"test nfiapowf e lk;wjmfioewa[ f","name":"1bb fjieowjfewq f waopf e jifoapfa jfieawpo ","produit":"111"},{"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 16:32:40","id":5,"li":"mety","name":"mety","produit":"1"}]
+[01:36:10.251] Browser LOG     [{"activitePta":"","cible":"","dateValidation":"2026-04-09 11:31:41","id":7,"li":"Kors taxe","name":"Hors tace","produit":""},{"activitePta":"1bb jfawpo[j wafeafeaw","cible":"454","dateValidation":"2026-04-09 12:03:45","id":6,"li":"test nfiapowf e lk;wjmfioewa[ f","name":"1bb fjieowjfewq f waopf e jifoapfa jfieawpo ","produit":"111"},{"activitePta":"mety","cible":"1","dateValidation":"2026-04-08 16:32:40","id":5,"li":"mety","name":"mety","produit":"1"}]
+[01:38:31.080] Browser LOG     activitePta 1bb jfawpo[j wafeafeaw
+[02:29:59.465] Server  LOG     ✓ Compiled in 80ms
+[02:30:33.632] Server  LOG     ✓ Compiled in 134ms
+[02:30:34.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:30:34.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:30:34.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:21.470] Server  LOG     ✓ Compiled in 117ms
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:22.396] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:32:23.398] Browser ERROR   ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx:18:30
+Parsing ecmascript source code failed
+  16 | export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalProps> = ({ item, onSuccess, onCancel }) => {
+  17 |     const {
+> 18 |         register,"use client";
+     |                              ^
+  19 |
+  20 | import React, { useEffect } from "react";
+  21 | import { useForm } from "react-hook-form";
+
+Unexpected token `;`. Expected an identifier
+
+Import traces:
+  Client Component Browser:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component Browser]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Client Component Browser]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx [Client Component SSR]
+    ./src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueForm.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Client Component SSR]
+    ./src/app/dashboard/OS/page.tsx [Server Component]
+[02:33:15.420] Server  LOG     ✓ Compiled in 52ms
+[02:33:28.943] Server  LOG     ✓ Compiled in 70ms
+[02:33:51.427] Server  LOG     ✓ Compiled in 92ms
+[02:34:13.163] Server  LOG     ✓ Compiled in 18ms
+[02:36:12.846] Server  LOG     ✓ Compiled in 204ms
+[02:36:28.883] Server  LOG     ✓ Compiled in 245ms
+[02:37:09.408] Server  LOG     ✓ Compiled in 161ms
+[02:39:50.646] Server  LOG     ✓ Compiled in 165ms
+[02:40:00.285] Server  LOG     ✓ Compiled in 66ms
+[02:41:56.511] Server  LOG     ✓ Compiled in 92ms
+[02:42:09.793] Server  LOG     ○ Compiling /dashboard/LI ...
+[02:55:21.393] Server  LOG     ✓ Compiled in 51ms
+[02:55:47.343] Server  LOG     ✓ Compiled in 75ms
+[02:56:24.224] Server  LOG     ✓ Compiled in 45ms
+[03:04:46.227] Server  LOG     ✓ Compiled in 322ms
+[03:05:01.628] Server  LOG     ✓ Compiled in 212ms
+[03:05:04.148] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[03:06:19.888] Server  LOG     ✓ Compiled in 57ms
+[03:09:18.492] Server  LOG     ✓ Compiled in 55ms
+[03:22:34.355] Server  LOG     ✓ Compiled in 66ms
+[03:22:51.454] Server  LOG     ✓ Compiled in 15ms
+[03:23:11.834] Server  LOG     ✓ Compiled in 57ms
+[03:23:52.898] Server  LOG     ✓ Compiled in 22ms
+[03:25:05.438] Server  LOG     ✓ Compiled in 39ms
+[03:25:10.810] Server  LOG     ✓ Compiled in 34ms
+[03:25:18.139] Server  LOG     ✓ Compiled in 27ms
+[03:25:23.091] Server  LOG     ✓ Compiled in 34ms
+[03:26:40.894] Server  LOG     ✓ Compiled in 28ms
+[03:27:53.010] Server  LOG     ✓ Compiled in 25ms

@@ -20,7 +20,9 @@ import { audioService } from "@/hooks/audioService";
 // 👇 Import du nouveau composant
 import TableauActivites from "./TableauActivite";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
+import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 
 export const ConsolidationForm = () => {
   const router = useRouter();
@@ -39,6 +41,7 @@ export const ConsolidationForm = () => {
     },
   });
   const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
+  const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const { fields, append, remove } = useFieldArray({ control, name: "lignes" });
   const calendrierResult = usePeriodes(true);
@@ -112,6 +115,8 @@ export const ConsolidationForm = () => {
           try {
               const OS = await objectifSpecifiqueService.getAll();
               setObjectifSpecifiques(OS);
+              const LI = await logiqueInterventionService.getAll();
+              setLogiqueInterventions(LI);
           } catch {
               toast.error("Erreur lors du chargement des objectifs spécifiques");
           } finally {
@@ -121,10 +126,10 @@ export const ConsolidationForm = () => {
   
       useEffect(() => {
           // Ne charger les listes OS/LI qu'une seule fois si mode trimestriel
-          if (isTrimestriel && objectifSpecifiques.length === 0) {
+          if (isTrimestriel && objectifSpecifiques.length === 0 && logiqueInterventions.length === 0) {
             fetchItems();
           }
-        }, [fetchItems, isTrimestriel, objectifSpecifiques.length]);
+        }, [fetchItems, isTrimestriel, objectifSpecifiques.length, logiqueInterventions.length]);
 
   const onInvalid = (errors: any) => {
     const champsManquants = Object.keys(errors).join(", ");
@@ -168,6 +173,7 @@ export const ConsolidationForm = () => {
         remove={remove}
         isTrimestriel={Number(selectedTypeId)}
         objectifSpecifiques={objectifSpecifiques}
+        logiqueInterventions={logiqueInterventions}
         setValue={setValue}
       />
 
@@ -193,7 +199,7 @@ export const ConsolidationForm = () => {
 
       {/* Rendu PDF caché */}
       <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-        <div id="pdf-render-zone" style={{ width: isTrimestriel ? "210mm" : "210mm" }}>
+        <div id="pdf-render-zone" style={{ width: isTrimestriel ? "297mm" : "210mm" }}>
           <RapportView data={[rapportPreview]} isPrintMode={true} isLandscape={isTrimestriel} />
         </div>
       </div>

@@ -6,7 +6,7 @@ export async function PUT(
   context: { params: Promise<{ id: string }> }
 ) {
   const { id } = await context.params;
-  const requiredFields = ["name","li"];
+  const requiredFields = ["name"];
   return callApiPut(req, `rapports/OS/${id}`, requiredFields);
 }
 export async function DELETE(

@@ -736,7 +736,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             marginBottom: "4px"
                         },
                         children: [
-                            isPdf && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            isPdf && !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -745,7 +745,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 82,
-                                columnNumber: 39
+                                columnNumber: 57
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
@@ -807,7 +807,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             marginBottom: "4px"
                         },
                         children: [
-                            isPdf && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            isPdf && !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -816,7 +816,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 106,
-                                columnNumber: 39
+                                columnNumber: 57
                             }, ("TURBOPACK compile-time value", void 0)),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
@@ -829,7 +829,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                                 lineNumber: 107,
                                 columnNumber: 29
                             }, ("TURBOPACK compile-time value", void 0)),
-                            i === items.length - 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                            i === items.length - 1 && !isNaN(parseFloat(item.name)) && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 style: {
                                     color: "#000000",
                                     fontWeight: "bold"
@@ -838,7 +838,7 @@ const RapportTable = ({ rapport, isPdf = true })=>{
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/vision/sub/RapportTable.tsx",
                                 lineNumber: 108,
-                                columnNumber: 56
+                                columnNumber: 89
                             }, ("TURBOPACK compile-time value", void 0))
                         ]
                     }, i, true, {
@@ -1722,7 +1722,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hoo
 ;
 ;
 ;
-const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], setValue, gridLayout })=>{
+const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestriel = false, objectifSpecifiques = [], logiqueInterventions = [], setValue, gridLayout })=>{
     // --- Hooks ---
     const { fields: effectsFields, append: appendEffect, remove: removeEffect } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useFieldArray"])({
         control,
@@ -1803,29 +1803,6 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
         appendObservation
     ]);
     // ... à l'intérieur de votre composant LigneActivite ...
-    // Surveiller la sélection de l'objectif spécifique pour remplir automatiquement les autres champs
-    const objectifSpecifiqueWatch = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useWatch"])({
-        control,
-        name: `lignes.${index}.titre`
-    });
-    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["useEffect"])(()=>{
-        if (isTrimestriel && objectifSpecifiqueWatch) {
-            const selectedObj = objectifSpecifiques.find((obj)=>obj.name === objectifSpecifiqueWatch);
-            if (selectedObj) {
-                // Remplir automatiquement les champs avec les valeurs de l'objectif spécifique
-                setValue(`lignes.${index}.effects.0.value`, selectedObj.li || '');
-                setValue(`lignes.${index}.impacts.0.value`, selectedObj.activitePta || '');
-                setValue(`lignes.${index}.produits.0.value`, selectedObj.produit || '');
-                setValue(`lignes.${index}.cibles.0.value`, selectedObj.cible || '');
-            }
-        }
-    }, [
-        objectifSpecifiqueWatch,
-        objectifSpecifiques,
-        isTrimestriel,
-        setValue,
-        index
-    ]);
     // On surveille les valeurs des prévisions et réalisations pour cet index précis
     // ... à l'intérieur de votre composant LigneActivite ...
     // On surveille les valeurs des prévisions et réalisations
@@ -1878,7 +1855,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                 children: String(index + 1).padStart(2, '0')
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 114,
+                lineNumber: 99,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1894,22 +1871,22 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                                 children: "Objectif spécifique"
                             }, void 0, false, {
                                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                lineNumber: 126,
+                                lineNumber: 111,
                                 columnNumber: 15
                             }, ("TURBOPACK compile-time value", void 0)),
                             objectifSpecifiques.map((obj)=>// ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
-                                    value: obj.name,
-                                    children: obj.name
+                                    value: obj.nom,
+                                    children: obj.nom
                                 }, obj.id, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 129,
+                                    lineNumber: 114,
                                     columnNumber: 17
                                 }, ("TURBOPACK compile-time value", void 0)))
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 122,
+                        lineNumber: 107,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                         ...register(`lignes.${index}.titre`),
@@ -1917,17 +1894,17 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                         placeholder: "Nom de l'activité..."
                     }, void 0, false, {
                         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                        lineNumber: 135,
+                        lineNumber: 120,
                         columnNumber: 13
                     }, ("TURBOPACK compile-time value", void 0))
                 }, void 0, false, {
                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                    lineNumber: 120,
+                    lineNumber: 105,
                     columnNumber: 9
                 }, ("TURBOPACK compile-time value", void 0))
             }, void 0, false, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 119,
+                lineNumber: 104,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1936,14 +1913,40 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                     effectsFields.map((field, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                             className: itemBoxClass,
                             children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                                isTrimestriel ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("select", {
+                                    ...register(`lignes.${index}.effects.${i}.value`),
+                                    className: selectClass,
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                            value: "",
+                                            children: "Logique d'intervention"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
+                                            lineNumber: 138,
+                                            columnNumber: 17
+                                        }, ("TURBOPACK compile-time value", void 0)),
+                                        logiqueInterventions.map((logique)=>// ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("option", {
+                                                value: logique.nom,
+                                                children: logique.nom
+                                            }, logique.id, false, {
+                                                fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
+                                                lineNumber: 141,
+                                                columnNumber: 19
+                                            }, ("TURBOPACK compile-time value", void 0)))
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
+                                    lineNumber: 134,
+                                    columnNumber: 15
+                                }, ("TURBOPACK compile-time value", void 0)) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                                     ...register(`lignes.${index}.effects.${i}.value`),
                                     className: textAreaClass,
-                                    placeholder: isTrimestriel ? "Logique d'intervention" : `Effet ${i + 1}...`
+                                    placeholder: `Effet ${i + 1}...`
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                                    lineNumber: 148,
-                                    columnNumber: 13
+                                    lineNumber: 147,
+                                    columnNumber: 15
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 effectsFields.length > 1 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
                                     type: "button",
@@ -1977,7 +1980,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                             ]
                         }, field.id, true, {
                             fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                            lineNumber: 147,
+                            lineNumber: 132,
                             columnNumber: 11
                         }, ("TURBOPACK compile-time value", void 0))),
                     !isTrimestriel && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -1995,7 +1998,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-                lineNumber: 145,
+                lineNumber: 130,
                 columnNumber: 7
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -2376,7 +2379,7 @@ const LigneActivite = ({ control, register, index, remove, canRemove, isTrimestr
         ]
     }, void 0, true, {
         fileName: "[project]/src/features/rapports/components/form/LigneActivite.tsx",
-        lineNumber: 111,
+        lineNumber: 96,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -2520,101 +2523,53 @@ const objectifSpecifiqueService = {
         // L'API retourne { name, id }, on mappe vers { nom, id }
         return items.map((item)=>({
                 id: item.id,
-                name: item.name,
-                li: item.li || "",
-                activitePta: item.activitePta,
-                produit: item.produit,
-                cible: item.cible
+                nom: item.name
             }));
     },
-    create: async (data)=>{
+    create: async (nom)=>{
         const response = await fetchAuth("/api/rapports/OS", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: data.name,
-                li: data.li,
-                activitePta: data.activitePta,
-                produit: data.produit,
-                cible: data.cible
+                name: nom
             })
         });
         if (!response.ok) {
             const err = await response.json().catch(()=>({}));
             throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
         }
-        const result = await response.json();
-        const item = result.data || result;
+        const data = await response.json();
+        const item = data.data || data;
         return {
             id: item.id,
-            name: item.name,
-            li: item.li || "",
-            activitePta: item.activitePta,
-            produit: item.produit,
-            cible: item.cible,
-            dateValidation: item.dateValidation || null
+            nom: item.name
         };
     },
-    update: async (id, data)=>{
+    update: async (id, nom)=>{
         const response = await fetchAuth(`/api/rapports/OS/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                name: data.name,
-                li: data.li,
-                activitePta: data.activitePta,
-                produit: data.produit,
-                cible: data.cible
+                name: nom
             })
         });
         if (!response.ok) {
             const err = await response.json().catch(()=>({}));
             throw new Error(err.message || err.error || `Erreur serveur: ${response.status}`);
         }
-        const result = await response.json();
-        const item = result.data || result;
+        const data = await response.json();
+        const item = data.data || data;
         return {
             id: item.id,
-            name: item.name,
-            li: item.li || "",
-            activitePta: item.activitePta,
-            produit: item.produit,
-            cible: item.cible,
-            dateValidation: item.dateValidation || null
+            nom: item.name
         };
     },
     // Pas d'endpoint DELETE dans l'API pour l'instant
-    delete: async (_id)=>{
-        await fetchAuth(`/api/rapports/OS/${_id}`, {
-            method: "DELETE"
-        });
-    },
-    validate: async (id)=>{
-        const response = await fetchAuth(`/api/rapports/OS/${id}/validate`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                name: ""
-            })
-        });
-        const result = await response.json();
-        const item = result.data.data;
-        return {
-            id: item.id,
-            name: item.name,
-            li: item.li || "",
-            activitePta: item.activitePta,
-            produit: item.produit,
-            cible: item.cible,
-            dateValidation: item.dateValidation || null
-        };
-    }
+    delete: async (_id)=>{}
 };
 }),
 "[project]/src/features/admin/services/logiqueInterventionService.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {

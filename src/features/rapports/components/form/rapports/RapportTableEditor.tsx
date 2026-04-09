@@ -7,7 +7,9 @@ import { LigneActiviteEditor } from "../utils/LigneActiviteEditor";
 import { rapportService } from "@/features/rapports/services/rapportService";
 import { toast } from "react-hot-toast";
 import { ObjectifSpecifique } from "@/features/admin/type/objectifSpecifique/objectifSpecifiqueSchema";
+import { LogiqueIntervention } from "@/features/admin/type/logiqueIntervention/logiqueInterventionSchema";
 import { objectifSpecifiqueService } from "@/features/admin/services/objectifSpecifiqueService";
+import { logiqueInterventionService } from "@/features/admin/services/logiqueInterventionService";
 
 interface RapportTableEditorProps {
   rapport: ApiRapport;
@@ -18,15 +20,18 @@ interface RapportTableEditorProps {
 export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport, onSuccess, isSupervision = false }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [objectifSpecifiques, setObjectifSpecifiques] = useState<ObjectifSpecifique[]>([]);
- 
+  const [logiqueInterventions, setLogiqueInterventions] = useState<LogiqueIntervention[]>([]);
+
   const isTrimestriel = rapport?.calendrier?.typeCalendrier?.id;
   const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
   const fetchItems = useCallback(async () => {
     try {
-      const [OS] = await Promise.all([
-        objectifSpecifiqueService.getAll()
+      const [OS, LI] = await Promise.all([
+        objectifSpecifiqueService.getAll(),
+        logiqueInterventionService.getAll(),
       ]);
       setObjectifSpecifiques(OS);
+      setLogiqueInterventions(LI);
     } catch {
       toast.error("Erreur lors du chargement des objectifs spécifiques");
     }
@@ -34,10 +39,10 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
 
   useEffect(() => {
     // Ne charger les listes OS/LI qu'une seule fois si mode trimestriel
-    if (isTrim && objectifSpecifiques.length === 0) {
+    if (isTrim && objectifSpecifiques.length === 0 && logiqueInterventions.length === 0) {
       fetchItems();
     }
-  }, [fetchItems, isTrim, objectifSpecifiques.length]);
+  }, [fetchItems, isTrim, objectifSpecifiques.length, logiqueInterventions.length]);
 
   // 1. DÉTECTION DU TYPE DE CALENDRIER (Ajuste "type" ou "name" selon ton API)
   
@@ -73,7 +78,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   // sinon les selects n'ont pas encore leurs options et la valeur par défaut ne s'applique pas.
   useEffect(() => {
     if (!rapport?.activites) return;
-    if (isTrim && (objectifSpecifiques.length === 0)) return;
+    if (isTrim && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
 
     const formattedData = rapport.activites.map((act) => ({
       titre: act.activite.name,
@@ -87,7 +92,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
       observations: act.observations?.length ? act.observations.map(o => ({ value: o.name })) : [{ value: "" }]
     }));
     reset({ lignes: formattedData });
-  }, [rapport, reset, isTrim, objectifSpecifiques]);
+  }, [rapport, reset, isTrim, objectifSpecifiques, logiqueInterventions]);
 
   // LOGIQUE DE SOUMISSION
   const onSubmit = async (data: any) => {
@@ -188,6 +193,7 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
                   canRemove={fields.length > 1}
                   isTrimestriel={isTrim}
                   objectifSpecifiques={objectifSpecifiques}
+                  logiqueInterventions={logiqueInterventions}
                   setValue={setValue}
                   gridLayout={gridLayout}
                   isSupervision={isSupervision}
