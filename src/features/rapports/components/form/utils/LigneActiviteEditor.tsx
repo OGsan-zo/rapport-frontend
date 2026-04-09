@@ -236,7 +236,7 @@ export const LigneActiviteEditor = ({
                 {previsionsFields.length > 1 && <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button>
+            {/* <button type="button" onClick={() => appendPrevision({ value: "" })} className={addBtnClass}>+ prévision</button> */}
           </div>
 
           {/* 8. Réalisations */}
@@ -252,7 +252,7 @@ export const LigneActiviteEditor = ({
                 {realisationsFields.length > 1 && <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
-            <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button>
+            {/* <button type="button" onClick={() => appendRealisation({ value: "" })} className={addBtnClass}>+ réalisation</button> */}
           </div>
 
           {/* 9. Taux (calculé automatiquement, non modifiable) */}

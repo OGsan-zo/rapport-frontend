@@ -141,7 +141,7 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
                     <input
                         {...register("emailCopie")}
                         type="email"
-                        placeholder="votre@email.com"
+                        placeholder="exemple@gmail.com"
                         className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.emailCopie ? "border-red-500" : "border-slate-300"}`}
                     />
                     {errors.emailCopie && <p className="text-[10px] text-red-600 font-bold">{errors.emailCopie.message}</p>}

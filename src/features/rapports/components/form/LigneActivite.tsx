@@ -56,9 +56,37 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
 // On surveille les valeurs des prévisions et réalisations
   const previsionsWatch = useWatch({ control, name: `lignes.${index}.previsions` });
   const realisationsWatch = useWatch({ control, name: `lignes.${index}.realisations` });
+  const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
+
+  // Effet pour mettre à jour tous les champs quand l'objectif spécifique change
+  useEffect(() => {
+    if (objectifSpecifiqueWatch === "Hors PTA") {
+      // Mettre à jour tous les champs avec "Hors PTA"
+      effectsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.effects.${i}.value`, "Hors PTA");
+      });
+      ciblesFields.forEach((_, i) => {
+        setValue(`lignes.${index}.cibles.${i}.value`, "Hors PTA");
+      });
+      previsionsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.previsions.${i}.value`, "Hors PTA");
+      });
+      realisationsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.realisations.${i}.value`, "Hors PTA");
+      });
+      tauxFields.forEach((_, i) => {
+        setValue(`lignes.${index}.taux.${i}.value`, "Hors PTA");
+      });
+    }
+  }, [objectifSpecifiqueWatch, index, setValue, effectsFields, ciblesFields, previsionsFields, realisationsFields, tauxFields]);
 
   // Fonction pour calculer le taux pour une ligne i donnée
   const calculerTaux = (i: number) => {
+    // Si c'est "Hors PTA", on retourne directement cette valeur
+    if (objectifSpecifiqueWatch === "Hors PTA") {
+      return "Hors PTA";
+    }
+    
     const prev = parseFloat(previsionsWatch?.[i]?.value) || 0;
     const real = parseFloat(realisationsWatch?.[i]?.value) || 0;
     
@@ -68,6 +96,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
     }
     return ((real/prev) * 100).toFixed(2);
   };
+  
   useEffect(() => {
     tauxFields.forEach((_, i) => {
       const resultatCalcul = calculerTaux(i);
@@ -76,7 +105,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       // C'est ce qui permet de récupérer la valeur au submit !
       setValue(`lignes.${index}.taux.${i}.value`, resultatCalcul);
     });
-  }, [previsionsWatch, realisationsWatch, setValue]);
+  }, [previsionsWatch, realisationsWatch, objectifSpecifiqueWatch, setValue]);
 
 
   // const gridLayout = isTrimestriel
@@ -109,6 +138,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
               className={`${selectClass} font-bold text-slate-800`}
             >
               <option value="">Objectif spécifique</option>
+              <option value="Hors PTA">Hors PTA</option>
               {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
                 // ⚠️ Assure-toi que obj.id et obj.libelle correspondent à ton schéma réel
                 <option key={obj.id} value={obj.nom}>
@@ -131,18 +161,29 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
         {effectsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
             {isTrimestriel ? (
-              <select
-                {...register(`lignes.${index}.effects.${i}.value` as any)}
-                className={selectClass}
-              >
-                <option value="">Logique d'intervention</option>
-                {logiqueInterventions.map((logique: LogiqueIntervention) => (
-                  // ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
-                  <option key={logique.id} value={logique.nom}>
-                    {logique.nom}
-                  </option>
-                ))}
-              </select>
+              <>
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.effects.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <select
+                    {...register(`lignes.${index}.effects.${i}.value` as any)}
+                    className={selectClass}
+                  >
+                    <option value="">Logique d'intervention</option>
+                    {logiqueInterventions.map((logique: LogiqueIntervention) => (
+                      // ⚠️ Assure-toi que logique.id et logique.libelle correspondent à ton schéma réel
+                      <option key={logique.id} value={logique.nom}>
+                        {logique.nom}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </>
             ) : (
               <textarea 
                 {...register(`lignes.${index}.effects.${i}.value` as any)} 
@@ -207,7 +248,16 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={inputClass} placeholder={`0`} min="1" />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.cibles.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input type="number" {...register(`lignes.${index}.cibles.${i}.value` as any)} className={inputClass} placeholder={`0`} min="1" />
+                )}
                 {ciblesFields.length > 1 && (
                   <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -222,12 +272,21 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input 
-                  type="number"
-                  {...register(`lignes.${index}.previsions.${i}.value` as any)} 
-                  className={inputClass} 
-                  placeholder="0" 
-                />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.previsions.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input 
+                    type="number"
+                    {...register(`lignes.${index}.previsions.${i}.value` as any)} 
+                    className={inputClass} 
+                    placeholder="0" 
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -236,12 +295,21 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           <div className={colContainerClass}>
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input 
-                  type="number"
-                  {...register(`lignes.${index}.realisations.${i}.value` as any)} 
-                  className={inputClass} 
-                  placeholder="0" 
-                />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.realisations.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input 
+                    type="number"
+                    {...register(`lignes.${index}.realisations.${i}.value` as any)} 
+                    className={inputClass} 
+                    placeholder="0" 
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -249,16 +317,16 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
           {/* 8. Taux (Calculé automatiquement à l'affichage) */}
           <div className={colContainerClass}>
             {tauxFields.map((field, i) => {
-              const valeurTaux = calculerTaux(i);
+              const valeurTaux = objectifSpecifiqueWatch === "Hors PTA" ? "Hors PTA" : calculerTaux(i);
               return (
                 <div key={field.id} className={`${itemBoxClass} bg-slate-50 border-blue-100`}>
-                  <input 
-                    type="text" // On utilise text car c'est une valeur calculée affichée
-                    {...register(`lignes.${index}.taux.${i}.value` as any)}
-                    value={valeurTaux}
-                    // readOnly
-                    className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`} 
-                  />
+                    <input
+                      type="text"
+                      {...register(`lignes.${index}.taux.${i}.value` as any, { value: "Hors PTA" })}
+                      className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`}
+                      readOnly
+                    />
+                  
                   <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
                 </div>
               );
