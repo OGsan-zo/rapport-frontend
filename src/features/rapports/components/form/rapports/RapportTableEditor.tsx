@@ -78,7 +78,10 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   // sinon les selects n'ont pas encore leurs options et la valeur par défaut ne s'applique pas.
   useEffect(() => {
     if (!rapport?.activites) return;
-    if (isTrim && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;
+    if (!isSupervision) {
+      if (isTrim && (objectifSpecifiques.length === 0 || logiqueInterventions.length === 0)) return;  
+    }
+    
 
     const formattedData = rapport.activites.map((act) => ({
       titre: act.activite.name,

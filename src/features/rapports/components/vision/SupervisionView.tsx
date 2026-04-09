@@ -170,6 +170,22 @@ export const SupervisionView: React.FC = () => {
             setSelectedForPdf(null);
         }, 600);
     };
+    const [selectedForPdfRay, setSelectedForPdfRay] = useState<ApiRapport | null>(null);
+    const handlePdfClick = async (rapport: ApiRapport) => {
+            const idRp = rapport.id !== undefined ? rapport.id : 0;
+            const isLandscape = rapport.calendrier?.typeCalendrier?.id === 3 || rapport.calendrier?.typeCalendrier?.id === 4;
+            setGeneratingId(idRp);
+            setSelectedForPdfRay(rapport);
+    
+            setTimeout(() => {
+                const year = new Date(rapport.calendrier.dateDebut).getFullYear();
+                exportToPdf("rapport-a4-container", `Rapport_H${year}_ID${rapport.id}.pdf`, isLandscape)
+                    .finally(() => {
+                        setGeneratingId(null);
+                        setSelectedForPdfRay(null);
+                    });
+            }, 500);
+    };
 
     const handleExportWord = async (reports: ApiRapport[]) => {
         // 1. Filtrer pour ne garder que les rapports dont le statut est "VALIDE"
@@ -280,7 +296,7 @@ export const SupervisionView: React.FC = () => {
                         rapports={filtered}
                         isLoading={isLoading}
                         generatingId={generatingId}
-                        onPdfClick={(r) => handleConsulter([r])}
+                        onPdfClick={handlePdfClick}
                         onHistoryClick={handleOpenHistory}
                         onUpdate={handleRapportUpdated}
                     />
@@ -311,6 +327,17 @@ export const SupervisionView: React.FC = () => {
                             data={selectedForPdf}
                             isPrintMode={true}
                             isPdf={isPdfMode} // Transmission de l'argument ici
+                        />
+                    </div>
+                </div>
+            )}
+            {selectedForPdfRay && (
+                <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
+                    <div id="rapport-a4-container" style={{ width: "210mm" }}>
+                        <RapportView
+                            data={[selectedForPdfRay]}
+                            isPrintMode={true}
+                            isLandscape={selectedForPdfRay.calendrier?.typeCalendrier?.id === 3}
                         />
                     </div>
                 </div>

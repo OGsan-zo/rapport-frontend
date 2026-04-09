@@ -32,11 +32,11 @@ export const LogiqueInterventionCreateForm = ({ onSubmit, feedback }: LogiqueInt
 
             <div className="space-y-3">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Logique d'intervention</label>
-                <input
-                    type="text"
+                <textarea
                     placeholder="Nom de la logique d'intervention"
                     {...register("nom")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.nom ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    rows={3}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition resize-none ${errors.nom ? "border-red-400 bg-red-50 text-red-900 placeholder-red-400" : "border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:border-slate-300 focus:bg-slate-50"}`}
                 />
                 {errors.nom && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.nom.message}</p>}
             </div>

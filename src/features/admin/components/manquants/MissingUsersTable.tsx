@@ -43,6 +43,11 @@ export const MissingUsersTable: React.FC<MissingUsersTableProps> = ({ users, isL
         
         try {
             const result = await adminService.envoyerMail(selectedUser.email, calendrierPeriod);
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (selectedUser.emailCopie?.trim() && emailRegex.test(selectedUser.emailCopie)) {
+                await adminService.envoyerMail(selectedUser.emailCopie, calendrierPeriod);
+            }
             if (result.success) {
                 toast.success(`Email envoyé avec succès à ${selectedUser.email}!`);
             } else {

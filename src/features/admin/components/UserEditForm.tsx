@@ -16,6 +16,7 @@ const userEditSchema = z.object({
     rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
     mdp: z.string().optional(),
     conf_mdp: z.string().optional(),
+    emailCopie: z.string().email("Adresse email invalide").optional(),
     sigle: z.string().min(2, "Le sigle doit faire au moins 2 caractères"),
 }).superRefine((data, ctx) => {
     const mdpFilled = data.mdp && data.mdp.trim() !== "";
@@ -72,6 +73,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
             rang: user.rang?.toString() ?? "0",
             mdp: "",
             conf_mdp: "",
+            emailCopie: user.emailCopie ?? "",
             sigle: user.sigle ?? "",
         }
     });
@@ -119,6 +121,7 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                 rang: Number(data.rang),
                 mdp: mdpFilled ? data.mdp : undefined,
                 sigle: data.sigle,
+                emailCopie: data.emailCopie,
             });
             onSuccess();
         } catch (err: any) {
@@ -228,6 +231,17 @@ export const UserEditForm: React.FC<UserEditFormProps> = ({ user, onSuccess, onC
                         />
                         {errors.conf_mdp && <p className="text-[10px] text-red-600 font-bold">{errors.conf_mdp.message}</p>}
                     </div>
+                    <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Email Copie</label>
+                    <input
+                        {...register("emailCopie")}
+                        type="email"
+                        placeholder="dsint@mesupres.mg"
+                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 outline-none focus:ring-1 focus:ring-slate-900 ${errors.emailCopie ? "border-red-500" : "border-slate-300"}`}
+                    />
+                    {errors.emailCopie && <p className="text-[10px] text-red-600 font-bold">{errors.emailCopie.message}</p>}
+                </div>
+
                 </div>
 
                 {error && (

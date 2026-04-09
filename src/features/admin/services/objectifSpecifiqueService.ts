@@ -53,5 +53,9 @@ export const objectifSpecifiqueService = {
 
     // Pas d'endpoint DELETE dans l'API pour l'instant
     delete: async (_id: number): Promise<void> => {
+        await fetchAuth(`/api/rapports/OS/${_id}`, {
+            method: "DELETE",
+        });
+        
     },
 };

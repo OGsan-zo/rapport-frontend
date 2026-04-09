@@ -7,6 +7,7 @@ export interface User {
   dateValidation?: string | null;
   rang?: number;
   sigle?: string;
+  emailCopie?: string;
 }
 
 export interface Entite {

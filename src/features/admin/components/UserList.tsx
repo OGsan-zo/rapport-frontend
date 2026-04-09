@@ -56,6 +56,7 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Entite</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Email</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Rôle</th>
+                                <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px]">Email Copie</th>
                                 <th className="px-6 py-4 font-bold text-slate-900 uppercase tracking-widest text-[10px] text-right">Actions</th>
                             </tr>
                         </thead>
@@ -82,6 +83,9 @@ export const UserList: React.FC<UserListProps> = ({ onAddUser, onEditUser, refre
                                                 }`}>
                                                 {user.role}
                                             </span>
+                                        </td>
+                                        <td className="px-6 py-4 text-slate-600 font-medium">
+                                            {user.emailCopie || ''}
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <button

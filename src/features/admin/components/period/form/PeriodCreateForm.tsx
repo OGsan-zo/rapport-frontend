@@ -36,12 +36,12 @@ export const PeriodCreateForm = ({ onSubmit, feedback }: PeriodCreateFormProps) 
 
             <div className="space-y-3">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date de début</label>
-                <input type="date" {...register("debut", { onChange: () => trigger("fin") })} className="w-full border rounded-lg px-4 py-3 text-sm border-slate-200 bg-slate-50/30 outline-none" />
+                <input type="date" {...register("debut", { onChange: () => trigger("fin") })} className="w-full border rounded-lg px-4 py-3 text-sm border-slate-200 bg-white text-slate-900 outline-none focus:border-slate-300 focus:bg-slate-50" />
             </div>
 
             <div className="space-y-3">
                 <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Date de fin</label>
-                <input type="date" {...register("fin")} className={`w-full border rounded-lg px-4 py-3 text-sm outline-none ${errors.fin ? "border-red-500 bg-red-50" : "border-slate-200 bg-slate-50/30"}`} />
+                <input type="date" {...register("fin")} className={`w-full border rounded-lg px-4 py-3 text-sm outline-none ${errors.fin ? "border-red-400 bg-red-50 text-red-900" : "border-slate-200 bg-white text-slate-900 focus:border-slate-300 focus:bg-slate-50"}`} />
                 {errors.fin && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.fin.message}</p>}
             </div>
 

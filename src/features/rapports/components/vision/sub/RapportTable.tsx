@@ -67,7 +67,11 @@ export const RapportTable: React.FC<RapportTableProps> = ({
     const cellPadding = isTrimestriel ? "4px 6px" : "12px"; 
 
     // Fonction utilitaire pour le rendu des cellules contenant des listes
-    const renderListCell = (items?: BaseNom[]) => (
+    let apoitra = isPdf;
+    if (isTrimestriel) {
+        apoitra = false;
+    }
+    const renderListCell = (items?: BaseNom[], showPoint: boolean = true) => (
         <td style={{ 
             border: "1px solid black", 
             padding: cellPadding, 
@@ -79,7 +83,7 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                 <ul style={{ margin: 0, padding: 0, listStyleType: "none" }}>
                     {items.map((item: BaseNom, i: number) => (
                         <li key={i} style={{ display: "flex", gap: "4px", marginBottom: "4px" }}>
-                            {isPdf && !isTrimestriel && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
+                            {showPoint && <span style={{ color: "#000000", fontWeight: "bold" }}>•</span>}
                             <span style={{ textAlign: "justify", color: "#000000" }}>{item.name}</span>
                         </li>
                     ))}
@@ -220,17 +224,17 @@ export const RapportTable: React.FC<RapportTableProps> = ({
                                     {act.activite?.name || " "}
                                 </td>
                                 
-                                {renderListCell(act.effects)}
-                                {renderListCell(act.impacts)}
+                                {renderListCell(act.effects,apoitra)}
+                                {renderListCell(act.impacts,apoitra)}
 
                                 {isTrimestriel && (
                                     <>
-                                        {renderListCell(act.produits)}
-                                        {renderListCell(act.cibles)}
-                                        {renderListCell(act.previsions)}
-                                        {renderListCell(act.realisations)}
+                                        {renderListCell(act.produits,apoitra)}
+                                        {renderListCell(act.cibles,apoitra)}
+                                        {renderListCell(act.previsions,apoitra)}
+                                        {renderListCell(act.realisations,apoitra)}
                                         {renderTauxCell(act.taux)}
-                                        {renderListCell(act.observations)}
+                                        {renderListCell(act.observations,isPdf)}
                                     </>
                                 )}
                             </tr>

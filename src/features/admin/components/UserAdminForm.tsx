@@ -10,6 +10,7 @@ import { RoleSelect } from "../../config/components/RoleSelect";
 const userAdminSchema = z.object({
     entite: z.string().min(2, "L'entité doit faire au moins 2 caractères"),
     email: z.string().email("Adresse email invalide"),
+    emailCopie: z.string().email("Adresse email invalide").optional(),
     mdp: z.string().min(6, "6 caractères minimum"),
     idRole: z.string().min(1, "Veuillez choisir un rôle"),
     rang: z.string().refine((v) => !isNaN(Number(v)) && Number(v) >= 0, { message: "Le rang doit être ≥ 0" }),
@@ -50,6 +51,7 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
             idRole: Number(data.idRole),
             rang: Number(data.rang),
             sigle: data.sigle || "",
+            emailCopie: data.emailCopie || "",
         };
 
         // console.log("Payload envoyé:", payload);
@@ -133,6 +135,16 @@ export const UserAdminForm: React.FC<UserAdminFormProps> = ({ onSuccess, onCance
                         onChange={(val) => setValue("idRole", val, { shouldValidate: true })}
                         error={errors.idRole?.message}
                     />
+                </div>
+                <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700 uppercase tracking-widest block">Email</label>
+                    <input
+                        {...register("emailCopie")}
+                        type="email"
+                        placeholder="votre@email.com"
+                        className={`w-full px-3 py-2 border rounded text-sm text-slate-900 placeholder-slate-400 transition-colors outline-none focus:ring-1 focus:ring-slate-900 ${errors.emailCopie ? "border-red-500" : "border-slate-300"}`}
+                    />
+                    {errors.emailCopie && <p className="text-[10px] text-red-600 font-bold">{errors.emailCopie.message}</p>}
                 </div>
 
                 {error && (

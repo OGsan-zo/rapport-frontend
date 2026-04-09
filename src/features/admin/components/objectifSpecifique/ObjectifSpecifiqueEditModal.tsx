@@ -59,10 +59,10 @@ export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalPr
                 <form onSubmit={handleSubmit(onSubmit)} className="px-8 py-6 space-y-6">
                     <div className="space-y-2">
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Nom</label>
-                        <input
-                            type="text"
+                        <textarea
                             {...register("nom")}
-                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.nom ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                            rows={3}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition resize-none ${errors.nom ? "border-red-400 bg-red-50 text-red-900 placeholder-red-400" : "border-slate-200 bg-white text-slate-900 placeholder-slate-400 focus:border-slate-300 focus:bg-slate-50"}`}
                         />
                         {errors.nom && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.nom.message}</p>}
                     </div>
