@@ -224,29 +224,28 @@ const ObjectifSpecifiqueCreateForm = ({ onSubmit, feedback })=>{
                 className: "space-y-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1",
-                        children: "Activité PTA"
+                        className: "text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1",
+                        children: "Pta"
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
                         lineNumber: 34,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        placeholder: "Activité PTA",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                        placeholder: "PTA",
                         ...register("name"),
-                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`
+                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.name ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
                         lineNumber: 35,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     errors.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[9px] text-red-500 font-bold uppercase",
+                        className: "text-[10px] text-red-600 font-medium mt-1",
                         children: errors.name.message
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 41,
+                        lineNumber: 40,
                         columnNumber: 33
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
@@ -259,140 +258,137 @@ const ObjectifSpecifiqueCreateForm = ({ onSubmit, feedback })=>{
                 className: "space-y-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1",
+                        className: "text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1",
                         children: "Logique d'intervention"
+                    }, void 0, false, {
+                        fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
+                        lineNumber: 44,
+                        columnNumber: 17
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
+                        placeholder: "Logique d'intervention",
+                        ...register("li"),
+                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.li ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
                         lineNumber: 45,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
-                        placeholder: "Logique d'intervention",
-                        ...register("li"),
-                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.li ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`
-                    }, void 0, false, {
-                        fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 46,
-                        columnNumber: 17
-                    }, ("TURBOPACK compile-time value", void 0)),
                     errors.li && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[9px] text-red-500 font-bold uppercase",
+                        className: "text-[10px] text-red-600 font-medium mt-1",
                         children: errors.li.message
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 52,
+                        lineNumber: 50,
                         columnNumber: 31
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                lineNumber: 44,
+                lineNumber: 43,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1",
+                        className: "text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1",
                         children: "Activité PTA"
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 56,
+                        lineNumber: 54,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                         placeholder: "Activité PTA",
                         ...register("activitePta"),
-                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`
+                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 57,
+                        lineNumber: 55,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     errors.activitePta && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[9px] text-red-500 font-bold uppercase",
+                        className: "text-[10px] text-red-600 font-medium mt-1",
                         children: errors.activitePta.message
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 63,
+                        lineNumber: 60,
                         columnNumber: 40
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                lineNumber: 55,
+                lineNumber: 53,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1",
+                        className: "text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1",
                         children: "Produit"
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 67,
+                        lineNumber: 64,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("textarea", {
                         placeholder: "Produit",
                         ...register("produit"),
-                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.produit ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`
+                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.produit ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 68,
+                        lineNumber: 65,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     errors.produit && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[9px] text-red-500 font-bold uppercase",
+                        className: "text-[10px] text-red-600 font-medium mt-1",
                         children: errors.produit.message
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 74,
+                        lineNumber: 70,
                         columnNumber: 36
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                lineNumber: 66,
+                lineNumber: 63,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "space-y-3",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("label", {
-                        className: "text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1",
+                        className: "text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1",
                         children: "Cible"
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 78,
+                        lineNumber: 74,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
-                        type: "text",
+                        type: "number",
                         placeholder: "Cible",
                         ...register("cible"),
-                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.cible ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`
+                        className: `w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.cible ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 79,
+                        lineNumber: 75,
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     errors.cible && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                        className: "text-[9px] text-red-500 font-bold uppercase",
+                        className: "text-[10px] text-red-600 font-medium mt-1",
                         children: errors.cible.message
                     }, void 0, false, {
                         fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                        lineNumber: 85,
+                        lineNumber: 81,
                         columnNumber: 34
                     }, ("TURBOPACK compile-time value", void 0))
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                lineNumber: 77,
+                lineNumber: 73,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -402,7 +398,7 @@ const ObjectifSpecifiqueCreateForm = ({ onSubmit, feedback })=>{
                 children: isSubmitting ? "Enregistrement..." : "Ajouter"
             }, void 0, false, {
                 fileName: "[project]/src/features/admin/components/objectifSpecifique/form/ObjectifSpecifiqueCreateForm.tsx",
-                lineNumber: 88,
+                lineNumber: 84,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
@@ -945,7 +941,7 @@ const ObjectifSpecifiqueEditModal = ({ item, onSuccess, onCancel })=>{
     const { register, handleSubmit, setValue, formState: { errors, isSubmitting } } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$react$2d$hook$2d$form$2f$dist$2f$index$2e$esm$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useForm"])({
         resolver: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$hookform$2f$resolvers$2f$zod$2f$dist$2f$zod$2e$mjs__$5b$app$2d$client$5d$__$28$ecmascript$29$__["zodResolver"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$admin$2f$type$2f$objectifSpecifique$2f$objectifSpecifiqueSchema$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["objectifSpecifiqueSchema"]),
         defaultValues: {
-            nom: item.nom,
+            name: item.name,
             li: item.li,
             activitePta: item.activitePta || "",
             produit: item.produit || "",
@@ -954,7 +950,7 @@ const ObjectifSpecifiqueEditModal = ({ item, onSuccess, onCancel })=>{
     });
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "ObjectifSpecifiqueEditModal.useEffect": ()=>{
-            setValue("nom", item.nom);
+            setValue("name", item.name);
             setValue("li", item.li);
             setValue("activitePta", item.activitePta || "");
             setValue("produit", item.produit || "");
@@ -1064,20 +1060,20 @@ const ObjectifSpecifiqueEditModal = ({ item, onSuccess, onCancel })=>{
                                 }, ("TURBOPACK compile-time value", void 0)),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("input", {
                                     type: "text",
-                                    ...register("nom"),
-                                    className: `w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.nom ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`
+                                    ...register("name"),
+                                    className: `w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.name ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx",
                                     lineNumber: 66,
                                     columnNumber: 25
                                 }, ("TURBOPACK compile-time value", void 0)),
-                                errors.nom && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                errors.name && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                                     className: "text-[9px] text-red-500 font-bold uppercase ml-1",
-                                    children: errors.nom.message
+                                    children: errors.name.message
                                 }, void 0, false, {
                                     fileName: "[project]/src/features/admin/components/objectifSpecifique/ObjectifSpecifiqueEditModal.tsx",
                                     lineNumber: 71,
-                                    columnNumber: 40
+                                    columnNumber: 41
                                 }, ("TURBOPACK compile-time value", void 0))
                             ]
                         }, void 0, true, {
@@ -1560,10 +1556,10 @@ const ObjectifSpecifiqueForm = ()=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "grid grid-cols-1 lg:grid-cols-3 gap-12",
+                className: "w-full space-y-8",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "lg:col-span-1",
+                        className: "w-full",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$admin$2f$components$2f$objectifSpecifique$2f$form$2f$ObjectifSpecifiqueCreateForm$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ObjectifSpecifiqueCreateForm"], {
                             onSubmit: handleCreate,
                             feedback: feedback
@@ -1578,7 +1574,7 @@ const ObjectifSpecifiqueForm = ()=>{
                         columnNumber: 17
                     }, ("TURBOPACK compile-time value", void 0)),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "lg:col-span-2",
+                        className: "w-full",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$features$2f$admin$2f$components$2f$objectifSpecifique$2f$liste$2f$ObjectifSpecifiqueList$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ObjectifSpecifiqueList"], {
                             items: items,
                             isLoading: isLoading,

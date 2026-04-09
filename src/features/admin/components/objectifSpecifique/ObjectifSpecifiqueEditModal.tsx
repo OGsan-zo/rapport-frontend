@@ -21,11 +21,11 @@ export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalPr
         formState: { errors, isSubmitting },
     } = useForm<ObjectifSpecifiqueFormValues>({
         resolver: zodResolver(objectifSpecifiqueSchema),
-        defaultValues: { nom: item.nom, li: item.li, activitePta: item.activitePta || "", produit: item.produit || "", cible: item.cible || "" },
+        defaultValues: { name: item.name, li: item.li, activitePta: item.activitePta || "", produit: item.produit || "", cible: item.cible || "" },
     });
 
     useEffect(() => {
-        setValue("nom", item.nom);
+        setValue("name", item.name);
         setValue("li", item.li);
         setValue("activitePta", item.activitePta || "");
         setValue("produit", item.produit || "");
@@ -65,10 +65,10 @@ export const ObjectifSpecifiqueEditModal: React.FC<ObjectifSpecifiqueEditModalPr
                         <label className="text-[10px] font-bold text-slate-500 uppercase tracking-widest block ml-1">Nom</label>
                         <input
                             type="text"
-                            {...register("nom")}
-                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.nom ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
+                            {...register("name")}
+                            className={`w-full border rounded-lg px-4 py-3 text-sm text-slate-900 outline-none focus:ring-1 transition ${errors.name ? "border-red-400 bg-red-50 focus:ring-red-400" : "border-slate-200 bg-slate-50 focus:ring-slate-900 focus:border-slate-900"}`}
                         />
-                        {errors.nom && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.nom.message}</p>}
+                        {errors.name && <p className="text-[9px] text-red-500 font-bold uppercase ml-1">{errors.name.message}</p>}
                     </div>
 
                     <div className="space-y-2">

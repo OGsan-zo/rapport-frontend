@@ -31,58 +31,54 @@ export const ObjectifSpecifiqueCreateForm = ({ onSubmit, feedback }: ObjectifSpe
             )}
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Activité PTA</label>
-                <input
-                    type="text"
-                    placeholder="Activité PTA"
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Pta</label>
+                <textarea
+                    placeholder="PTA"
                     {...register("name")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.name ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`}
                 />
-                {errors.name && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.name.message}</p>}
+                {errors.name && <p className="text-[10px] text-red-600 font-medium mt-1">{errors.name.message}</p>}
             </div>
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Logique d'intervention</label>
-                <input
-                    type="text"
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Logique d'intervention</label>
+                <textarea
                     placeholder="Logique d'intervention"
                     {...register("li")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.li ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.li ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`}
                 />
-                {errors.li && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.li.message}</p>}
+                {errors.li && <p className="text-[10px] text-red-600 font-medium mt-1">{errors.li.message}</p>}
             </div>
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Activité PTA</label>
-                <input
-                    type="text"
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Activité PTA</label>
+                <textarea
                     placeholder="Activité PTA"
                     {...register("activitePta")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.activitePta ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`}
                 />
-                {errors.activitePta && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.activitePta.message}</p>}
+                {errors.activitePta && <p className="text-[10px] text-red-600 font-medium mt-1">{errors.activitePta.message}</p>}
             </div>
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Produit</label>
-                <input
-                    type="text"
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Produit</label>
+                <textarea
                     placeholder="Produit"
                     {...register("produit")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.produit ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.produit ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`}
                 />
-                {errors.produit && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.produit.message}</p>}
+                {errors.produit && <p className="text-[10px] text-red-600 font-medium mt-1">{errors.produit.message}</p>}
             </div>
 
             <div className="space-y-3">
-                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest ml-1">Cible</label>
+                <label className="text-[10px] font-bold text-slate-600 uppercase tracking-widest ml-1">Cible</label>
                 <input
-                    type="text"
+                    type="number"
                     placeholder="Cible"
                     {...register("cible")}
-                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.cible ? "border-red-400 bg-red-50" : "border-slate-200 bg-slate-50/30"}`}
+                    className={`w-full border rounded-lg px-4 py-3 text-sm outline-none transition ${errors.cible ? "border-red-400 bg-red-50 text-red-700" : "border-slate-200 bg-white text-slate-700"}`}
                 />
-                {errors.cible && <p className="text-[9px] text-red-500 font-bold uppercase">{errors.cible.message}</p>}
+                {errors.cible && <p className="text-[10px] text-red-600 font-medium mt-1">{errors.cible.message}</p>}
             </div>
 
             <button

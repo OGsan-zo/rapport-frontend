@@ -61,6 +61,7 @@ export const LigneActiviteEditor = ({
   const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
 
   const [isHorsPta, setIsHorsPta] = useState(true);
+  const [hoveredObjectif, setHoveredObjectif] = useState<ObjectifSpecifique | null>(null);
   
   useEffect(() => {
     setIsHorsPta(true);
@@ -124,6 +125,7 @@ export const LigneActiviteEditor = ({
   const inputClass = "w-full text-sm text-slate-600 bg-transparent border-none focus:ring-0 min-h-[100px] p-2 placeholder:text-slate-300 text-center placeholder:text-center flex items-center justify-center";
   const addBtnClass = "w-full py-2 mt-auto border border-dashed border-slate-300 rounded-lg text-[10px] font-bold uppercase tracking-widest text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-all";
   const closeBtnClass = "text-slate-300 hover:text-red-500 transition-colors p-1 rounded-md hover:bg-red-50";
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
     <div className={`grid ${gridLayout} group/row transition-colors hover:bg-slate-50/30 items-stretch`}>
@@ -145,15 +147,104 @@ export const LigneActiviteEditor = ({
                 readOnly
               />
             ) : (
-              <select
-                {...register(`lignes.${index}.titre`)}
-                className={`${selectClass} font-bold text-slate-800`}
-              >
-                <option value="">Sélectionner un objectif...</option>
-                {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
-                  <option key={obj.id} value={obj.name}>{obj.name}</option>
-                ))}
-              </select>
+              <div className="relative">
+                {/* 1. Input caché pour conserver la compatibilité avec react-hook-form */}
+                <input 
+                  type="hidden" 
+                  {...register(`lignes.${index}.titre`)} 
+                />
+
+                {/* 2. Faux "Select" (Bouton principal) */}
+                <div
+                  className={`${selectClass} font-bold text-slate-800 cursor-pointer flex justify-between items-center bg-white`}
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  <span className="truncate">
+                    {objectifSpecifiqueWatch || "Sélectionner un objectif..."}
+                  </span>
+                  <span className="text-xs text-slate-400">▼</span>
+                </div>
+
+                {/* 3. La liste des options personnalisée */}
+                {isDropdownOpen && (
+                  <div className="fixed sm:absolute z-[100] min-w-[280px] mt-1 bg-white border border-slate-200 rounded-md shadow-2xl max-h-60 overflow-y-auto">
+                    <div 
+                      className="px-3 py-2 text-slate-500 hover:bg-slate-50 cursor-pointer border-b border-slate-100"
+                      onClick={() => {
+                        setValue(`lignes.${index}.titre`, "");
+                        setIsDropdownOpen(false);
+                        setHoveredObjectif(null);
+                      }}
+                    >
+                      Sélectionner un objectif...
+                    </div>
+                    
+                    {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
+                      <div 
+                        key={obj.id}
+                        className="px-3 py-2 hover:bg-blue-50 cursor-pointer text-slate-800 transition-colors border-b border-slate-50 last:border-0"
+                        onMouseEnter={() => setHoveredObjectif(obj)}
+                        onMouseLeave={() => setHoveredObjectif(null)}
+                        onClick={() => {
+                          setValue(`lignes.${index}.titre`, obj.name, { shouldValidate: true });
+                          setIsDropdownOpen(false);
+                          setHoveredObjectif(null);
+                        }}
+                      >
+                        {obj.name}
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* 4. Tooltip avec détails de l'objectif spécifique */}
+                {hoveredObjectif && (
+                  <div className="absolute z-50 left-full ml-4 top-0 w-auto max-w-2xl p-3 bg-white border border-slate-200 rounded-lg shadow-xl pointer-events-none">
+                    <div className="flex items-center gap-4 space-x-4">
+                      <div className="flex-shrink-0">
+                        <h4 className="font-bold text-slate-900 text-sm whitespace-nowrap">{hoveredObjectif.name}</h4>
+                        <div className="mt-1">
+                          <span className="inline-block px-2 py-1 text-xs font-medium rounded-full bg-blue-50 text-blue-700">
+                            {hoveredObjectif.activitePta ? 'Dans PTA' : 'Hors PTA'}
+                          </span>
+                        </div>
+                      </div>
+                      
+                      <div className="h-12 w-px bg-slate-200"></div>
+                      
+                      <div className="flex gap-6 text-xs">
+                        {hoveredObjectif.li && (
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-600 mb-1">Logique</span>
+                            <p className="text-slate-700 max-w-xs truncate" title={hoveredObjectif.li}>{hoveredObjectif.li}</p>
+                          </div>
+                        )}
+                        
+                        {hoveredObjectif.activitePta && (
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-600 mb-1">Activité PTA</span>
+                            <p className="text-slate-700 max-w-xs truncate" title={hoveredObjectif.activitePta}>{hoveredObjectif.activitePta}</p>
+                          </div>
+                        )}
+                        
+                        {hoveredObjectif.produit && (
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-600 mb-1">Produit</span>
+                            <p className="text-slate-700 max-w-xs truncate" title={hoveredObjectif.produit}>{hoveredObjectif.produit}</p>
+                          </div>
+                        )}
+                        
+                        {hoveredObjectif.cible && (
+                          <div className="flex flex-col">
+                            <span className="font-semibold text-slate-600 mb-1">Cible</span>
+                            <p className="text-slate-700 max-w-xs truncate" title={hoveredObjectif.cible}>{hoveredObjectif.cible}</p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             )
           ) : (
             <textarea
