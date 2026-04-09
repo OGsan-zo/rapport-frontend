@@ -64,8 +64,14 @@ export const LigneActiviteEditor = ({
   // --- Calcul automatique du taux (comme dans LigneActivite) ---
   const previsionsWatch = useWatch({ control, name: `lignes.${index}.previsions` });
   const realisationsWatch = useWatch({ control, name: `lignes.${index}.realisations` });
+  const objectifSpecifiqueWatch = useWatch({ control, name: `lignes.${index}.titre` });
 
   const calculerTaux = (i: number) => {
+    // Si c'est "Hors PTA", on retourne directement cette valeur
+    if (objectifSpecifiqueWatch === "Hors PTA") {
+      return "Hors PTA";
+    }
+    
     const prev = parseFloat(previsionsWatch?.[i]?.value) || 0;
     const real = parseFloat(realisationsWatch?.[i]?.value) || 0;
     if (prev <= 0) return "0.00";
@@ -73,11 +79,33 @@ export const LigneActiviteEditor = ({
     return ((real / prev) * 100).toFixed(2);
   };
 
+  // Effet pour mettre à jour tous les champs quand l'objectif spécifique change
+  useEffect(() => {
+    if (objectifSpecifiqueWatch === "Hors PTA") {
+      // Mettre à jour tous les champs avec "Hors PTA"
+      effectsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.effects.${i}.value`, "Hors PTA");
+      });
+      ciblesFields.forEach((_, i) => {
+        setValue(`lignes.${index}.cibles.${i}.value`, "Hors PTA");
+      });
+      previsionsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.previsions.${i}.value`, "Hors PTA");
+      });
+      realisationsFields.forEach((_, i) => {
+        setValue(`lignes.${index}.realisations.${i}.value`, "Hors PTA");
+      });
+      tauxFields.forEach((_, i) => {
+        setValue(`lignes.${index}.taux.${i}.value`, "Hors PTA");
+      });
+    }
+  }, [objectifSpecifiqueWatch, index, setValue, effectsFields, ciblesFields, previsionsFields, realisationsFields, tauxFields]);
+
   useEffect(() => {
     tauxFields.forEach((_, i) => {
       setValue(`lignes.${index}.taux.${i}.value`, calculerTaux(i));
     });
-  }, [previsionsWatch, realisationsWatch]);
+  }, [previsionsWatch, realisationsWatch, objectifSpecifiqueWatch, setValue]);
 
   // --- Grille dynamique synchronisée avec le parent ---
  
@@ -116,6 +144,7 @@ export const LigneActiviteEditor = ({
                 className={`${selectClass} font-bold text-slate-800`}
               >
                 <option value="">Sélectionner un objectif...</option>
+                <option value="Hors PTA">Hors PTA</option>
                 {objectifSpecifiques.map((obj: ObjectifSpecifique) => (
                   <option key={obj.id} value={obj.nom}>{obj.nom}</option>
                 ))}
@@ -144,15 +173,26 @@ export const LigneActiviteEditor = ({
                   readOnly
                 />
               ) : (
-                <select
-                  {...register(`lignes.${index}.effects.${i}.value`)}
-                  className={selectClass}
-                >
-                  <option value="">Sélectionner une logique d'intervention...</option>
-                  {logiqueInterventions.map((logique: LogiqueIntervention) => (
-                    <option key={logique.id} value={logique.nom}>{logique.nom}</option>
-                  ))}
-                </select>
+                <>
+                  {objectifSpecifiqueWatch === "Hors PTA" ? (
+                    <input
+                      type="text"
+                      {...register(`lignes.${index}.effects.${i}.value` as any, { value: "Hors PTA" })}
+                      className={inputClass}
+                      readOnly
+                    />
+                  ) : (
+                    <select
+                      {...register(`lignes.${index}.effects.${i}.value`)}
+                      className={selectClass}
+                    >
+                      <option value="">Sélectionner une logique d'intervention...</option>
+                      {logiqueInterventions.map((logique: LogiqueIntervention) => (
+                        <option key={logique.id} value={logique.nom}>{logique.nom}</option>
+                      ))}
+                    </select>
+                  )}
+                </>
               )
             ) : (
               <textarea
@@ -216,7 +256,16 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {ciblesFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={inputClass} placeholder={`Cible ${i + 1}...`} min="1" />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.cibles.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input type="number" {...register(`lignes.${index}.cibles.${i}.value`)} className={inputClass} placeholder={`Cible ${i + 1}...`} min="1" />
+                )}
                 {ciblesFields.length > 1 && <button type="button" onClick={() => removeCible(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -227,12 +276,21 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {previsionsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input 
-                  type="number"
-                  {...register(`lignes.${index}.previsions.${i}.value`)} 
-                  className={inputClass} 
-                  placeholder={`Prévision ${i + 1}...`}
-                />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.previsions.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input 
+                    type="number"
+                    {...register(`lignes.${index}.previsions.${i}.value`)} 
+                    className={inputClass} 
+                    placeholder={`Prévision ${i + 1}...`}
+                  />
+                )}
                 {previsionsFields.length > 1 && <button type="button" onClick={() => removePrevision(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -243,12 +301,21 @@ export const LigneActiviteEditor = ({
           <div className={colContainerClass}>
             {realisationsFields.map((field, i) => (
               <div key={field.id} className={itemBoxClass}>
-                <input 
-                  type="number"
-                  {...register(`lignes.${index}.realisations.${i}.value`)} 
-                  className={inputClass} 
-                  placeholder={`Réalisation ${i + 1}...`}
-                />
+                {objectifSpecifiqueWatch === "Hors PTA" ? (
+                  <input
+                    type="text"
+                    {...register(`lignes.${index}.realisations.${i}.value` as any, { value: "Hors PTA" })}
+                    className={inputClass}
+                    readOnly
+                  />
+                ) : (
+                  <input 
+                    type="number"
+                    {...register(`lignes.${index}.realisations.${i}.value`)} 
+                    className={inputClass} 
+                    placeholder={`Réalisation ${i + 1}...`}
+                  />
+                )}
                 {realisationsFields.length > 1 && <button type="button" onClick={() => removeRealisation(i)} className={closeBtnClass}>✕</button>}
               </div>
             ))}
@@ -268,7 +335,9 @@ export const LigneActiviteEditor = ({
                     readOnly
                     className={`${textAreaClass} font-bold text-blue-600 pointer-events-none`}
                   />
-                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 transform -translate-y-1/2">%</span>
+                  {valeurTaux !== "Hors PTA" && (
+                    <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 transform -translate-y-1/2">%</span>
+                  )}
                 </div>
               );
             })}

@@ -210,7 +210,7 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
       <div className={colContainerClass}>
         {impactsFields.map((field, i) => (
           <div key={field.id} className={itemBoxClass}>
-            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité suivant le PTA ` : `Impact ${i + 1}...`} />
+            <textarea {...register(`lignes.${index}.impacts.${i}.value` as any)} className={textAreaClass} placeholder={isTrimestriel ? `Activité` : `Impact ${i + 1}...`} />
             {impactsFields.length > 1 && (
               <button type="button" onClick={() => removeImpact(i)} className={closeBtnClass}>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
@@ -327,7 +327,9 @@ export const LigneActivite = ({ control, register, index, remove, canRemove, isT
                       readOnly
                     />
                   
-                  <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
+                  {objectifSpecifiqueWatch !== "Hors PTA" && (
+                    <span className="text-[10px] font-bold text-blue-400 absolute right-2 top-1/2 -translate-y-1/2">%</span>
+                  )}
                 </div>
               );
             })}

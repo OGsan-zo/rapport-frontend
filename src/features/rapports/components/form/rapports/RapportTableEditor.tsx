@@ -151,9 +151,9 @@ export const RapportTableEditor: React.FC<RapportTableEditorProps> = ({ rapport,
   // 5. CONFIGURATION DES EN-TÊTES ET DE LA GRILLE
   
     const headers = isTrimestriel === 3 
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
     : isTrimestriel === 4
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
     : ["#", "Titre de l'activité", "Effets", "Impacts", ""];
 
 

@@ -28,9 +28,9 @@ const TableauActivites: React.FC<TableauActivitesProps> = ({
   const isTrim = isTrimestriel === 3 || isTrimestriel === 4;
   
   const headers = isTrimestriel === 3 
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité", "Produit", "Cible", "Prévision Trim.", "Réalisation Trim.", "Taux de réalisation", "Observation", ""]
     : isTrimestriel === 4
-    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité PTA", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
+    ? ["#", "Objectif spécifique", "Logique d'intervention", "Activité", "Produit", "Cible", "Prévision annuel", "Réalisation annuel", "Taux de réalisation", "Observation", ""]
     : ["#", "Titre de l'activité", "Effets", "Impacts", ""];
 
   // 1. CORRECTION DES COLONNES : Distribution optimisée pour le mode trimestriel
