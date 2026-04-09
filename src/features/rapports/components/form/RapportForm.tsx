@@ -199,7 +199,7 @@ export const ConsolidationForm = () => {
 
       {/* Rendu PDF caché */}
       <div className="fixed left-[-9999px] top-0 pointer-events-none opacity-0">
-        <div id="pdf-render-zone" style={{ width: isTrimestriel ? "297mm" : "210mm" }}>
+        <div id="pdf-render-zone" style={{ width: isTrimestriel ? "210mm" : "210mm" }}>
           <RapportView data={[rapportPreview]} isPrintMode={true} isLandscape={isTrimestriel} />
         </div>
       </div>
