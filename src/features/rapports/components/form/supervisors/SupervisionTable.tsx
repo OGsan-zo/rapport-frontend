@@ -89,7 +89,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
             if (!id) return;
             setLocalValidatingId(id);
             await rapportService.changerValidationRapport(id);
-            const nextStatut = currentStatut === "VALIDE" ? "TRANSMIS" : "VALIDE";
+            const nextStatut = currentStatut === "VALIDE" ? "EN COURS" : "VALIDE";
             setListRapports(prev =>
                 prev.map(r => r.id === id ? { ...r, statut: nextStatut } : r)
             );
@@ -185,7 +185,7 @@ export const SupervisionTable: React.FC<SupervisionTableProps> = ({
                             >
                                 <option value="">Tous les statuts</option>
                                 <option value="VALIDE">Validé</option>
-                                <option value="TRANSMIS">Transmis</option>
+                                <option value="EN COURS">En cours</option>
                             </select>
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-slate-400 absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
