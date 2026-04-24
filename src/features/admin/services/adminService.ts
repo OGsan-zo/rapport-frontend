@@ -71,6 +71,7 @@ export const adminService = {
     /**
      * Crée un nouvel utilisateur dans le backend.
      */
+    
     createUser: async (data: any): Promise<User> => {
         try {
             const response = await fetchAuth("/api/utilisateurs", {
